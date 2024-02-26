@@ -103,7 +103,7 @@ class Migration(migrations.Migration):
                 ('property_sector_2', models.CharField(blank=True, max_length=100, null=True)),
                 ('location', models.CharField(max_length=100)),
                 ('capital_expenditure', models.DecimalField(decimal_places=2, max_digits=15)),
-                ('property_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='properties.property')),
+                ('property_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Property_Dashboard_app.property')),
             ],
         ),
         migrations.CreateModel(
@@ -138,8 +138,8 @@ class Migration(migrations.Migration):
                 ('fire_risk', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('specific_bad_debt', models.DecimalField(decimal_places=2, max_digits=10)),
                 ('ppm', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('property_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='properties.property')),
-                ('tenant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='properties.tenant')),
+                ('property_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Property_Dashboard_app.property')),
+                ('tenant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='Property_Dashboard_app.tenant')),
             ],
         ),
     ]
