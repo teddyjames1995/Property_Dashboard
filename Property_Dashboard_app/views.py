@@ -1,4 +1,5 @@
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def home_view(request):
-    return HttpResponse("Welcome to the Property Dashboard!")
+    # Your view logic here
+    return render(request, 'home.html', {})
