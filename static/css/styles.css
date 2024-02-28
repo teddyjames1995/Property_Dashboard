@@ -3,6 +3,8 @@
     background-color: #333; /* Sidebar background color */
     position: fixed; /* Make the sidebar stay in place when scrolling */
     height: 100%; /* Full height */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
     overflow: auto; /* Enable scroll if the content is too long */
 }
 
@@ -21,7 +23,7 @@
     padding: 10px;
     color: white; /* Text color */
     font-size: 18px; /* Increase font size */
-    text-decoration: none;
+    text-decoration: none;/* No underline */
     transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
 
