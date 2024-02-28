@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Your Website Title{% endblock %}</title>
+    {% block styles %}
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <!-- Add additional CSS files here -->
+    {% endblock %}
+</head>
+<body>
+    <nav class="sidebar">
+        <ol>
+            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
+            <li><a href="{% url 'financial-modelling' %}">Financial Modelling</a></li>
+            <li><a href="{% url 'property-deepdive' %}">Property Deepdive</a></li>
+            <li><a href="{% url 'tenancy-schedule' %}">Tenancy Schedule</a></li>
+            <li><a href="{% url 'portfolio-performance' %}">Portfolio Performance</a></li>
+            <li><a href="{% url 'debt' %}">Debt</a></li>
+            <li><a href="{% url 'income-expense' %}">Income / Expense</a></li>
+            <li><a href="{% url 'artificial-intelligence' %}">Artificial Intelligence</a></li>
+        </ol>
+    </nav>
+
+    <div class="content">
+        {% block content %}
+        <!-- Page-specific content will go here -->
+        {% endblock %}
+    </div>
+</body>
+</html>
