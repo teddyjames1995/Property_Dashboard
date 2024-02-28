@@ -1,6 +1,9 @@
 .sidebar {
-    width: 200px; /* Adjust width as needed */
-    /* Other styling for sidebar position, etc. */
+    width: 250px; /* Set the width of the sidebar */
+    background-color: #333; /* Sidebar background color */
+    position: fixed; /* Make the sidebar stay in place when scrolling */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if the content is too long */
 }
 
 .sidebar ol {
@@ -17,6 +20,7 @@
     display: block;
     padding: 10px;
     color: white; /* Text color */
+    font-size: 18px; /* Increase font size */
     text-decoration: none;
     transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
@@ -30,5 +34,11 @@
 }
 
 .sidebar li a:hover {
-    background-color: #grey; /* Color change on hover */
+    background-color: #575757; /* Hover background color */
+}
+
+.content {
+    margin-left: 250px; /* Add a left margin to the content */
+    padding: 1px 16px; /* Add some padding */
+    height: 1000px; /* Just for demo, set to the height you need */
 }
