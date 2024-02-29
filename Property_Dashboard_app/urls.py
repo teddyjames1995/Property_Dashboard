@@ -6,6 +6,7 @@ urlpatterns = [
     path('dashboard/', views.dashboard_view, name='dashboard'),
     path('financial_modelling/', views.financial_modelling_view, name='financial_modelling'),
     path('property_deepdive/', views.property_deepdive_view, name='property_deepdive'),
+    path('tenancy_schedule/', views.tenancy_schedule_view, name='tenancy_schedule'),
     path('portfolio_performance/', views.portfolio_performance_view, name='portfolio_performance'),
     path('debt/', views.debt_view, name='debt'),  # Added missing trailing slash
     path('income_and_expenses/', views.income_and_expenses_view, name='income_and_expenses'),  # Added missing trailing slash
