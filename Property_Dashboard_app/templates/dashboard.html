@@ -1,8 +1,66 @@
 {% extends 'base.html' %}
 
-{% block title %}Dashboard{% endblock %}
+{% block title %}Dashboard{% endblock title %}
 
 {% block content %}
-<h1>Dashboard</h1>
-<p>Welcome to the Dashboard! This is where the dashboard content will go.</p>
-{% endblock content %}
+<div class="dashboard-container">
+    <!-- User dropdowns and Generate Report button -->
+    <div class="dashboard-controls">
+        <!-- Dropdowns -->
+        <select id="portfolio-dropdown">...</select>
+        <select id="property-dropdown">...</select>
+        <select id="date-dropdown">...</select>
+        <!-- Generate Report button -->
+        <button id="generate-report-btn">Generate Report</button>
+    </div>
+
+<div id="dashboard">
+    <!-- Portfolio Overview -->
+    <div id="portfolio-overview">
+        <h2>Portfolio Overview</h2>
+        <p>Number of Properties: {{ total_properties }}</p>
+        <p>Number of Tenants: {{ total_tenants }}</p>
+        <p>Total Sq Ft: {{ total_sq_ft }}</p>
+        <p>Total Valuation: £{{ total_valuation }}</p>
+        <p>Total Income: £{{ total_income }}</p>
+        <p>Occupancy: {{ total_occupancy_by_erv }}</p>
+        <p>Yield: {{ total_yield }}</p>
+        <p>Total Capex: {{ total_capex }}</p>
+        <p>LTV: {{ total_debt_ltv }}</p>
+        <p>Interest: {{ total_interest}}</p>
+        <!-- Add more stats as needed -->
+    </div>
+
+    <!-- Top 5 Properties by Valuation -->
+    <div id="top-properties">
+        <h3>Top 5 Properties by Valuation</h3>
+        <ul>
+            {% for property in top_properties %}
+            <li>{{ property.title }} - £{{ property.valuation }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Top 5 Tenants by Rental Income -->
+    <div id="top-tenants">
+        <h3>Top 5 Tenants by Rental Income</h3>
+        <ul>
+            {% for tenant in top_tenants %}
+            <li>{{ tenant.tenant_name }} - £{{ tenant.contracted_rent }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts">
+        <!-- Sector Allocation Pie Chart -->
+        <div id="sector-allocation-chart">...</div>
+        <!-- Lease Expiry Bar Chart -->
+        <div id="lease-expiry-chart">...</div>
+        <!-- More charts... -->
+    </div>
+        
+    <!-- Additional sections as per design -->
+</div>
+</div>
+{% endblock %}
