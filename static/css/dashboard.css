@@ -1,0 +1,11 @@
+body {
+    font-family: 'Calibri', sans-serif;
+}
+
+.top-properties li, .top-tenants li {
+    background-color: #f0f0f0;
+}
+
+.top-properties li:nth-child(odd), .top-tenants li:nth-child(odd) {
+    background-color: #e0e0e0;
+}
