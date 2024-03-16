@@ -2,6 +2,9 @@
 
 {% block title %}Dashboard{% endblock title %}
 
+
+
+
 {% block content %}
 <div class="dashboard-container">
     <!-- User dropdowns and Generate Report button -->
@@ -53,14 +56,16 @@
 
     <!-- Charts -->
     <div class="charts">
-        <!-- Sector Allocation Pie Chart -->
-        <div id="sector-allocation-chart">...</div>
-        <!-- Lease Expiry Bar Chart -->
-        <div id="lease-expiry-chart">...</div>
+        <canvas id="sector-allocation-chart"></canvas>
+        <canvas id="lease-expiry-chart"></canvas>
         <!-- More charts... -->
     </div>
         
     <!-- Additional sections as per design -->
 </div>
 </div>
+{% endblock %}
+
+{% block javascript %}
+<script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}

@@ -1,5 +1,4 @@
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,5 +31,11 @@
         <!-- Page-specific content will go here -->
         {% endblock %}
     </div>
+
+    {% block javascript %}
+    <!-- JavaScript files -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    {% endblock %}
+
 </body>
 </html>
