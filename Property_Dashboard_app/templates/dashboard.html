@@ -2,8 +2,10 @@
 
 {% block title %}Dashboard{% endblock title %}
 
-
-
+{% block styles %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
 
 {% block content %}
 <div class="dashboard-container">
@@ -17,55 +19,59 @@
         <button id="generate-report-btn">Generate Report</button>
     </div>
 
-<div id="dashboard">
-    <!-- Portfolio Overview -->
-    <div id="portfolio-overview">
-        <h2>Portfolio Overview</h2>
-        <p>Number of Properties: {{ total_properties }}</p>
-        <p>Number of Tenants: {{ total_tenants }}</p>
-        <p>Total Sq Ft: {{ total_sq_ft }}</p>
-        <p>Total Valuation: £{{ total_valuation }}</p>
-        <p>Total Income: £{{ total_income }}</p>
-        <p>Occupancy: {{ total_occupancy_by_erv }}</p>
-        <p>Yield: {{ total_yield }}</p>
-        <p>Total Capex: {{ total_capex }}</p>
-        <p>LTV: {{ total_debt_ltv }}</p>
-        <p>Interest: {{ total_interest}}</p>
-        <!-- Add more stats as needed -->
-    </div>
+    <div id="dashboard">
+        <!-- Portfolio Overview -->
+        <div id="portfolio-overview">
+            <h2>Portfolio Overview</h2>
+            <p>Number of Properties: {{ total_properties }}</p>
+            <p>Number of Tenants: {{ total_tenants }}</p>
+            <p>Total Sq Ft: {{ total_sq_ft }}</p>
+            <p>Total Valuation: £{{ total_valuation }}</p>
+            <p>Total Income: £{{ total_income }}</p>
+            <p>Occupancy: {{ total_occupancy_by_erv }}%</p>
+            <p>Yield: {{ total_yield }}%</p>
+            <p>Total Capex: £{{ total_capex }}</p>
+            <p>LTV: {{ total_debt_ltv }}%</p>
+            <p>Interest: {{ total_interest }}%</p>
+        </div>
 
-    <!-- Top 5 Properties by Valuation -->
-    <div id="top-properties">
-        <h3>Top 5 Properties by Valuation</h3>
-        <ul>
-            {% for property in top_properties %}
-            <li>{{ property.title }} - £{{ property.valuation }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+        <!-- Top 5 Properties by Valuation -->
+        <div id="top-properties">
+            <h3>Top 5 Properties by Valuation</h3>
+            <ul>
+                {% for property in top_properties %}
+                <li>{{ property.title }} - £{{ property.valuation }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-    <!-- Top 5 Tenants by Rental Income -->
-    <div id="top-tenants">
-        <h3>Top 5 Tenants by Rental Income</h3>
-        <ul>
-            {% for tenant in top_tenants %}
-            <li>{{ tenant.tenant_name }} - £{{ tenant.contracted_rent }}</li>
-            {% endfor %}
-        </ul>
-    </div>
+        <!-- Top 5 Tenants by Rental Income -->
+        <div id="top-tenants">
+            <h3>Top 5 Tenants by Rental Income</h3>
+            <ul>
+                {% for tenant in top_tenants %}
+                <li>{{ tenant.tenant_name }} - £{{ tenant.contracted_rent }}</li>
+                {% endfor %}
+            </ul>
+        </div>
 
-    <!-- Charts -->
-    <div class="charts">
-        <canvas id="sector-allocation-chart"></canvas>
-        <canvas id="lease-expiry-chart"></canvas>
-        <!-- More charts... -->
+        <!-- Charts -->
+        <div class="charts">
+            <canvas id="sector-allocation-chart"></canvas>
+            <canvas id="lease-expiry-chart"></canvas>
+            <canvas id="debt-wall-chart"></canvas>
+            <!-- More charts... -->
+        </div>
+            
+        <!-- Additional sections as per design -->
     </div>
-        
-    <!-- Additional sections as per design -->
-</div>
 </div>
 {% endblock %}
 
 {% block javascript %}
+{{ sector_allocation_data_json|json_script:"sector-allocation-data" }}
+{{ lease_expiry_data_json|json_script:"lease-expiry-data" }}
+{{ debt_wall_data_json|json_script:"debt-wall-data" }}
 <script src="{% static 'js/dashboard.js' %}"></script>
 {% endblock %}
+

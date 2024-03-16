@@ -29,3 +29,46 @@ function updateChartsOnDropdownChange() {
 
 // Event listeners for dropdown changes
 document.getElementById('portfolio-dropdown').addEventListener('change', updateChartsOnDropdownChange);
+// Assuming you have Django context variables passed into JavaScript variables
+// This might require additional steps or handling JSON data
+
+var ctxPie = document.getElementById('sector-allocation-chart').getContext('2d');
+var sectorAllocationChart = new Chart(ctxPie, {
+    type: 'pie',
+    data: {
+        labels: sectorLabels,  // Your sector labels array
+        datasets: [{
+            label: 'Sector Allocation',
+            data: sectorData,  // Your sector data array
+            backgroundColor: [/* Colors */],
+            borderColor: [/* Border colors */],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        // Additional options...
+    }
+});
+
+var ctxBar = document.getElementById('lease-expiry-chart').getContext('2d');
+var leaseExpiryChart = new Chart(ctxBar, {
+    type: 'bar',
+    data: {
+        labels: leaseExpiryLabels,  // Your labels array
+        datasets: [{
+            label: 'Lease Expiry',
+            data: leaseExpiryData,  // Your data array
+            backgroundColor: [/* Colors */],
+            borderColor: [/* Border colors */],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            yAxes: [{ ticks: { beginAtZero: true } }]
+        },
+        responsive: true,
+        // Additional options...
+    }
+});

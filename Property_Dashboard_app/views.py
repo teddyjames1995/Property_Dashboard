@@ -1,7 +1,9 @@
+from django.shortcuts import render
+from django.core.serializers.json import DjangoJSONEncoder
+import json
+from .models import Property, Tenant, OperatingExpenses
 from django.db.models import Sum, Count, Avg, F, FloatField
 from django.db.models.functions import ExtractYear
-from django.shortcuts import render
-from .models import Property, Tenant, OperatingExpenses
 
 def home_view(request):
     # Updated template path
@@ -57,6 +59,27 @@ def dashboard_view(request):
         debt_sum=Sum('total_debt')
     ).order_by('year')
 
+    sector_allocation_data = {
+        'labels': ['Industrial', 'Offices', 'Retail'],
+        'data': [30, 25, 45],
+        'backgroundColor': ['#FF6384', '#36A2EB', '#FFCE56'],
+    }
+    
+    lease_expiry_data = {
+        'labels': ['2024', '2025', '2026'],
+        'data': [5, 10, 15],
+    }
+    
+    debt_wall_data = {
+        'labels': ['2024', '2025', '2026'],
+        'data': [200000, 300000, 400000],
+    }
+
+    # Serializing data for JavaScript consumption in the template
+    sector_allocation_data_json = json.dumps(sector_allocation_data, cls=DjangoJSONEncoder)
+    lease_expiry_data_json = json.dumps(lease_expiry_data, cls=DjangoJSONEncoder)
+    debt_wall_data_json = json.dumps(debt_wall_data, cls=DjangoJSONEncoder)
+
     # Prepare context data for rendering
     context = {
         'total_properties': total_properties,
@@ -74,6 +97,9 @@ def dashboard_view(request):
         'pie_chart_data': pie_chart_data,
         'lease_expiry_breakdown': lease_expiry_breakdown,
         'debt_wall_breakdown': debt_wall_breakdown,
+        'sector_allocation_data_json': sector_allocation_data_json,
+        'lease_expiry_data_json': lease_expiry_data_json,
+        'debt_wall_data_json': debt_wall_data_json,
         # Add more context data as needed...
     }
     return render(request, 'dashboard.html', context)
