@@ -1,12 +1,12 @@
 import os
 import django
 from faker import Faker
-from random import choice, randint, uniform, date
+from random import choice, randint, uniform
 from datetime import date, timedelta
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')
-django.setup()
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Property_Dashboard.settings')
+
 
 from Property_Dashboard_app.models import Property  # Adjust the import according to your app structure
 
