@@ -2,7 +2,8 @@ import os
 import django
 from faker import Faker
 from random import choice, randint, uniform, date
-from datetime import timedelta
+from datetime import date, timedelta
+
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'your_project_name.settings')
 django.setup()
