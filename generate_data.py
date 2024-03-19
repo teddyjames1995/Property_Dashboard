@@ -6,7 +6,7 @@ from datetime import date, timedelta
 
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Property_Dashboard.settings')
-
+django.setup()
 
 from Property_Dashboard_app.models import Property  # Adjust the import according to your app structure
 
