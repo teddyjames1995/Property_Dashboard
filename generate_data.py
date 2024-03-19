@@ -2,13 +2,13 @@ import os
 import django
 from faker import Faker
 from random import choice, randint, uniform
-from datetime import date, timedelta
-
+from datetime import timedelta
+from django.utils import timezone
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Property_Dashboard.settings')
 django.setup()
 
-from Property_Dashboard_app.models import Property  # Adjust the import according to your app structure
+from Property_Dashboard_app.models import Property
 
 fake = Faker()
 
@@ -18,7 +18,18 @@ def create_properties(n):
     strategies = ['Core', 'Value-Add', 'Opportunistic']
     for _ in range(n):
         acquisition_date = fake.date_between(start_date='-10y', end_date='today')
-        refinance_date = acquisition_date + timedelta(days=randint(100, 1000))
+        refinance_date = acquisition_date + timedelta(days=randint(1, 3650))  # Ensure refinance date is after acquisition
+
+        # Only generate date_sold if refinance_date is in the past
+        if refinance_date <= timezone.now().date():
+            date_sold = fake.date_between(start_date=refinance_date, end_date='today') if choice([True, False]) else None
+            net_sales_price = randint(100000, 5000000) if date_sold else None
+            disposal_costs = uniform(0, 5) if date_sold else None
+        else:
+            date_sold = None
+            net_sales_price = None
+            disposal_costs = None
+
         Property.objects.create(
             title=fake.company(),
             address=fake.address(),
@@ -46,8 +57,11 @@ def create_properties(n):
             amortisation=uniform(0, 100),
             debt_arrangement_fee=uniform(0, 5),
             refinance=choice([True, False]),
-            refinance_date=refinance_date if choice([True, False]) else None,
-            valuation_at_refinance=randint(100000, 5000000) if choice([True, False]) else None,
+            refinance_date=refinance_date,
+            valuation_at_refinance=randint(100000, 5000000) if refinance_date <= timezone.now().date() and choice([True, False]) else None,
+            date_sold=date_sold,
+            net_sales_price=net_sales_price,
+            disposal_costs=disposal_costs,
             refinance_loan_term_years=randint(1, 30) if choice([True, False]) else None,
             refinance_interest_only=choice([True, False]) if choice([True, False]) else None,
             refinance_interest=uniform(1.0, 5.0) if choice([True, False]) else None,
