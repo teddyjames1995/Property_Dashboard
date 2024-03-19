@@ -59,22 +59,20 @@ def create_properties(n):
             refinance=choice([True, False]),
             refinance_date=refinance_date,
             valuation_at_refinance=randint(100000, 5000000) if refinance_date <= timezone.now().date() and choice([True, False]) else None,
+            refinance_loan_term_years=randint(1, 30) if refinance_date <= timezone.now().date() and choice([True, False]) else None,
+            refinance_interest_only=choice([True, False]) if refinance_date <= timezone.now().date() and choice([True, False]) else None,
+            refinance_interest=uniform(1.0, 5.0) if refinance_date <= timezone.now().date() and choice([True, False]) else None,
+            refinance_amortisation=uniform(0, 100) if refinance_date <= timezone.now().date() and choice([True, False]) else None,
+            refinance_debt_arrangement_fee=uniform(0, 5) if refinance_date <= timezone.now().date() and choice([True, False]) else None,
+            number_of_tenants=randint(1, 10),
+            valuation_fees=uniform(0.1, 1.0) * randint(1000, 10000),
             date_sold=date_sold,
             net_sales_price=net_sales_price,
             disposal_costs=disposal_costs,
-            refinance_loan_term_years=randint(1, 30) if choice([True, False]) else None,
-            refinance_interest_only=choice([True, False]) if choice([True, False]) else None,
-            refinance_interest=uniform(1.0, 5.0) if choice([True, False]) else None,
-            refinance_amortisation=uniform(0, 100) if choice([True, False]) else None,
-            refinance_debt_arrangement_fee=uniform(0, 5) if choice([True, False]) else None,
-            number_of_tenants=randint(1, 10),
-            valuation_fees=uniform(0.1, 1.0) * randint(1000, 10000),
-            date_sold=fake.date_between(start_date=refinance_date, end_date='today') if choice([True, False]) else None,
-            net_sales_price=randint(100000, 5000000) if choice([True, False]) else None,
-            disposal_costs=uniform(0, 5) if choice([True, False]) else None,
             cluster=fake.word(),
             strategy=choice(strategies),
         )
+
 
 if __name__ == '__main__':
     num_properties = 100  # Number of properties to create
