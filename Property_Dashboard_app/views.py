@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.core.serializers.json import DjangoJSONEncoder
 import json
 from .models import Property, Tenant, OperatingExpenses
-from django.db.models import Sum, Count, Avg, F, FloatField
+from django.db.models import Sum, Count, Avg, F, FloatField, ExpressionWrapper, DecimalField
 from django.db.models.functions import ExtractYear
 
 def home_view(request):
@@ -17,12 +17,23 @@ def dashboard_view(request):
     total_valuation = Property.objects.aggregate(total_valuation=Sum('valuation'))['total_valuation'] or 0
     total_sq_ft = Property.objects.aggregate(total_sq_ft=Sum('sq_ft'))['total_sq_ft'] or 0
     total_capex = Property.objects.aggregate(total_capex=Sum('capital_expenditure'))['total_capex'] or 0
-    # Calculations for Occupancy by ERV, Yield, Debt LTV, and Interest
-    # These are placeholders for your actual calculations. Replace with your own logic.
     total_occupancy_by_erv = Property.objects.filter(occupancy__gt=0).aggregate(avg_occupancy=Avg('occupancy'))['avg_occupancy'] or 0
-    total_yield = Property.objects.aggregate(weighted_yield=Sum(F('yield') * F('valuation'), output_field=FloatField()) / Sum('valuation'))['weighted_yield'] or 0
+
+    # Calculate the total yield based on the provided formula
+    if total_valuation > 0:
+        total_yield = (total_income / total_valuation) * 100
+    else:
+        total_yield = 0
+
     total_debt_ltv = Property.objects.aggregate(debt_ltv=Sum('total_debt') / Sum('valuation') * 100)['debt_ltv'] or 0
-    total_interest = Property.objects.aggregate(weighted_interest=Sum(F('interest_percentage') * F('total_debt'), output_field=FloatField()) / Sum('total_debt'))['weighted_interest'] or 0
+    total_interest = Property.objects.annotate(
+        weighted_interest_part=ExpressionWrapper(
+            F('interest_percentage') * F('total_debt'), 
+            output_field=DecimalField()
+        )
+    ).aggregate(
+        weighted_interest=Sum('weighted_interest_part', output_field=DecimalField()) / Sum('total_debt', output_field=DecimalField())
+    )['weighted_interest'] or 0
 
 
     # Get the top 5 properties by valuation
