@@ -8,7 +8,13 @@ from datetime import datetime, timedelta
 import locale
 
 # Set locale for currency formatting
-locale.setlocale(locale.LC_ALL, 'en_GB.UTF-8')
+try:
+    locale.setlocale(locale.LC_ALL, 'en_GB.UTF-8')
+except locale.Error:
+    try:
+        locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+    except locale.Error:
+        pass  # Use default locale if none work
 
 def format_currency(value):
     if value < 0:
@@ -49,7 +55,7 @@ def check_for_reminders():
 # Dashboard View
 def dashboard_view(request):
     # Check for reminders whenever the dashboard is accessed
-    check_for_reminders()
+    # check_for_reminders()  # Commented out to prevent BrokenPipeError
 
     # Aggregate data for key portfolio facts
     total_properties_value = Property.objects.count()
