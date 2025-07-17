@@ -1,0 +1,480 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Portfolio Report{% endblock %}
+{% block page_title %}Portfolio Report{% endblock page_title %}
+
+{% block content %}
+<!-- Top Controls -->
+<div class="report-header">
+    <div class="report-controls-row">
+        <div class="control-group">
+            <label>Dash.</label>
+            <select class="report-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Asset ▼</label>
+            <select class="report-select">
+                <option>All Assets</option>
+                <option>Property A</option>
+                <option>Property B</option>
+                <option>Property C</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Report</label>
+            <button class="generate-report-btn">Generate PDF</button>
+        </div>
+    </div>
+</div>
+
+<!-- F/M Portfolio Name -->
+<div class="portfolio-name-section">
+    <div class="portfolio-name-card">
+        <h2>Portfolio Name: Core Property Portfolio</h2>
+        <div class="report-date">Generated: {{ current_date|default:"December 2024" }}</div>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="report-layout">
+    <!-- Left Sidebar with Metrics -->
+    <div class="report-sidebar">
+        <!-- Portfolio Metrics -->
+        <div class="sidebar-section">
+            <h3>F/M</h3>
+            <div class="portfolio-metrics">
+                <div class="metric-group">
+                    <h4>Valuation</h4>
+                    <span class="metric-value large">£12.5M</span>
+                </div>
+                <div class="metric-group">
+                    <h4>Gross Income</h4>
+                    <span class="metric-value">£1.8M</span>
+                </div>
+                <div class="metric-group">
+                    <h4>Yield</h4>
+                    <span class="metric-value">7.2%</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Debt Metrics -->
+        <div class="sidebar-section">
+            <h3>Debt</h3>
+            <div class="debt-metrics">
+                <div class="metric-group">
+                    <h4>LTV</h4>
+                    <span class="metric-value">62%</span>
+                </div>
+                <div class="metric-group">
+                    <h4>Interest</h4>
+                    <span class="metric-value">4.2%</span>
+                </div>
+                <div class="metric-group">
+                    <h4>DSCR</h4>
+                    <span class="metric-value">1.5x</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Top 5 Assets -->
+        <div class="sidebar-section">
+            <h3>Top 5 Assets</h3>
+            <div class="top-assets-list">
+                <div class="asset-item">
+                    <span class="asset-name">Property Alpha</span>
+                    <span class="asset-value">£3.2M</span>
+                </div>
+                <div class="asset-item">
+                    <span class="asset-name">Property Beta</span>
+                    <span class="asset-value">£2.8M</span>
+                </div>
+                <div class="asset-item">
+                    <span class="asset-name">Property Gamma</span>
+                    <span class="asset-value">£2.5M</span>
+                </div>
+                <div class="asset-item">
+                    <span class="asset-name">Property Delta</span>
+                    <span class="asset-value">£2.1M</span>
+                </div>
+                <div class="asset-item">
+                    <span class="asset-name">Property Epsilon</span>
+                    <span class="asset-value">£1.9M</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Top 5 Tenants -->
+        <div class="sidebar-section">
+            <h3>Top 5 Tenants</h3>
+            <div class="top-tenants-list">
+                <div class="tenant-item">
+                    <span class="tenant-name">TechCorp Ltd</span>
+                    <span class="tenant-rent">£180k</span>
+                </div>
+                <div class="tenant-item">
+                    <span class="tenant-name">RetailChain PLC</span>
+                    <span class="tenant-rent">£165k</span>
+                </div>
+                <div class="tenant-item">
+                    <span class="tenant-name">LogisticsCo</span>
+                    <span class="tenant-rent">£145k</span>
+                </div>
+                <div class="tenant-item">
+                    <span class="tenant-name">FinanceGroup</span>
+                    <span class="tenant-rent">£132k</span>
+                </div>
+                <div class="tenant-item">
+                    <span class="tenant-name">ManufacturingInc</span>
+                    <span class="tenant-rent">£128k</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="report-content">
+        <!-- Key Opportunities -->
+        <div class="opportunities-section">
+            <h3>Key Opportunities</h3>
+            <div class="opportunities-content">
+                <div class="opportunity-item">
+                    <div class="opportunity-icon">🎯</div>
+                    <div class="opportunity-text">
+                        <h4>Rent Review Opportunities</h4>
+                        <p>3 properties due for rent review in Q1 2025 with potential 15% uplift</p>
+                    </div>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opportunity-icon">📈</div>
+                    <div class="opportunity-text">
+                        <h4>Asset Enhancement</h4>
+                        <p>Property Beta CapEx investment could increase valuation by £500k</p>
+                    </div>
+                </div>
+                <div class="opportunity-item">
+                    <div class="opportunity-icon">🏢</div>
+                    <div class="opportunity-text">
+                        <h4>Lease Extensions</h4>
+                        <p>2 key tenants interested in 10-year extensions with break clauses</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Risks -->
+        <div class="risks-section">
+            <h3>Risks</h3>
+            <div class="risks-content">
+                <div class="risk-item">
+                    <div class="risk-icon">⚠️</div>
+                    <div class="risk-text">
+                        <h4>Lease Expiry Risk</h4>
+                        <p>Property Alpha main tenant (40% of income) expires June 2025</p>
+                    </div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-icon">📉</div>
+                    <div class="risk-text">
+                        <h4>Market Softening</h4>
+                        <p>Industrial sector showing 5% decline in comparable rents</p>
+                    </div>
+                </div>
+                <div class="risk-item">
+                    <div class="risk-icon">💰</div>
+                    <div class="risk-text">
+                        <h4>Interest Rate Exposure</h4>
+                        <p>£3.2M debt refinancing due in 2025 amid rising rates</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Graphs Section -->
+        <div class="graphs-section">
+            <h3>Graphs</h3>
+            <div class="charts-container">
+                <!-- Interest Rate Chart -->
+                <div class="chart-container">
+                    <h4>Interest Rate</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="interestRateChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+                
+                <!-- Yield/Income Chart -->
+                <div class="chart-container">
+                    <h4>Yield, Income, Etc.</h4>
+                    <div class="chart-wrapper">
+                        <canvas id="yieldIncomeChart" width="400" height="200"></canvas>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Sensitivity Analysis -->
+            <div class="sensitivity-section">
+                <h4>Sensitivity</h4>
+                <div class="sensitivity-content">
+                    <p><strong>Interest Rate Impact:</strong> +1% rate increase would reduce portfolio value by £800k</p>
+                    <p><strong>Vacancy Impact:</strong> +5% vacancy would reduce income by £90k annually</p>
+                    <p><strong>Rental Growth:</strong> +3% annual growth maintains current yields</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Comments Section -->
+    <div class="comments-sidebar">
+        <div class="comments-section">
+            <h3>Comments</h3>
+            <div class="comments-content">
+                <div class="comment-group">
+                    <h4>Generate Report for Investor/Bank Manager</h4>
+                    <p>AI - Locate key risks/opportunities in portfolio</p>
+                </div>
+                
+                <div class="comment-group">
+                    <h4>Portfolio Actuals vs Bank Covenants</h4>
+                    <p>Current DSCR: 1.5x (Covenant: 1.25x) ✅</p>
+                    <p>Current LTV: 62% (Covenant: 70%) ✅</p>
+                </div>
+                
+                <div class="comment-group">
+                    <h4>Conditional Formatting</h4>
+                    <p>Sensitivity - Values would have to fall X% to breach covenants</p>
+                    <p>- Income ↓ X% to breach DSCR</p>
+                </div>
+                
+                <div class="comment-group">
+                    <h4>AI Ability to PDF & Print</h4>
+                    <p>Automated report generation with executive summary</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Interest Rate Chart
+const interestCtx = document.getElementById('interestRateChart').getContext('2d');
+const interestRateChart = new Chart(interestCtx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            label: 'Interest Rate (%)',
+            data: [3.8, 3.9, 4.0, 4.1, 4.2, 4.3, 4.2, 4.1, 4.0, 4.1, 4.2, 4.2],
+            borderColor: '#ef4444',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: false,
+                min: 3.5,
+                max: 4.5,
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            },
+            x: {
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            }
+        }
+    }
+});
+
+// Yield/Income Chart
+const yieldCtx = document.getElementById('yieldIncomeChart').getContext('2d');
+const yieldIncomeChart = new Chart(yieldCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        datasets: [{
+            label: 'Income (£k)',
+            data: [420, 450, 465, 480],
+            backgroundColor: '#10b981',
+            borderColor: '#059669',
+            borderWidth: 1,
+            yAxisID: 'y'
+        }, {
+            label: 'Yield (%)',
+            data: [7.0, 7.1, 7.2, 7.3],
+            backgroundColor: '#3b82f6',
+            borderColor: '#2563eb',
+            borderWidth: 1,
+            yAxisID: 'y1'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 12
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                type: 'linear',
+                display: true,
+                position: 'left',
+                beginAtZero: true,
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            },
+            y1: {
+                type: 'linear',
+                display: true,
+                position: 'right',
+                beginAtZero: false,
+                min: 6.5,
+                max: 7.5,
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    drawOnChartArea: false,
+                }
+            },
+            x: {
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            }
+        }
+    }
+});
+
+// Generate PDF Report Button
+document.querySelector('.generate-report-btn').addEventListener('click', function() {
+    this.textContent = 'Generating...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Generate PDF';
+        this.disabled = false;
+        alert('Portfolio report PDF generated successfully!');
+    }, 2000);
+});
+
+// Portfolio/Asset dropdown change handlers
+document.querySelectorAll('.report-select').forEach(select => {
+    select.addEventListener('change', function() {
+        console.log('Selected:', this.value);
+        updateReportData(this.value);
+    });
+});
+
+function updateReportData(selection) {
+    console.log('Updating portfolio report for:', selection);
+    
+    // Update all metrics and charts based on selection
+    // This would typically fetch new data from the server
+    
+    // Example: Update portfolio metrics
+    if (selection === 'Value-Add Portfolio') {
+        document.querySelector('.metric-value.large').textContent = '£8.2M';
+        document.querySelectorAll('.metric-value')[1].textContent = '£1.2M';
+        document.querySelectorAll('.metric-value')[2].textContent = '8.1%';
+    }
+}
+
+// Print functionality
+function printReport() {
+    window.print();
+}
+
+// Export to Excel functionality
+function exportToExcel() {
+    console.log('Exporting portfolio report to Excel...');
+    alert('Portfolio report exported to Excel successfully!');
+}
+
+// Risk/Opportunity analysis
+function analyzeRisks() {
+    const risks = [
+        'Lease expiry concentration',
+        'Interest rate sensitivity', 
+        'Market conditions',
+        'Tenant credit quality'
+    ];
+    
+    console.log('Risk analysis:', risks);
+}
+
+function analyzeOpportunities() {
+    const opportunities = [
+        'Rent review potential',
+        'Asset enhancement projects',
+        'Lease extension opportunities',
+        'Market repositioning'
+    ];
+    
+    console.log('Opportunity analysis:', opportunities);
+}
+
+// Auto-refresh data every 5 minutes
+setInterval(() => {
+    console.log('Refreshing portfolio report data...');
+    // This would fetch updated data from the server
+}, 300000);
+</script>
+{% endblock javascript %}

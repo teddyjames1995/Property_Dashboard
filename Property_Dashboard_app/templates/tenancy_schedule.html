@@ -1,8 +1,297 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Tenancy Schedule{% endblock %}
+{% block page_title %}Tenancy Schedule{% endblock page_title %}
 
 {% block content %}
-<h1>Tenancy Schedule</h1>
-<p>Welcome to Tenancy Schedule! This is where tenancy schedule content will go.</p>
+<!-- Top Controls -->
+<div class="tenancy-header">
+    <div class="tenancy-controls-row">
+        <div class="control-group">
+            <label>Dash.</label>
+            <select class="tenancy-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Sector ▼</label>
+            <select class="tenancy-select">
+                <option>All Sectors</option>
+                <option>Office</option>
+                <option>Retail</option>
+                <option>Industrial</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Activity Log</label>
+            <button class="activity-btn">View Log</button>
+        </div>
+        
+        <div class="control-group">
+            <label>Generate Report</label>
+            <button class="tenancy-report-btn">Generate</button>
+        </div>
+    </div>
+</div>
+
+<!-- Portfolio Stats -->
+<div class="portfolio-stats">
+    <div class="stats-container">
+        <div class="stat-item">
+            <label>Sq Ft</label>
+            <span class="stat-value">125,000</span>
+        </div>
+        <div class="stat-item">
+            <label>Vacancy</label>
+            <span class="stat-value">8.5%</span>
+        </div>
+        <div class="stat-item">
+            <label>WAULT</label>
+            <span class="stat-value">4.2 yrs</span>
+        </div>
+        <div class="stat-item">
+            <label>Income</label>
+            <span class="stat-value">£2.4M</span>
+        </div>
+        <div class="stat-item">
+            <label>ERV</label>
+            <span class="stat-value">£2.8M</span>
+        </div>
+        <div class="stat-item">
+            <label>Commitment</label>
+            <span class="stat-value">£180k</span>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="tenancy-layout">
+    <!-- Property Listings -->
+    <div class="properties-section">
+        <!-- Property 1 -->
+        <div class="property-container">
+            <div class="property-header">
+                <h3>1) Property 1</h3>
+                <div class="property-stats">
+                    <span>Postcode: SW1A 1AA</span>
+                    <span>NIA: 15,000 sq ft</span>
+                </div>
+            </div>
+            
+            <!-- Tenant Details -->
+            <div class="tenants-list">
+                <div class="tenant-row">
+                    <div class="tenant-info">
+                        <div class="tenant-number">1)</div>
+                        <div class="tenant-details">
+                            <div class="tenant-name">Tenant 1</div>
+                            <div class="tenant-meta">
+                                <span class="photo-icon">📷</span>
+                                <span>Photo / Lease Start / Rent Start / Break / Expiry</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tenant-row">
+                    <div class="tenant-info">
+                        <div class="tenant-number">2)</div>
+                        <div class="tenant-details">
+                            <div class="tenant-name">Tenant 2</div>
+                            <div class="tenant-meta">
+                                <span class="credit-safe">🔍</span>
+                                <span>Credit Safe / Comments / Tenant Sector</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tenant-row">
+                    <div class="tenant-info">
+                        <div class="tenant-number">3)</div>
+                        <div class="tenant-details">
+                            <div class="tenant-name">Tenant 3</div>
+                            <div class="tenant-meta">
+                                <span>Asset Cluster / Location</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tenant-row">
+                    <div class="tenant-info">
+                        <div class="tenant-number">4)</div>
+                        <div class="tenant-details">
+                            <div class="tenant-name">Tenant 4</div>
+                            <div class="tenant-meta">
+                                <span>Additional tenant details</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Property 2 -->
+        <div class="property-container">
+            <div class="property-header">
+                <h3>2) Property 2</h3>
+                <div class="property-stats">
+                    <span>Postcode: M1 2AB</span>
+                    <span>NIA: 22,500 sq ft</span>
+                </div>
+            </div>
+            
+            <!-- Reminder Alert -->
+            <div class="reminder-alert">
+                <div class="reminder-icon">⚠️</div>
+                <div class="reminder-text">Reminder!</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Attachments Section -->
+    <div class="attachments-section">
+        <h3>Attachments/Report when clicked</h3>
+        <div class="attachment-list">
+            <div class="attachment-item">
+                <span class="attachment-icon">📄</span>
+                <span class="attachment-name">Lease 1 PDF</span>
+            </div>
+            <div class="attachment-item">
+                <span class="attachment-icon">📄</span>
+                <span class="attachment-name">CapEx 1 PDF</span>
+            </div>
+            <div class="attachment-item">
+                <span class="attachment-icon">📄</span>
+                <span class="attachment-name">EPC 1 PDF</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Activity Log Section -->
+<div class="activity-section">
+    <div class="activity-content">
+        <h3>Where Landlord Updates</h3>
+        <div class="activity-info">
+            <p><strong>Adds a new property</strong></p>
+            <p><strong>Proforma adds new prop. → new lot. stats</strong></p>
+            <p><strong>Lawyer adds lease</strong> → YoY changes</p>
+        </div>
+        
+        <div class="data-feeds">
+            <h4>All of this data feeds to Dashboard/Property Deepdive etc.</h4>
+            <p>Automatically saved at month end & quarter end / year end to help compare</p>
+            <p>→ reporting</p>
+        </div>
+        
+        <div class="data-functions">
+            <h4>By Attach documents → EPC levels</h4>
+            <p>Activity log shows who & when each stat/metric updated → highlights what has changed</p>
+        </div>
+        
+        <div class="ai-suggestions">
+            <h4>AI → How to improve EPC?</h4>
+            <p>→ what do recently let properties have that mine does not? → suggest</p>
+            <p>Filter vacant properties</p>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
+
+{% block javascript %}
+<script>
+// Activity Log Button
+document.querySelector('.activity-btn').addEventListener('click', function() {
+    // Toggle activity section visibility
+    const activitySection = document.querySelector('.activity-section');
+    activitySection.style.display = activitySection.style.display === 'none' ? 'block' : 'none';
+});
+
+// Generate Report Button
+document.querySelector('.tenancy-report-btn').addEventListener('click', function() {
+    this.textContent = 'Generating...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Generate';
+        this.disabled = false;
+        alert('Tenancy schedule report generated successfully!');
+    }, 1500);
+});
+
+// Tenant row interactions
+document.querySelectorAll('.tenant-row').forEach(row => {
+    row.addEventListener('click', function() {
+        // Highlight selected tenant
+        document.querySelectorAll('.tenant-row').forEach(r => r.classList.remove('selected'));
+        this.classList.add('selected');
+        
+        // Show tenant details or attachments
+        const tenantName = this.querySelector('.tenant-name').textContent;
+        console.log('Selected tenant:', tenantName);
+    });
+});
+
+// Attachment clicks
+document.querySelectorAll('.attachment-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const attachmentName = this.querySelector('.attachment-name').textContent;
+        alert(`Opening ${attachmentName}...`);
+    });
+});
+
+// Portfolio/Sector dropdown change handlers
+document.querySelectorAll('.tenancy-select').forEach(select => {
+    select.addEventListener('change', function() {
+        console.log('Selected:', this.value);
+        updateTenancyData(this.value);
+    });
+});
+
+function updateTenancyData(selection) {
+    console.log('Updating tenancy schedule for:', selection);
+    
+    // Update property listings and stats based on selection
+    // This would typically fetch new data from the server
+}
+
+// Reminder functionality
+document.querySelectorAll('.reminder-alert').forEach(reminder => {
+    reminder.addEventListener('click', function() {
+        alert('Lease expiry reminder: Property 2 has tenants with leases expiring within 6 months!');
+    });
+});
+
+// Search and filter functionality
+function filterProperties(searchTerm) {
+    const propertyContainers = document.querySelectorAll('.property-container');
+    propertyContainers.forEach(container => {
+        const propertyName = container.querySelector('h3').textContent.toLowerCase();
+        const tenantNames = Array.from(container.querySelectorAll('.tenant-name'))
+            .map(name => name.textContent.toLowerCase());
+        
+        const matches = propertyName.includes(searchTerm.toLowerCase()) ||
+                       tenantNames.some(name => name.includes(searchTerm.toLowerCase()));
+        
+        container.style.display = matches ? 'block' : 'none';
+    });
+}
+
+// Auto-save functionality
+function autoSave() {
+    console.log('Auto-saving tenancy data...');
+    // This would save current state to the server
+}
+
+// Auto-save every 30 seconds
+setInterval(autoSave, 30000);
+</script>
+{% endblock javascript %}

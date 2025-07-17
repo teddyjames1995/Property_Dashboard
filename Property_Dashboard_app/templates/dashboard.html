@@ -1,77 +1,353 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Dashboard{% endblock title %}
-
-{% block styles %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-{% endblock %}
+{% block title %}Dashboard - XYZ Company{% endblock title %}
+{% block page_title %}Dashboard{% endblock page_title %}
 
 {% block content %}
-<div class="dashboard-container">
-    <!-- User dropdowns and Generate Report button -->
-    <div class="dashboard-controls">
-        <!-- Dropdowns -->
-        <select id="portfolio-dropdown">...</select>
-        <select id="property-dropdown">...</select>
-        <select id="date-dropdown">...</select>
-        <!-- Generate Report button -->
-        <button id="generate-report-btn">Generate Report</button>
+<!-- Top Navigation Bar with Company Info and User Controls -->
+<div class="top-header">
+    <div class="company-info">
+        <h1>XYZ Company</h1>
+        <div class="header-controls">
+            <select class="header-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+            </select>
+            <select class="header-select">
+                <option>Property ▼</option>
+                <option>All Properties</option>
+                <option>Office</option>
+                <option>Retail</option>
+            </select>
+            <select class="header-select">
+                <option>Date ▼</option>
+                <option>Current Quarter</option>
+                <option>YTD</option>
+            </select>
+        </div>
     </div>
-
-    <div id="dashboard">
-        <!-- Portfolio Overview -->
-        <div id="portfolio-overview">
-            <h2>Portfolio Overview</h2>
-            <p>Number of Properties: {{ total_properties }}</p>
-            <p>Number of Tenants: {{ total_tenants }}</p>
-            <p>Total Sq Ft: {{ total_sq_ft }}</p>
-            <p>Total Valuation: £{{ total_valuation }}</p>
-            <p>Total Income: £{{ total_income }}</p>
-            <p>Occupancy: {{ total_occupancy_by_erv }}%</p>
-            <p>Yield: {{ total_yield }}%</p>
-            <p>Total Capex: £{{ total_capex }}</p>
-            <p>LTV: {{ total_debt_ltv }}%</p>
-            <p>Interest: {{ total_interest }}%</p>
+    
+    <div class="user-controls">
+        <div class="faq-section">
+            <span class="faq-label">FAQ</span>
+            <div class="user-icons">
+                <span class="material-symbols-outlined">help</span>
+                <span class="material-symbols-outlined">account_circle</span>
+                <button class="generate-report-btn">Generate Report</button>
+            </div>
         </div>
-
-        <!-- Top 5 Properties by Valuation -->
-        <div id="top-properties">
-            <h3>Top 5 Properties by Valuation</h3>
-            <ul>
-                {% for property in top_properties %}
-                <li>{{ property.title }} - £{{ property.valuation }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <!-- Top 5 Tenants by Rental Income -->
-        <div id="top-tenants">
-            <h3>Top 5 Tenants by Rental Income</h3>
-            <ul>
-                {% for tenant in top_tenants %}
-                <li>{{ tenant.tenant_name }} - £{{ tenant.contracted_rent }}</li>
-                {% endfor %}
-            </ul>
-        </div>
-
-        <!-- Charts -->
-        <div class="charts">
-            <canvas id="sector-allocation-chart"></canvas>
-            <canvas id="lease-expiry-chart"></canvas>
-            <canvas id="debt-wall-chart"></canvas>
-            <!-- More charts... -->
-        </div>
-            
-        <!-- Additional sections as per design -->
     </div>
 </div>
+
+<!-- Main Dashboard Content -->
+<div class="dashboard-layout">
+    <!-- Left Section: Metrics Cards -->
+    <div class="metrics-section">
+        <div class="metrics-grid-compact">
+            <div class="metric-box">
+                <label>Properties</label>
+                <div class="metric-value">{{ total_properties }}</div>
+            </div>
+            <div class="metric-box">
+                <label>Sq Ft</label>
+                <div class="metric-value">{{ total_sq_ft }}</div>
+            </div>
+            <div class="metric-box">
+                <label>Tenants</label>
+                <div class="metric-value">{{ total_tenants }}</div>
+            </div>
+            <div class="metric-box">
+                <label>Occupancy</label>
+                <div class="metric-value">{{ total_occupancy_by_erv }}%</div>
+            </div>
+            <div class="metric-box">
+                <label>Income</label>
+                <div class="metric-value">{{ total_income }}</div>
+            </div>
+            <div class="metric-box">
+                <label>Yield</label>
+                <div class="metric-value">{{ total_yield }}%</div>
+            </div>
+            <div class="metric-box">
+                <label>Valuation</label>
+                <div class="metric-value">{{ total_valuation }}</div>
+            </div>
+            <div class="metric-box">
+                <label>Capex</label>
+                <div class="metric-value">{{ total_capex }}</div>
+            </div>
+            <div class="metric-box">
+                <label>Interest</label>
+                <div class="metric-value">{{ total_interest }}%</div>
+            </div>
+        </div>
+        
+        <!-- Sector Allocation Chart -->
+        <div class="sector-chart-container">
+            <h3>Sector Allocation</h3>
+            <div class="pie-chart-wrapper">
+                <canvas id="sector-allocation-chart"></canvas>
+                <div class="sector-legend">
+                    <div class="legend-item">
+                        <span class="legend-color industrial"></span>
+                        <span>Industrial 30%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color office"></span>
+                        <span>Office 28%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color retail"></span>
+                        <span>Retail 25%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color resi"></span>
+                        <span>Resi 17%</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-color alt"></span>
+                        <span>Alt</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right Section: Property Lists -->
+    <div class="properties-section">
+        <!-- Top 5 Properties -->
+        <div class="property-list-container">
+            <h3>Property 1)</h3>
+            <div class="property-list">
+                {% if top_properties %}
+                    {% for property in top_properties %}
+                    <div class="property-item">
+                        <span>{{ forloop.counter }})</span>
+                        <span>{{ property.name }}</span>
+                        <span>{{ property.valuation }}</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="property-item">No properties available</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Top 5 Tenants -->
+        <div class="tenant-list-container">
+            <h3>Top 5 Tenants</h3>
+            <div class="tenant-headers">
+                <span>Income £</span>
+                <span>Credit Star</span>
+            </div>
+            <div class="tenant-list">
+                {% if top_tenants_by_income %}
+                    {% for tenant in top_tenants_by_income %}
+                    <div class="tenant-item">
+                        <span>{{ forloop.counter }})</span>
+                        <span>{{ tenant.tenant_name }}</span>
+                        <span>{{ tenant.total_rent }}</span>
+                        <span>★★★★☆</span>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="tenant-item">No tenants available</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Section -->
+<div class="charts-section">
+    <!-- Lease Expiry Chart -->
+    <div class="chart-container-wireframe">
+        <h3>Lease Expiry</h3>
+        <div class="chart-wrapper">
+            <canvas id="lease-expiry-chart"></canvas>
+        </div>
+        <div class="chart-years">
+            <span>2023</span>
+            <span>2024</span>
+            <span>2025</span>
+        </div>
+    </div>
+
+    <!-- Debt Maturity Chart -->
+    <div class="chart-container-wireframe">
+        <h3>Debt Maturity</h3>
+        <div class="chart-wrapper">
+            <canvas id="debt-maturity-chart"></canvas>
+        </div>
+        <div class="chart-years">
+            <span>2023</span>
+            <span>2024</span>
+            <span>2025</span>
+            <span>2026+</span>
+        </div>
+    </div>
+
+    <!-- Deep Dive Section -->
+    <div class="deep-dive-container">
+        <h3>Deep Dive:</h3>
+        <div class="deep-dive-content">
+            <p>Rents<br>Tenants<br>Debt</p>
+        </div>
+    </div>
+</div>
+
+<!-- Bottom Note -->
+<div class="dynamic-note">
+    <p>All Dynamic</p>
+</div>
+
 {% endblock %}
 
 {% block javascript %}
 {{ sector_allocation_data_json|json_script:"sector-allocation-data" }}
 {{ lease_expiry_data_json|json_script:"lease-expiry-data" }}
 {{ debt_wall_data_json|json_script:"debt-wall-data" }}
-<script src="{% static 'js/dashboard.js' %}"></script>
-{% endblock %}
 
+<script>
+// Chart.js configuration for dark theme
+Chart.defaults.color = '#b3b3b3';
+Chart.defaults.borderColor = '#333333';
+
+// Sector Allocation Pie Chart
+const sectorCtx = document.getElementById('sector-allocation-chart').getContext('2d');
+
+new Chart(sectorCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Industrial', 'Office', 'Retail', 'Resi', 'Alt'],
+        datasets: [{
+            data: [30, 28, 25, 17, 0],
+            backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'],
+            borderWidth: 0,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+// Lease Expiry Bar Chart
+const leaseCtx = document.getElementById('lease-expiry-chart').getContext('2d');
+
+new Chart(leaseCtx, {
+    type: 'bar',
+    data: {
+        labels: ['2023', '2024', '2025'],
+        datasets: [{
+            label: 'Lease Expiries',
+            data: [15, 25, 35],
+            backgroundColor: '#3b82f6',
+            borderRadius: 4,
+            borderSkipped: false,
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: '#333333'
+                },
+                ticks: {
+                    color: '#b3b3b3'
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    color: '#b3b3b3'
+                }
+            }
+        }
+    }
+});
+
+// Debt Maturity Chart
+const debtCtx = document.getElementById('debt-maturity-chart').getContext('2d');
+
+new Chart(debtCtx, {
+    type: 'bar',
+    data: {
+        labels: ['2023', '2024', '2025', '2026+'],
+        datasets: [{
+            label: 'Debt Maturity',
+            data: [20, 45, 30, 15],
+            backgroundColor: '#ef4444',
+            borderRadius: 4,
+            borderSkipped: false,
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: '#333333'
+                },
+                ticks: {
+                    color: '#b3b3b3'
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    color: '#b3b3b3'
+                }
+            }
+        }
+    }
+});
+
+// Interactive functionality
+document.querySelectorAll('.property-item, .tenant-item').forEach(item => {
+    item.addEventListener('click', function() {
+        // Add click handlers for navigation
+        console.log('Item clicked:', this.textContent);
+    });
+});
+
+// Generate Report functionality
+document.querySelector('.generate-report-btn').addEventListener('click', function() {
+    this.textContent = 'Generating...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Generate Report';
+        this.disabled = false;
+        alert('Report generated successfully!');
+    }, 2000);
+});
+</script>
+{% endblock %}

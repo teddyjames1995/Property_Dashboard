@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Debt Dashboard{% endblock %}
+{% block page_title %}Debt Dashboard{% endblock page_title %}
+
+{% block content %}
+<!-- Top Controls -->
+<div class="debt-header">
+    <div class="debt-controls-row">
+        <div class="control-group">
+            <label>Dash.</label>
+            <select class="debt-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Property ▼</label>
+            <select class="debt-select">
+                <option>All Properties</option>
+                <option>Property A</option>
+                <option>Property B</option>
+                <option>Property C</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Stress Test</label>
+            <button class="stress-test-btn">Run Test</button>
+        </div>
+        
+        <div class="control-group">
+            <label>Report</label>
+            <button class="debt-report-btn">Generate</button>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="debt-layout">
+    <!-- Left Sidebar with Metrics -->
+    <div class="debt-sidebar">
+        <div class="sidebar-section">
+            <h3>F/M</h3>
+            <div class="metric-checkboxes">
+                <label><input type="checkbox" checked> Prop.</label>
+                <label><input type="checkbox" checked> TS</label>
+                <label><input type="checkbox" checked> Perf.</label>
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h3>Debt</h3>
+            <div class="debt-metrics">
+                <div class="debt-metric">
+                    <label><input type="checkbox" checked> Portfolio Valuation</label>
+                    <span class="metric-value">£12.5M</span>
+                </div>
+                <div class="debt-metric">
+                    <label><input type="checkbox" checked> Total Debt</label>
+                    <span class="metric-value">£7.8M</span>
+                </div>
+                <div class="debt-metric">
+                    <label><input type="checkbox" checked> LTV</label>
+                    <span class="metric-value">62%</span>
+                </div>
+                <div class="debt-metric">
+                    <label><input type="checkbox" checked> Interest Rate</label>
+                    <span class="metric-value">4.2%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h3>Exposure Breakdown</h3>
+            <div class="exposure-list">
+                <div class="exposure-item">
+                    <span class="exposure-label">Equity %</span>
+                    <span class="exposure-value">38%</span>
+                </div>
+                <div class="exposure-item">
+                    <span class="exposure-label">Mezz %</span>
+                    <span class="exposure-value">25%</span>
+                </div>
+                <div class="exposure-item">
+                    <span class="exposure-label">Debt %</span>
+                    <span class="exposure-value">37%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="debt-content">
+        <!-- Metrics Table with Bar Chart -->
+        <div class="metrics-section">
+            <h3>Metrics Table</h3>
+            <div class="metrics-chart-container">
+                <canvas id="metricsChart" width="400" height="200"></canvas>
+                <div class="chart-years">
+                    <span>2021</span>
+                    <span>2022</span>
+                    <span>2023</span>
+                    <span>2024</span>
+                    <span>2025</span>
+                </div>
+            </div>
+            
+            <div class="metrics-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Lender</th>
+                            <th>Property</th>
+                            <th>£m</th>
+                            <th>Interest</th>
+                            <th>DSCR</th>
+                            <th>ISCR</th>
+                            <th>LTV</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Loan A</td>
+                            <td>HSBC</td>
+                            <td>Property 1</td>
+                            <td>£5.5m</td>
+                            <td>3.8%</td>
+                            <td>1.5x</td>
+                            <td>1.3x</td>
+                            <td>65%</td>
+                        </tr>
+                        <tr>
+                            <td>Loan B</td>
+                            <td>Barclays</td>
+                            <td>Property 2</td>
+                            <td>£2.3m</td>
+                            <td>4.2%</td>
+                            <td>1.8x</td>
+                            <td>1.6x</td>
+                            <td>58%</td>
+                        </tr>
+                        <tr>
+                            <td>Loan C</td>
+                            <td>Santander</td>
+                            <td>Property 3</td>
+                            <td>£1.9m</td>
+                            <td>4.5%</td>
+                            <td>1.2x</td>
+                            <td>1.1x</td>
+                            <td>72%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Stress Test Section -->
+        <div class="stress-test-section">
+            <h3>Stress Test</h3>
+            <div class="stress-test-content">
+                <div class="stress-note">
+                    <p><strong>Property Value loop by Xcvl by X%.</strong></p>
+                    <p><strong>To breach Bank Cov. Comment</strong></p>
+                </div>
+                
+                <div class="stress-scenarios">
+                    <div class="scenario-item">
+                        <label>If BoE T rates ↑ by to</label>
+                        <input type="range" class="stress-slider" min="0" max="10" value="5">
+                        <span class="slider-value">5%</span>
+                    </div>
+                    <div class="scenario-result">
+                        <span>Refinance? Return on Property/</span>
+                        <span>Sell Property? Portfolio...</span>
+                        <span>Interest Rate: 100 | 2 2.5 | 3 3.5</span>
+                    </div>
+                </div>
+                
+                <div class="ltv-breakdown">
+                    <div class="ltv-item">
+                        <span>LTV</span>
+                        <span>65%</span>
+                    </div>
+                    <div class="ltv-item">
+                        <span>50%</span>
+                    </div>
+                    <div class="ltv-item">
+                        <span>55%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Additional Notes -->
+        <div class="notes-section">
+            <div class="functionality-note">
+                <h4>Stress Test functionality - If Rates ↑ by X%.</h4>
+            </div>
+            <div class="dynamic-note">
+                <h4>Dynamic - Capital Stack changes w/ each property chosen</h4>
+            </div>
+            <div class="comments-section">
+                <h4>Comments</h4>
+                <p>What metrics do bank managers/debt providers look for?</p>
+                <p>AI - Webscrape mortgages % - Moneyfacts</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Metrics Bar Chart
+const ctx = document.getElementById('metricsChart').getContext('2d');
+const metricsChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ['2021', '2022', '2023', '2024', '2025'],
+        datasets: [{
+            label: 'Portfolio Value (£M)',
+            data: [8.5, 9.2, 10.8, 11.5, 12.5],
+            backgroundColor: '#3b82f6',
+            borderColor: '#2563eb',
+            borderWidth: 1
+        }, {
+            label: 'Total Debt (£M)',
+            data: [5.2, 5.8, 6.5, 7.1, 7.8],
+            backgroundColor: '#ef4444',
+            borderColor: '#dc2626',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                labels: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 12
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            },
+            x: {
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            }
+        }
+    }
+});
+
+// Stress Test Slider
+document.querySelectorAll('.stress-slider').forEach(slider => {
+    const valueSpan = slider.nextElementSibling;
+    
+    slider.addEventListener('input', function() {
+        valueSpan.textContent = this.value + '%';
+        
+        // Update stress test calculations
+        updateStressTest(this.value);
+    });
+});
+
+function updateStressTest(rateIncrease) {
+    // Simulate stress test calculations
+    const baseRate = 4.2;
+    const newRate = baseRate + parseFloat(rateIncrease);
+    const impactOnLTV = Math.min(80, 62 + (rateIncrease * 2));
+    
+    console.log(`Rate increase: ${rateIncrease}%`);
+    console.log(`New rate: ${newRate}%`);
+    console.log(`Impact on LTV: ${impactOnLTV}%`);
+    
+    // Update display elements
+    document.querySelector('.ltv-breakdown .ltv-item:first-child span:last-child').textContent = impactOnLTV.toFixed(0) + '%';
+}
+
+// Stress Test Button
+document.querySelector('.stress-test-btn').addEventListener('click', function() {
+    this.textContent = 'Running...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Run Test';
+        this.disabled = false;
+        alert('Stress test completed! Check results below.');
+    }, 2000);
+});
+
+// Generate Report Button
+document.querySelector('.debt-report-btn').addEventListener('click', function() {
+    this.textContent = 'Generating...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Generate';
+        this.disabled = false;
+        alert('Debt report generated successfully!');
+    }, 1500);
+});
+
+// Checkbox functionality
+document.querySelectorAll('.debt-sidebar input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const label = this.parentElement.textContent.trim();
+        console.log(`${label} ${this.checked ? 'enabled' : 'disabled'}`);
+        
+        // Add filtering logic here
+        if (!this.checked) {
+            // Hide related data
+        } else {
+            // Show related data
+        }
+    });
+});
+
+// Property dropdown change handler
+document.querySelectorAll('.debt-select').forEach(select => {
+    select.addEventListener('change', function() {
+        console.log('Selected:', this.value);
+        // Update dashboard data based on selection
+        updateDashboardData(this.value);
+    });
+});
+
+function updateDashboardData(selection) {
+    // Simulate data update based on selection
+    console.log('Updating dashboard for:', selection);
+    
+    // Update metrics, charts, and tables
+    // This would typically fetch new data from the server
+}
+</script>
+{% endblock javascript %}

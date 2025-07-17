@@ -1,7 +1,8 @@
 from django.db import models
 
 class Property(models.Model):
-    property_id = models.CharField(max_length=100, unique=True)
+    # Use Django's default 'id' field unless you specifically need 'property_id'
+    property_id = models.CharField(max_length=100, unique=True)  # Keep if required for specific reasons
     year = models.IntegerField()
     quarter = models.CharField(max_length=2)
     month = models.CharField(max_length=2)
@@ -45,7 +46,7 @@ class Property(models.Model):
     disposal_costs_percentage = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
     cluster = models.CharField(max_length=100)
     strategy = models.CharField(max_length=100)
-    
+
     def __str__(self):
         return self.title
 
@@ -77,7 +78,8 @@ class Tenant(models.Model):
         ('G', 'G'),
     ]
 
-    property_id = models.ForeignKey(Property, on_delete=models.CASCADE)
+    # The ForeignKey should relate to the 'id' of Property unless you have specific reasons for 'property_id'.
+    property = models.ForeignKey(Property, on_delete=models.CASCADE, related_name='tenants')
     year = models.IntegerField()
     quarter = models.CharField(max_length=2)
     month = models.CharField(max_length=2)
@@ -116,20 +118,17 @@ class Tenant(models.Model):
     location = models.CharField(max_length=100)
     capital_expenditure = models.DecimalField(max_digits=15, decimal_places=2)
 
-    # Add any other fields relevant to your tenant data
-
     def __str__(self):
         return f"{self.tenant_name} on {self.floor}"
 
-    
 class OperatingExpenses(models.Model):
-    property_id = models.ForeignKey(Property, on_delete=models.CASCADE)
+    property = models.ForeignKey(Property, on_delete=models.CASCADE)
+    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     year = models.IntegerField()
     quarter = models.CharField(max_length=2)
     month = models.CharField(max_length=2)
     title = models.CharField(max_length=255)
     floor = models.CharField(max_length=100)
-    tenant = models.ForeignKey(Tenant, on_delete=models.CASCADE)
     legal_fees = models.DecimalField(max_digits=10, decimal_places=2)
     managing_agent_fees = models.DecimalField(max_digits=10, decimal_places=2)
     marketing_costs = models.DecimalField(max_digits=10, decimal_places=2)
@@ -154,9 +153,5 @@ class OperatingExpenses(models.Model):
     specific_bad_debt = models.DecimalField(max_digits=10, decimal_places=2)
     ppm = models.DecimalField(max_digits=10, decimal_places=2)
 
-
     def __str__(self):
         return f"Expenses for {self.tenant} on {self.floor}"
-from django.db import models
-
-

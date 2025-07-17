@@ -5,36 +5,169 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Your Website Title{% endblock %}</title>
+    <title>{% block title %}Capital Compass - Property Dashboard{% endblock %}</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    
     {% block styles %}
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <!-- Add additional CSS files here -->
     {% endblock %}
 </head>
-<body>
-    <nav class="sidebar">
-        <ol>
-            <li><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li><a href="{% url 'financial_modelling' %}">Financial Modelling</a></li>
-            <li><a href="{% url 'property_deepdive' %}">Property Deepdive</a></li>
-            <li><a href="{% url 'tenancy_schedule' %}">Tenancy Schedule</a></li>
-            <li><a href="{% url 'portfolio_performance' %}">Portfolio Performance</a></li>
-            <li><a href="{% url 'debt' %}">Debt</a></li>
-            <li><a href="{% url 'income_and_expenses' %}">Income / Expense</a></li>
-            <li><a href="{% url 'artificial_intelligence' %}">Artificial Intelligence</a></li>
-            <li><a href="{% url 'forecasting' %}">Forecasting</a></li>
-        </ol>
-    </nav>
+<body class="dark-theme">
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div class="logo">
+                <span class="material-symbols-outlined">apartment</span>
+                <h2>Capital Compass</h2>
+            </div>
+        </div>
+        
+        <nav class="sidebar-nav">
+            <ul>
+                <li>
+                    <a href="{% url 'dashboard' %}" class="nav-item active">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'portfolio_performance' %}" class="nav-item">
+                        <span class="material-symbols-outlined">trending_up</span>
+                        <span>Portfolio Performance</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'property_deepdive' %}" class="nav-item">
+                        <span class="material-symbols-outlined">business</span>
+                        <span>Property Deep Dive</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'tenancy_schedule' %}" class="nav-item">
+                        <span class="material-symbols-outlined">event</span>
+                        <span>Tenancy Schedule</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'financial_modelling' %}" class="nav-item">
+                        <span class="material-symbols-outlined">calculate</span>
+                        <span>Financial Modelling</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'debt' %}" class="nav-item">
+                        <span class="material-symbols-outlined">account_balance</span>
+                        <span>Debt Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'income_and_expenses' %}" class="nav-item">
+                        <span class="material-symbols-outlined">receipt_long</span>
+                        <span>Income & Expenses</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'forecasting' %}" class="nav-item">
+                        <span class="material-symbols-outlined">analytics</span>
+                        <span>Forecasting</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'artificial_intelligence' %}" class="nav-item">
+                        <span class="material-symbols-outlined">psychology</span>
+                        <span>AI Insights</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="user-profile">
+                <div class="avatar">
+                    <span class="material-symbols-outlined">person</span>
+                </div>
+                <div class="user-info">
+                    <span class="user-name">Portfolio Manager</span>
+                    <span class="user-role">Administrator</span>
+                </div>
+            </div>
+        </div>
+    </aside>
 
-    <div class="content">
-        {% block content %}
-        <!-- Page-specific content will go here -->
-        {% endblock %}
-    </div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Navigation Bar -->
+        <header class="top-nav">
+            <div class="nav-left">
+                <button class="sidebar-toggle">
+                    <span class="material-symbols-outlined">menu</span>
+                </button>
+                <h1 class="page-title">{% block page_title %}Dashboard{% endblock %}</h1>
+            </div>
+            
+            <div class="nav-right">
+                <div class="search-box">
+                    <span class="material-symbols-outlined">search</span>
+                    <input type="text" placeholder="Search properties, tenants...">
+                </div>
+                
+                <button class="notification-btn">
+                    <span class="material-symbols-outlined">notifications</span>
+                    <span class="notification-badge">3</span>
+                </button>
+                
+                <div class="theme-toggle">
+                    <button id="theme-toggle">
+                        <span class="material-symbols-outlined">dark_mode</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Page Content -->
+        <div class="page-content">
+            {% block content %}
+            <!-- Page-specific content will go here -->
+            {% endblock %}
+        </div>
+    </main>
 
     {% block javascript %}
-    <!-- JavaScript files -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Sidebar toggle functionality
+        document.querySelector('.sidebar-toggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+            document.querySelector('.main-content').classList.toggle('expanded');
+        });
+
+        // Theme toggle functionality
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            document.body.classList.toggle('light-theme');
+            document.body.classList.toggle('dark-theme');
+            
+            const icon = this.querySelector('.material-symbols-outlined');
+            if (document.body.classList.contains('light-theme')) {
+                icon.textContent = 'light_mode';
+            } else {
+                icon.textContent = 'dark_mode';
+            }
+        });
+
+        // Active navigation highlighting
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+            if (item.getAttribute('href') === currentPath) {
+                item.classList.add('active');
+            }
+        });
+    </script>
     {% endblock %}
 
 </body>

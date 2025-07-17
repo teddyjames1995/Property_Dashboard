@@ -1,8 +1,501 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Financial Modelling{% endblock %}
+{% block page_title %}Financial Modelling{% endblock page_title %}
 
 {% block content %}
-<h1>Financial Modelling</h1>
-<p>Welcome to financial modelling! This is where the financial modelling content will go.</p>
+<!-- Top Controls -->
+<div class="financial-header">
+    <div class="financial-controls-row">
+        <div class="control-group">
+            <label>Dashboard</label>
+            <select class="financial-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+                <option>Development Portfolio</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Status</label>
+            <select class="financial-select">
+                <option>All Status ▼</option>
+                <option>New</option>
+                <option>In Progress</option>
+                <option>Completed</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Actions</label>
+            <button class="financial-btn primary">New Model</button>
+            <button class="financial-btn secondary">Export</button>
+        </div>
+    </div>
+</div>
+
+<!-- Status Dashboard -->
+<div class="status-dashboard">
+    <div class="status-cards">
+        <div class="status-card new">
+            <div class="status-header">
+                <h3>New</h3>
+                <span class="status-count">4</span>
+            </div>
+            <div class="status-items">
+                <div class="status-item">
+                    <span class="property-name">Canary Wharf Office</span>
+                    <span class="status-date">Created: 12/10/24</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Manchester Retail Park</span>
+                    <span class="status-date">Created: 11/10/24</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Birmingham Industrial</span>
+                    <span class="status-date">Created: 10/10/24</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Leeds Mixed Use</span>
+                    <span class="status-date">Created: 09/10/24</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-card in-progress">
+            <div class="status-header">
+                <h3>In Progress</h3>
+                <span class="status-count">6</span>
+            </div>
+            <div class="status-items">
+                <div class="status-item">
+                    <span class="property-name">London Bridge Tower</span>
+                    <span class="status-date">Progress: 75%</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Edinburgh Shopping Centre</span>
+                    <span class="status-date">Progress: 60%</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Bristol Warehouse</span>
+                    <span class="status-date">Progress: 45%</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Liverpool Dock</span>
+                    <span class="status-date">Progress: 30%</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Glasgow Office Park</span>
+                    <span class="status-date">Progress: 20%</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Cardiff Bay Development</span>
+                    <span class="status-date">Progress: 15%</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="status-card completed">
+            <div class="status-header">
+                <h3>Completed</h3>
+                <span class="status-count">3</span>
+            </div>
+            <div class="status-items">
+                <div class="status-item">
+                    <span class="property-name">Shoreditch Creative Hub</span>
+                    <span class="status-date">Completed: 08/10/24</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">Oxford Street Retail</span>
+                    <span class="status-date">Completed: 05/10/24</span>
+                </div>
+                <div class="status-item">
+                    <span class="property-name">King's Cross Apartments</span>
+                    <span class="status-date">Completed: 02/10/24</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Property Appraisal Matrix -->
+<div class="appraisal-matrix">
+    <div class="matrix-header">
+        <h3>Property Appraisal Matrix</h3>
+        <div class="matrix-controls">
+            <button class="matrix-btn">Add Property</button>
+            <button class="matrix-btn">Bulk Import</button>
+        </div>
+    </div>
+    
+    <div class="matrix-table">
+        <table class="appraisal-table">
+            <thead>
+                <tr>
+                    <th>Property</th>
+                    <th>Photo</th>
+                    <th>Location</th>
+                    <th>Cost (£)</th>
+                    <th>Current Value (£)</th>
+                    <th>Profit (£)</th>
+                    <th>IRR (%)</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="property-row">
+                    <td class="property-name">Canary Wharf Office</td>
+                    <td class="property-photo">
+                        <div class="photo-placeholder">
+                            <span class="photo-icon">📷</span>
+                        </div>
+                    </td>
+                    <td class="property-location">
+                        <span class="address">1 Canada Square, E14 5AB</span>
+                        <div class="location-links">
+                            <a href="#" class="street-view-link">Street View</a>
+                        </div>
+                    </td>
+                    <td class="cost-value">£2,500,000</td>
+                    <td class="current-value">£3,200,000</td>
+                    <td class="profit-value positive">£700,000</td>
+                    <td class="irr-value">12.5%</td>
+                    <td class="status-badge new">New</td>
+                    <td class="actions">
+                        <button class="action-btn edit">Edit</button>
+                        <button class="action-btn model">Model</button>
+                    </td>
+                </tr>
+                
+                <tr class="property-row">
+                    <td class="property-name">Manchester Retail Park</td>
+                    <td class="property-photo">
+                        <div class="photo-placeholder">
+                            <span class="photo-icon">📷</span>
+                        </div>
+                    </td>
+                    <td class="property-location">
+                        <span class="address">Trafford Park, M17 8AA</span>
+                        <div class="location-links">
+                            <a href="#" class="street-view-link">Street View</a>
+                        </div>
+                    </td>
+                    <td class="cost-value">£1,800,000</td>
+                    <td class="current-value">£2,100,000</td>
+                    <td class="profit-value positive">£300,000</td>
+                    <td class="irr-value">8.9%</td>
+                    <td class="status-badge new">New</td>
+                    <td class="actions">
+                        <button class="action-btn edit">Edit</button>
+                        <button class="action-btn model">Model</button>
+                    </td>
+                </tr>
+                
+                <tr class="property-row">
+                    <td class="property-name">London Bridge Tower</td>
+                    <td class="property-photo">
+                        <div class="photo-placeholder">
+                            <span class="photo-icon">📷</span>
+                        </div>
+                    </td>
+                    <td class="property-location">
+                        <span class="address">2 London Bridge, SE1 9RA</span>
+                        <div class="location-links">
+                            <a href="#" class="street-view-link">Street View</a>
+                        </div>
+                    </td>
+                    <td class="cost-value">£4,200,000</td>
+                    <td class="current-value">£5,800,000</td>
+                    <td class="profit-value positive">£1,600,000</td>
+                    <td class="irr-value">15.2%</td>
+                    <td class="status-badge in-progress">In Progress</td>
+                    <td class="actions">
+                        <button class="action-btn edit">Edit</button>
+                        <button class="action-btn model">Model</button>
+                    </td>
+                </tr>
+                
+                <tr class="property-row">
+                    <td class="property-name">Birmingham Industrial</td>
+                    <td class="property-photo">
+                        <div class="photo-placeholder">
+                            <span class="photo-icon">📷</span>
+                        </div>
+                    </td>
+                    <td class="property-location">
+                        <span class="address">Industrial Estate, B12 0XY</span>
+                        <div class="location-links">
+                            <a href="#" class="street-view-link">Street View</a>
+                        </div>
+                    </td>
+                    <td class="cost-value">£950,000</td>
+                    <td class="current-value">£1,150,000</td>
+                    <td class="profit-value positive">£200,000</td>
+                    <td class="irr-value">6.8%</td>
+                    <td class="status-badge new">New</td>
+                    <td class="actions">
+                        <button class="action-btn edit">Edit</button>
+                        <button class="action-btn model">Model</button>
+                    </td>
+                </tr>
+                
+                <tr class="property-row">
+                    <td class="property-name">Shoreditch Creative Hub</td>
+                    <td class="property-photo">
+                        <div class="photo-placeholder">
+                            <span class="photo-icon">📷</span>
+                        </div>
+                    </td>
+                    <td class="property-location">
+                        <span class="address">Old Street, EC1V 9NR</span>
+                        <div class="location-links">
+                            <a href="#" class="street-view-link">Street View</a>
+                        </div>
+                    </td>
+                    <td class="cost-value">£3,100,000</td>
+                    <td class="current-value">£4,500,000</td>
+                    <td class="profit-value positive">£1,400,000</td>
+                    <td class="irr-value">18.7%</td>
+                    <td class="status-badge completed">Completed</td>
+                    <td class="actions">
+                        <button class="action-btn view">View</button>
+                        <button class="action-btn export">Export</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Navigation Tabs for Financial Model Sections -->
+<div class="model-navigation">
+    <div class="nav-tabs">
+        <div class="nav-tab active" data-section="dashboard">
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Dashboard</span>
+        </div>
+        <div class="nav-tab" data-section="general-assumptions">
+            <span class="nav-icon">📋</span>
+            <span class="nav-text">General Assumptions</span>
+        </div>
+        <div class="nav-tab" data-section="detailed-assumptions">
+            <span class="nav-icon">📝</span>
+            <span class="nav-text">Detailed Assumptions</span>
+        </div>
+        <div class="nav-tab" data-section="tenancy-schedule">
+            <span class="nav-icon">🏢</span>
+            <span class="nav-text">Tenancy Schedule</span>
+        </div>
+        <div class="nav-tab" data-section="projected-returns">
+            <span class="nav-icon">📈</span>
+            <span class="nav-text">Projected Returns</span>
+        </div>
+        <div class="nav-tab" data-section="pro-forma">
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Pro-forma Portfolio</span>
+        </div>
+        <div class="nav-tab" data-section="lp-gp-split">
+            <span class="nav-icon">💰</span>
+            <span class="nav-text">LP/GP Split</span>
+        </div>
+    </div>
+</div>
+
+<!-- Model Summary Stats -->
+<div class="model-summary">
+    <div class="summary-cards">
+        <div class="summary-card">
+            <h4>Total Portfolio Value</h4>
+            <span class="summary-value">£18.75M</span>
+            <span class="summary-change positive">+12.5%</span>
+        </div>
+        <div class="summary-card">
+            <h4>Total Investment</h4>
+            <span class="summary-value">£13.55M</span>
+            <span class="summary-change">Cost Basis</span>
+        </div>
+        <div class="summary-card">
+            <h4>Total Profit</h4>
+            <span class="summary-value">£5.20M</span>
+            <span class="summary-change positive">+38.4%</span>
+        </div>
+        <div class="summary-card">
+            <h4>Average IRR</h4>
+            <span class="summary-value">12.8%</span>
+            <span class="summary-change positive">Target: 10%</span>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
+
+{% block javascript %}
+<script>
+// Status card interactions
+document.querySelectorAll('.status-item').forEach(item => {
+    item.addEventListener('click', function() {
+        // Highlight selected item
+        document.querySelectorAll('.status-item').forEach(i => i.classList.remove('selected'));
+        this.classList.add('selected');
+        
+        const propertyName = this.querySelector('.property-name').textContent;
+        console.log('Selected property:', propertyName);
+        
+        // Filter appraisal matrix to show selected property
+        filterAppraisalMatrix(propertyName);
+    });
+});
+
+// Navigation tab switching
+document.querySelectorAll('.nav-tab').forEach(tab => {
+    tab.addEventListener('click', function() {
+        // Remove active class from all tabs
+        document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+        
+        // Add active class to clicked tab
+        this.classList.add('active');
+        
+        const section = this.getAttribute('data-section');
+        console.log('Switching to section:', section);
+        
+        // In a real implementation, this would load the appropriate section
+        navigateToSection(section);
+    });
+});
+
+// Property row interactions
+document.querySelectorAll('.property-row').forEach(row => {
+    row.addEventListener('click', function() {
+        // Highlight selected row
+        document.querySelectorAll('.property-row').forEach(r => r.classList.remove('selected'));
+        this.classList.add('selected');
+        
+        const propertyName = this.querySelector('.property-name').textContent;
+        console.log('Selected property for modeling:', propertyName);
+    });
+});
+
+// Action button handlers
+document.querySelectorAll('.action-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        
+        const action = this.classList.contains('edit') ? 'edit' :
+                      this.classList.contains('model') ? 'model' :
+                      this.classList.contains('view') ? 'view' : 'export';
+        
+        const propertyName = this.closest('.property-row').querySelector('.property-name').textContent;
+        
+        handleAction(action, propertyName);
+    });
+});
+
+// Street View links
+document.querySelectorAll('.street-view-link').forEach(link => {
+    link.addEventListener('click', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        
+        const address = this.closest('.property-location').querySelector('.address').textContent;
+        openStreetView(address);
+    });
+});
+
+// Control handlers
+document.querySelector('.financial-btn.primary').addEventListener('click', function() {
+    console.log('Creating new financial model...');
+    alert('New Financial Model wizard will open here');
+});
+
+document.querySelector('.financial-btn.secondary').addEventListener('click', function() {
+    console.log('Exporting financial models...');
+    alert('Exporting all models to Excel...');
+});
+
+// Matrix control handlers
+document.querySelectorAll('.matrix-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        if (this.textContent === 'Add Property') {
+            console.log('Adding new property to matrix...');
+            alert('Add Property form will open here');
+        } else {
+            console.log('Bulk importing properties...');
+            alert('Bulk import wizard will open here');
+        }
+    });
+});
+
+// Dropdown handlers
+document.querySelectorAll('.financial-select').forEach(select => {
+    select.addEventListener('change', function() {
+        console.log('Filter changed:', this.value);
+        updateDashboard(this.value);
+    });
+});
+
+// Helper functions
+function filterAppraisalMatrix(propertyName) {
+    const rows = document.querySelectorAll('.property-row');
+    rows.forEach(row => {
+        const name = row.querySelector('.property-name').textContent;
+        row.style.display = name.includes(propertyName) ? 'table-row' : 'none';
+    });
+}
+
+function navigateToSection(section) {
+    // This would navigate to different pages/views of the financial model
+    const sectionUrls = {
+        'dashboard': '/financial_modelling/',
+        'general-assumptions': '/financial_modelling/general-assumptions/',
+        'detailed-assumptions': '/financial_modelling/detailed-assumptions/',
+        'tenancy-schedule': '/financial_modelling/tenancy-schedule/',
+        'projected-returns': '/financial_modelling/projected-returns/',
+        'pro-forma': '/financial_modelling/pro-forma/',
+        'lp-gp-split': '/financial_modelling/lp-gp-split/'
+    };
+    
+    console.log('Would navigate to:', sectionUrls[section]);
+    // window.location.href = sectionUrls[section];
+}
+
+function handleAction(action, propertyName) {
+    console.log(`${action} action for ${propertyName}`);
+    
+    switch(action) {
+        case 'edit':
+            alert(`Editing ${propertyName}...`);
+            break;
+        case 'model':
+            alert(`Opening financial model for ${propertyName}...`);
+            break;
+        case 'view':
+            alert(`Viewing completed model for ${propertyName}...`);
+            break;
+        case 'export':
+            alert(`Exporting ${propertyName} model...`);
+            break;
+    }
+}
+
+function openStreetView(address) {
+    console.log('Opening Street View for:', address);
+    // In a real implementation, this would open Google Street View
+    const streetViewUrl = `https://www.google.com/maps/@?api=1&map_action=pano&parameters&query=${encodeURIComponent(address)}`;
+    window.open(streetViewUrl, '_blank');
+}
+
+function updateDashboard(filterValue) {
+    console.log('Updating dashboard with filter:', filterValue);
+    // This would update the status cards and appraisal matrix based on the filter
+}
+
+// Auto-refresh data every 5 minutes
+setInterval(() => {
+    console.log('Refreshing financial modelling data...');
+    // This would fetch updated data from the server
+}, 300000);
+</script>
+{% endblock javascript %}

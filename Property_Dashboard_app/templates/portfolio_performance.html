@@ -1,8 +1,321 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}Portfolio Performance{% endblock %}
+{% block page_title %}Portfolio Performance{% endblock page_title %}
 
 {% block content %}
-<h1>Portfolio Performance</h1>
-<p>Welcome to your portfolio performance! This is where your portfolio performance content will go.</p>
+<!-- Top Controls Section -->
+<div class="performance-header">
+    <div class="filter-controls-row">
+        <div class="control-group">
+            <label>Dash</label>
+            <select class="performance-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Time ▼</label>
+            <select class="performance-select">
+                <option>Year/Quarter/Month</option>
+                <option>Monthly</option>
+                <option>Quarterly</option>
+                <option>Yearly</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Sector ▼</label>
+            <select class="performance-select">
+                <option>All Sectors</option>
+                <option>Office</option>
+                <option>Retail</option>
+                <option>Industrial</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Asset ▼</label>
+            <select class="performance-select">
+                <option>All Assets</option>
+                <option>Property A</option>
+                <option>Property B</option>
+            </select>
+        </div>
+        
+        <button class="report-btn">Report</button>
+    </div>
+    
+    <!-- Comments Section -->
+    <div class="comments-section">
+        <h3>Comments</h3>
+        <p>Rent, capex, other expenses, tax etc can be added by owner/LL/Agents</p>
+        
+        <div class="top-performing">
+            <h4>Top 10 performing properties</h4>
+            <div class="performance-grades">
+                <div class="grade-item">A - 10%</div>
+                <div class="grade-item">B - 8%</div>
+                <div class="grade-item">C - 6%</div>
+                <div class="grade-item">D - -2%</div>
+            </div>
+        </div>
+        
+        <p class="auto-save">Automatically saves a copy at month end</p>
+        <p class="mod-dietz">Try to use Mod. Dietz for accuracy<br>- MSCI</p>
+    </div>
+</div>
+
+<!-- Main Performance Dashboard -->
+<div class="performance-dashboard">
+    <!-- Left Column -->
+    <div class="performance-left">
+        <!-- Performance Metrics -->
+        <div class="performance-metrics">
+            <h3>F/M Prop. TS R/P LL</h3>
+            <div class="metrics-row">
+                <div class="metric-item">
+                    <label>Total Return</label>
+                    <input type="checkbox" checked>
+                    <span class="metric-value">15.2%</span>
+                </div>
+                <div class="metric-item">
+                    <label>Capital</label>
+                    <input type="checkbox">
+                    <span class="metric-value">8.5%</span>
+                </div>
+                <div class="metric-item">
+                    <label>Income</label>
+                    <input type="checkbox">
+                    <span class="metric-value">6.7%</span>
+                </div>
+            </div>
+            
+            <div class="additional-metrics">
+                <div class="metric-checkbox">
+                    <input type="checkbox" id="irr">
+                    <label for="irr">IRR</label>
+                </div>
+                <div class="metric-checkbox">
+                    <input type="checkbox" id="em">
+                    <label for="em">EM</label>
+                </div>
+                <div class="metric-checkbox">
+                    <input type="checkbox" id="profit">
+                    <label for="profit">Profit</label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Performance Chart -->
+        <div class="performance-chart-container">
+            <div class="chart-wrapper">
+                <canvas id="performance-timeline-chart"></canvas>
+            </div>
+            <div class="chart-years">
+                <span>2019</span>
+                <span>2020</span>
+                <span>2021</span>
+            </div>
+        </div>
+        
+        <!-- Contribution to Returns -->
+        <div class="contribution-chart">
+            <h4>Contribution to returns</h4>
+            <div class="contribution-bars">
+                <div class="contrib-bar" style="height: 60px; background: #3b82f6;">
+                    <span>A</span>
+                </div>
+                <div class="contrib-bar" style="height: 40px; background: #8b5cf6;">
+                    <span>B C D</span>
+                </div>
+            </div>
+            <div class="properties-label">Properties</div>
+        </div>
+    </div>
+    
+    <!-- Right Column -->
+    <div class="performance-right">
+        <!-- Valuation Pie Chart -->
+        <div class="valuation-section">
+            <h4>Valuation</h4>
+            <div class="valuation-chart">
+                <canvas id="valuation-pie-chart"></canvas>
+                <div class="pie-legend">
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background: #3b82f6;"></span>
+                        <span>10m (60%) Prop. A</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot" style="background: #8b5cf6;"></span>
+                        <span>Prop. B</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sector Returns -->
+        <div class="sector-returns">
+            <h4>Sector Returns</h4>
+            <div class="sector-bars">
+                <div class="sector-bar">
+                    <span class="sector-label">Ind.</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 80%; background: #3b82f6;"></div>
+                    </div>
+                    <span class="sector-value">16%</span>
+                </div>
+                <div class="sector-bar">
+                    <span class="sector-label">Off.</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 60%; background: #8b5cf6;"></div>
+                    </div>
+                    <span class="sector-value">12%</span>
+                </div>
+                <div class="sector-bar">
+                    <span class="sector-label">Ret.</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 40%; background: #10b981;"></div>
+                    </div>
+                    <span class="sector-value">8%</span>
+                </div>
+                <div class="sector-bar">
+                    <span class="sector-label">Alt.</span>
+                    <div class="bar-container">
+                        <div class="bar" style="width: 20%; background: #f59e0b;"></div>
+                    </div>
+                    <span class="sector-value">4%</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Section -->
+<div class="export-section">
+    <button class="excel-btn">Export to Excel</button>
+</div>
+
+<!-- AI Notes Section -->
+<div class="ai-notes">
+    <h3>AI - How to improve property returns vs B/M</h3>
+    <p><strong>Returns Data</strong> is hidden behind in code</p>
+    <p>So Owner can request Excel workbook to reconcile</p>
+</div>
+
 {% endblock content %}
+
+{% block javascript %}
+<script>
+// Chart.js configuration for dark theme
+Chart.defaults.color = '#b3b3b3';
+Chart.defaults.borderColor = '#333333';
+
+// Performance Timeline Chart
+const performanceCtx = document.getElementById('performance-timeline-chart').getContext('2d');
+
+new Chart(performanceCtx, {
+    type: 'line',
+    data: {
+        labels: ['2019', '2020', '2021'],
+        datasets: [{
+            label: 'Total Return %',
+            data: [12, 8, 15],
+            borderColor: '#3b82f6',
+            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+            tension: 0.4,
+            fill: true,
+            pointRadius: 4,
+            pointHoverRadius: 6
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                grid: {
+                    color: '#333333'
+                },
+                ticks: {
+                    color: '#b3b3b3',
+                    callback: function(value) {
+                        return value + '%';
+                    }
+                }
+            },
+            x: {
+                grid: {
+                    display: false
+                },
+                ticks: {
+                    color: '#b3b3b3'
+                }
+            }
+        }
+    }
+});
+
+// Valuation Pie Chart
+const valuationCtx = document.getElementById('valuation-pie-chart').getContext('2d');
+
+new Chart(valuationCtx, {
+    type: 'doughnut',
+    data: {
+        labels: ['Property A', 'Property B'],
+        datasets: [{
+            data: [60, 40],
+            backgroundColor: ['#3b82f6', '#8b5cf6'],
+            borderWidth: 0,
+            hoverOffset: 4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    }
+});
+
+// Interactive functionality
+document.querySelectorAll('.metric-item input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        // Update chart visibility based on checkbox state
+        console.log('Metric toggled:', this.parentElement.querySelector('label').textContent);
+    });
+});
+
+// Export to Excel functionality
+document.querySelector('.excel-btn').addEventListener('click', function() {
+    this.textContent = 'Exporting...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Export to Excel';
+        this.disabled = false;
+        alert('Excel export completed!');
+    }, 2000);
+});
+
+// Performance grade click handlers
+document.querySelectorAll('.grade-item').forEach(item => {
+    item.addEventListener('click', function() {
+        console.log('Performance grade clicked:', this.textContent);
+        // Add drill-down functionality here
+    });
+});
+</script>
+{% endblock javascript %}

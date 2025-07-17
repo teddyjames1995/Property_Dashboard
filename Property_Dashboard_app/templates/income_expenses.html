@@ -1,0 +1,424 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Income & Expenses{% endblock %}
+{% block page_title %}Income & Expenses{% endblock page_title %}
+
+{% block content %}
+<!-- Top Controls -->
+<div class="income-header">
+    <div class="income-controls-row">
+        <div class="control-group">
+            <label>Dash.</label>
+            <select class="income-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Asset ▼</label>
+            <select class="income-select">
+                <option>All Assets</option>
+                <option>Property A</option>
+                <option>Property B</option>
+                <option>Property C</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Data Validation</label>
+            <div class="validation-info">
+                <span class="validation-status">Quality: What? Who? Portfolio Report when?</span>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>Report</label>
+            <button class="income-report-btn">Generate</button>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="income-layout">
+    <!-- Left Sidebar with Categories -->
+    <div class="income-sidebar">
+        <div class="sidebar-section">
+            <h3>F/M</h3>
+            <div class="category-checkboxes">
+                <label><input type="checkbox" checked> Prop.</label>
+                <label><input type="checkbox" checked> TS</label>
+                <label><input type="checkbox" checked> Perf.</label>
+            </div>
+        </div>
+        
+        <div class="sidebar-section">
+            <h3>Income & Expenses</h3>
+            <div class="income-categories">
+                <div class="category-group">
+                    <h4>Income</h4>
+                    <div class="category-items">
+                        <label><input type="checkbox" checked> Add Income</label>
+                        <label><input type="checkbox" checked> Expense</label>
+                        <label><input type="checkbox" checked> Capital Expenditure</label>
+                        <label><input type="checkbox" checked> Tax</label>
+                        <label><input type="checkbox" checked> Fees (CP)</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="income-content">
+        <!-- Charts Section -->
+        <div class="charts-container">
+            <!-- CapEx Chart -->
+            <div class="chart-section">
+                <h3>CapEx</h3>
+                <div class="chart-wrapper">
+                    <canvas id="capexChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+            
+            <!-- Total YoY Chart -->
+            <div class="chart-section">
+                <h3>Total YoY</h3>
+                <div class="chart-wrapper">
+                    <canvas id="totalYoyChart" width="400" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Property A Time Series -->
+        <div class="property-chart-section">
+            <h3>Property A</h3>
+            <div class="property-chart-wrapper">
+                <canvas id="propertyAChart" width="800" height="300"></canvas>
+                <div class="chart-timeline">
+                    <span>Time →</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Expenses Breakdown -->
+        <div class="expenses-section">
+            <h3>Expenses</h3>
+            <div class="expenses-chart-wrapper">
+                <canvas id="expensesChart" width="400" height="200"></canvas>
+                <div class="expenses-labels">
+                    <span>Utilities</span>
+                    <span>Void</span>
+                    <span>P.M.</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- AI Insights -->
+        <div class="ai-section">
+            <div class="ai-insight">
+                <h4>AI Insight:</h4>
+                <p>Void is costing you X%/£xm p.a. to Portfolio performance.</p>
+                <p>Consider X___ → AI</p>
+            </div>
+        </div>
+        
+        <!-- Comments Section -->
+        <div class="comments-section">
+            <h3>Comments</h3>
+            <div class="comments-content">
+                <p><strong>Feeds automatically into performance figures.</strong></p>
+                <p><strong>Dynamic Graphs</strong></p>
+                <p>AI - Suggest best options for ⬇ expenditure to ⬆ or ⬆ best quality letting agents to ⬇ void</p>
+                <p>Utilify companies to ⬇ cost</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Mobile App Section -->
+    <div class="mobile-app-section">
+        <div class="app-container">
+            <h3>App</h3>
+            <div class="app-interface">
+                <div class="app-buttons">
+                    <button class="app-btn expense-btn">Expense</button>
+                    <button class="app-btn income-btn">Add Income</button>
+                </div>
+                <div class="app-icon">
+                    <span class="material-symbols-outlined">add_circle</span>
+                </div>
+            </div>
+            <p class="app-description">Quick expense/income tracking</p>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// CapEx Bar Chart
+const capexCtx = document.getElementById('capexChart').getContext('2d');
+const capexChart = new Chart(capexCtx, {
+    type: 'bar',
+    data: {
+        labels: ['A', 'B', 'C', 'D'],
+        datasets: [{
+            label: 'CapEx (£k)',
+            data: [120, 80, 150, 90],
+            backgroundColor: '#3b82f6',
+            borderColor: '#2563eb',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            },
+            x: {
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            }
+        }
+    }
+});
+
+// Total YoY Bar Chart
+const totalYoyCtx = document.getElementById('totalYoyChart').getContext('2d');
+const totalYoyChart = new Chart(totalYoyCtx, {
+    type: 'bar',
+    data: {
+        labels: ['2021', '2022', '2023', '2024'],
+        datasets: [{
+            label: 'Total (£k)',
+            data: [450, 520, 480, 590],
+            backgroundColor: '#10b981',
+            borderColor: '#059669',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            },
+            x: {
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            }
+        }
+    }
+});
+
+// Property A Time Series Chart
+const propertyACtx = document.getElementById('propertyAChart').getContext('2d');
+const propertyAChart = new Chart(propertyACtx, {
+    type: 'line',
+    data: {
+        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        datasets: [{
+            label: 'Property A Performance',
+            data: [45, 52, 48, 61, 58, 67, 72, 69, 75, 73, 78, 82],
+            borderColor: '#8b5cf6',
+            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.4
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            },
+            x: {
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            }
+        }
+    }
+});
+
+// Expenses Bar Chart
+const expensesCtx = document.getElementById('expensesChart').getContext('2d');
+const expensesChart = new Chart(expensesCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Utilities', 'Void', 'P.M.'],
+        datasets: [{
+            label: 'Expenses (£k)',
+            data: [85, 120, 65],
+            backgroundColor: ['#f59e0b', '#ef4444', '#6b7280'],
+            borderColor: ['#d97706', '#dc2626', '#4b5563'],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            },
+            x: {
+                ticks: {
+                    color: 'var(--text-secondary)',
+                    font: {
+                        size: 11
+                    }
+                },
+                grid: {
+                    color: 'var(--border-color)'
+                }
+            }
+        }
+    }
+});
+
+// Generate Report Button
+document.querySelector('.income-report-btn').addEventListener('click', function() {
+    this.textContent = 'Generating...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Generate';
+        this.disabled = false;
+        alert('Income & Expenses report generated successfully!');
+    }, 1500);
+});
+
+// Category checkbox functionality
+document.querySelectorAll('.income-sidebar input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        const label = this.parentElement.textContent.trim();
+        console.log(`${label} ${this.checked ? 'enabled' : 'disabled'}`);
+        
+        // Update charts based on selection
+        updateChartsVisibility(this.checked, label);
+    });
+});
+
+function updateChartsVisibility(isChecked, category) {
+    // Simulate chart updates based on category selection
+    console.log(`Updating charts for ${category}: ${isChecked ? 'show' : 'hide'}`);
+    
+    // You can add logic here to show/hide chart datasets
+    // or update chart data based on the selected categories
+}
+
+// App buttons functionality
+document.querySelectorAll('.app-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const type = this.classList.contains('expense-btn') ? 'Expense' : 'Income';
+        alert(`${type} entry form would open here`);
+    });
+});
+
+// Portfolio/Asset dropdown change handlers
+document.querySelectorAll('.income-select').forEach(select => {
+    select.addEventListener('change', function() {
+        console.log('Selected:', this.value);
+        updateDashboardData(this.value);
+    });
+});
+
+function updateDashboardData(selection) {
+    console.log('Updating income & expenses data for:', selection);
+    
+    // Update all charts with new data based on selection
+    // This would typically fetch new data from the server
+    
+    // Example: Update CapEx chart
+    const newCapexData = selection === 'Property A' ? [150, 120, 90, 110] : [120, 80, 150, 90];
+    capexChart.data.datasets[0].data = newCapexData;
+    capexChart.update();
+}
+</script>
+{% endblock javascript %}

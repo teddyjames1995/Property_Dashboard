@@ -1,8 +1,511 @@
 {% extends 'base.html' %}
+{% load static %}
 
-{% block title %}Property Deepdive{% endblock %}
+{% block title %}Property Deep Dive{% endblock %}
+{% block page_title %}Property Deep Dive{% endblock page_title %}
 
 {% block content %}
-<h1>Property Deepdive</h1>
-<p>Welcome to Property Deepdive! This is where Property Deepdive content will go.</p>
+<!-- Top Controls -->
+<div class="deepdive-header">
+    <div class="filter-controls-row">
+        <div class="control-group">
+            <label>Dash.</label>
+            <select class="deepdive-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>View</label>
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="list">
+                    <span class="material-symbols-outlined">view_list</span>
+                    List View
+                </button>
+                <button class="view-btn" data-view="grid">
+                    <span class="material-symbols-outlined">grid_view</span>
+                    Grid View
+                </button>
+                <button class="view-btn" data-view="map">
+                    <span class="material-symbols-outlined">map</span>
+                    Map View
+                </button>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>Sector ▼</label>
+            <select class="deepdive-select">
+                <option>All Sectors</option>
+                <option>Office</option>
+                <option>Retail</option>
+                <option>Industrial</option>
+            </select>
+        </div>
+        
+        <button class="report-btn">Generate Report</button>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="deepdive-layout">
+    <!-- Main Content Views -->
+    <div class="deepdive-content">
+        <!-- List View -->
+        <div class="view-container list-view active" id="list-view">
+            <div class="list-header">
+                <div class="list-note">
+                    <p>📊 <strong>Attachments</strong> - Valuation/Lease/Legal/operative_in_PDF</p>
+                    <p>💬 <strong>Comment/Post</strong> - Allows owner/landlord to make comments on any property. Can do analytics to identify main risks to property</p>
+                    <p>📈 <strong>Data drawn from Tenancy Schedule</strong> - Multiple vectors</p>
+                </div>
+            </div>
+            
+            <div class="properties-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Photo</th>
+                            <th>Value</th>
+                            <th>Sq Ft</th>
+                            <th>Income</th>
+                            <th>Yield</th>
+                            <th>Comment/Ask</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Property A</td>
+                            <td>
+                                <div class="photo-placeholder">📷</div>
+                            </td>
+                            <td>£2.5M</td>
+                            <td>15,000</td>
+                            <td>£180k</td>
+                            <td>7.2%</td>
+                            <td>
+                                <button class="comment-btn">💬</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Property B</td>
+                            <td>
+                                <div class="photo-placeholder">📷</div>
+                            </td>
+                            <td>£1.8M</td>
+                            <td>12,500</td>
+                            <td>£144k</td>
+                            <td>8.0%</td>
+                            <td>
+                                <button class="comment-btn">💬</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Property C</td>
+                            <td>
+                                <div class="photo-placeholder">📷</div>
+                            </td>
+                            <td>£3.2M</td>
+                            <td>20,000</td>
+                            <td>£224k</td>
+                            <td>7.0%</td>
+                            <td>
+                                <button class="comment-btn">💬</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Grid View -->
+        <div class="view-container grid-view" id="grid-view">
+            <div class="grid-note">
+                <p>📸 <strong>Easily see properties in Grid view w/ Photographs</strong></p>
+                <p>🔍 <strong>High level Key metrics under each</strong></p>
+            </div>
+            
+            <div class="properties-grid">
+                <div class="property-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Property A</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Value:</span>
+                                <span class="value">£2.5M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Yield:</span>
+                                <span class="value">7.2%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Income:</span>
+                                <span class="value">£180k</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Debt:</span>
+                                <span class="value">£1.2M</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Property B</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Value:</span>
+                                <span class="value">£1.8M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Yield:</span>
+                                <span class="value">8.0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Income:</span>
+                                <span class="value">£144k</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Debt:</span>
+                                <span class="value">£900k</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Property C</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Value:</span>
+                                <span class="value">£3.2M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Yield:</span>
+                                <span class="value">7.0%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Income:</span>
+                                <span class="value">£224k</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Debt:</span>
+                                <span class="value">£1.8M</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Property D</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Value:</span>
+                                <span class="value">£1.5M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Yield:</span>
+                                <span class="value">6.8%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Income:</span>
+                                <span class="value">£102k</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Debt:</span>
+                                <span class="value">£750k</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Property E</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Value:</span>
+                                <span class="value">£2.1M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Yield:</span>
+                                <span class="value">7.5%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Income:</span>
+                                <span class="value">£157k</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Debt:</span>
+                                <span class="value">£1.1M</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Property F</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Value:</span>
+                                <span class="value">£2.8M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Yield:</span>
+                                <span class="value">6.9%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Income:</span>
+                                <span class="value">£193k</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Debt:</span>
+                                <span class="value">£1.4M</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map View -->
+        <div class="view-container map-view" id="map-view">
+            <div class="map-layout">
+                <div class="map-left">
+                    <div class="property-list-panel">
+                        <h4>List of Properties</h4>
+                        <div class="map-property-list">
+                            <div class="map-property-item active" data-property="1">
+                                <span class="property-number">1)</span>
+                                <span class="property-name">Property A</span>
+                                <span class="property-location">London</span>
+                            </div>
+                            <div class="map-property-item" data-property="2">
+                                <span class="property-number">2)</span>
+                                <span class="property-name">Property B</span>
+                                <span class="property-location">Manchester</span>
+                            </div>
+                            <div class="map-property-item" data-property="3">
+                                <span class="property-number">3)</span>
+                                <span class="property-name">Property C</span>
+                                <span class="property-location">Birmingham</span>
+                            </div>
+                            <div class="map-property-item" data-property="4">
+                                <span class="property-number">4)</span>
+                                <span class="property-name">Property D</span>
+                                <span class="property-location">Leeds</span>
+                            </div>
+                            <div class="map-property-item" data-property="5">
+                                <span class="property-number">5)</span>
+                                <span class="property-name">Property E</span>
+                                <span class="property-location">Liverpool</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-center">
+                    <div class="map-container">
+                        <div class="map-placeholder">
+                            🗺️ Interactive Map
+                            <div class="map-pins">
+                                <div class="map-pin" style="top: 20%; left: 60%;" data-property="1">1</div>
+                                <div class="map-pin" style="top: 30%; left: 40%;" data-property="2">2</div>
+                                <div class="map-pin" style="top: 45%; left: 50%;" data-property="3">3</div>
+                                <div class="map-pin" style="top: 25%; left: 45%;" data-property="4">4</div>
+                                <div class="map-pin" style="top: 35%; left: 30%;" data-property="5">5</div>
+                            </div>
+                        </div>
+                        <p class="map-note">Interactive Map showing location of properties - Different colors = sectors, Dynamic = sized by EBITDA = valuation</p>
+                    </div>
+                </div>
+                
+                <div class="map-right">
+                    <div class="property-details-panel">
+                        <div class="property-photo-large">
+                            <div class="photo-placeholder">📷</div>
+                        </div>
+                        
+                        <div class="property-details">
+                            <h4>Property 1</h4>
+                            <div class="property-address">
+                                <p><strong>Address:</strong><br>123 Business Park<br>London, SW1A 1AA</p>
+                            </div>
+                            
+                            <div class="property-metrics-detailed">
+                                <h5>Valuation</h5>
+                                <p>£2.5M</p>
+                                
+                                <h5>Debt/LTV</h5>
+                                <p>£1.2M (48%)</p>
+                                
+                                <h5>Income</h5>
+                                <p>£180k p.a.</p>
+                            </div>
+                            
+                            <div class="tenants-section">
+                                <h5>Tenants</h5>
+                                <div class="tenant-list">
+                                    <div class="tenant-item">1) TechCorp Ltd</div>
+                                    <div class="tenant-item">2) RetailCo</div>
+                                    <div class="tenant-item">3) ServiceFirm</div>
+                                    <div class="tenant-item">4) StartupInc</div>
+                                </div>
+                            </div>
+                            
+                            <div class="lease-expiry">
+                                <h5>Lease Expiry</h5>
+                                <div class="lease-chart-placeholder">
+                                    📊 Chart
+                                </div>
+                            </div>
+                            
+                            <div class="attachments">
+                                <h5>Attachments</h5>
+                                <div class="attachment-icon">📎</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {% endblock content %}
+
+{% block javascript %}
+<script>
+// View Toggle Functionality
+document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const viewType = this.dataset.view;
+        
+        // Update active button
+        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Show/hide view containers
+        document.querySelectorAll('.view-container').forEach(container => {
+            container.classList.remove('active');
+        });
+        document.getElementById(viewType + '-view').classList.add('active');
+    });
+});
+
+// Map property selection
+document.querySelectorAll('.map-property-item, .map-pin').forEach(item => {
+    item.addEventListener('click', function() {
+        const propertyId = this.dataset.property;
+        
+        // Update active property in list
+        document.querySelectorAll('.map-property-item').forEach(p => p.classList.remove('active'));
+        document.querySelector(`.map-property-item[data-property="${propertyId}"]`).classList.add('active');
+        
+        // Update property details panel
+        updatePropertyDetails(propertyId);
+    });
+});
+
+function updatePropertyDetails(propertyId) {
+    // Sample property data
+    const properties = {
+        '1': {
+            name: 'Property A',
+            address: '123 Business Park<br>London, SW1A 1AA',
+            valuation: '£2.5M',
+            debt: '£1.2M (48%)',
+            income: '£180k p.a.',
+            tenants: ['TechCorp Ltd', 'RetailCo', 'ServiceFirm', 'StartupInc']
+        },
+        '2': {
+            name: 'Property B', 
+            address: '456 Commerce Street<br>Manchester, M1 2AB',
+            valuation: '£1.8M',
+            debt: '£900k (50%)',
+            income: '£144k p.a.',
+            tenants: ['ManufacturingCo', 'LogisticsFirm', 'TradingLtd']
+        },
+        '3': {
+            name: 'Property C',
+            address: '789 Industrial Estate<br>Birmingham, B1 3CD',
+            valuation: '£3.2M',
+            debt: '£1.8M (56%)',
+            income: '£224k p.a.',
+            tenants: ['WarehouseCorp', 'DistributionInc', 'StorageLtd', 'FreightCo']
+        }
+    };
+    
+    const property = properties[propertyId] || properties['1'];
+    
+    // Update details panel
+    document.querySelector('.property-details h4').textContent = property.name;
+    document.querySelector('.property-address p').innerHTML = '<strong>Address:</strong><br>' + property.address;
+    document.querySelector('.property-metrics-detailed p').textContent = property.valuation;
+    document.querySelectorAll('.property-metrics-detailed p')[1].textContent = property.debt;
+    document.querySelectorAll('.property-metrics-detailed p')[2].textContent = property.income;
+    
+    // Update tenants list
+    const tenantsList = document.querySelector('.tenant-list');
+    tenantsList.innerHTML = '';
+    property.tenants.forEach((tenant, index) => {
+        const tenantDiv = document.createElement('div');
+        tenantDiv.className = 'tenant-item';
+        tenantDiv.textContent = `${index + 1}) ${tenant}`;
+        tenantsList.appendChild(tenantDiv);
+    });
+}
+
+// Filter functionality
+document.querySelectorAll('.filter-group input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener('change', function() {
+        console.log('Filter changed:', this.parentElement.textContent.trim());
+        // Add filter logic here
+    });
+});
+
+// Comment button functionality
+document.querySelectorAll('.comment-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        alert('Comment functionality would open here');
+    });
+});
+
+// Generate Report functionality
+document.querySelector('.report-btn').addEventListener('click', function() {
+    this.textContent = 'Generating...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Generate Report';
+        this.disabled = false;
+        alert('Property report generated successfully!');
+    }, 2000);
+});
+</script>
+{% endblock javascript %}
