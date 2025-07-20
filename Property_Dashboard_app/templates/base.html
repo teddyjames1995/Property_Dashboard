@@ -30,7 +30,7 @@
         <nav class="sidebar-nav">
             <ul>
                 <li>
-                    <a href="{% url 'dashboard' %}" class="nav-item active">
+                    <a href="{% url 'dashboard' %}" class="nav-item">
                         <span class="material-symbols-outlined">dashboard</span>
                         <span>Dashboard</span>
                     </a>
@@ -138,7 +138,15 @@
     </main>
 
     {% block javascript %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+    <script>
+        // Verify Chart.js loaded
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js failed to load from CDN');
+        } else {
+            console.log('Chart.js loaded successfully, version:', Chart.version);
+        }
+    </script>
     <script>
         // Sidebar toggle functionality
         document.querySelector('.sidebar-toggle').addEventListener('click', function() {
@@ -160,13 +168,30 @@
         });
 
         // Active navigation highlighting
-        const currentPath = window.location.pathname;
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === currentPath) {
-                item.classList.add('active');
-            }
-        });
+        function updateActiveNavigation() {
+            const currentPath = window.location.pathname;
+            console.log('Current path:', currentPath);
+            
+            // Remove active class from all nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Find and highlight the current page
+            document.querySelectorAll('.nav-item').forEach(item => {
+                const href = item.getAttribute('href');
+                console.log('Checking href:', href, 'against path:', currentPath);
+                
+                // Match exact path or if current path starts with the href (for sub-pages)
+                if (href === currentPath || (href !== '/' && currentPath.startsWith(href))) {
+                    item.classList.add('active');
+                    console.log('✅ Set active for:', href);
+                }
+            });
+        }
+        
+        // Update navigation on page load
+        updateActiveNavigation();
     </script>
     {% endblock %}
 

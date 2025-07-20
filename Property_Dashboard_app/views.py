@@ -87,6 +87,7 @@ def dashboard_view(request):
 
     total_valuation = format_currency(total_valuation_value)
     total_income = format_currency(total_income_value)
+    total_capex_formatted = format_currency(total_capex)
 
     top_properties_by_valuation = Property.objects.order_by('-valuation')[:5]
     top_properties = []
@@ -128,20 +129,79 @@ def dashboard_view(request):
         debt_sum=Sum('total_debt')
     ).order_by('year')
 
+    # Generate sector allocation data from actual properties
+    sector_allocation_valuation = Property.objects.values('sector').annotate(
+        valuation_sum=Sum('valuation')
+    ).order_by('-valuation_sum')
+    
+    sector_labels = []
+    sector_values = []
+    sector_colors = ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444']
+    
+    for i, sector in enumerate(sector_allocation_valuation):
+        sector_labels.append(sector['sector'])
+        sector_values.append(float(sector['valuation_sum']) / 1000000)  # Convert to millions
+    
     sector_allocation_data = {
-        'labels': ['Industrial', 'Offices', 'Retail'],
-        'data': [30, 25, 45],
-        'backgroundColor': ['#FF6384', '#36A2EB', '#FFCE56'],
+        'labels': sector_labels,
+        'data': sector_values,
+        'backgroundColor': sector_colors[:len(sector_labels)],
     }
 
+    # Generate monthly lease expiry data starting from current month using real data
+    from datetime import datetime, timedelta
+    import calendar
+    from django.db.models import Q
+    
+    current_date = datetime.now()
+    monthly_labels = []
+    monthly_data = []
+    
+    # Generate 12 months starting from current month
+    for i in range(12):
+        month_date = current_date + timedelta(days=30 * i)
+        month_name = calendar.month_abbr[month_date.month]
+        year = month_date.year
+        monthly_labels.append(f"{month_name} {year}")
+        
+        # Query actual lease expiries for this month
+        month_start = month_date.replace(day=1)
+        if month_date.month == 12:
+            month_end = month_date.replace(year=month_date.year + 1, month=1, day=1) - timedelta(days=1)
+        else:
+            month_end = month_date.replace(month=month_date.month + 1, day=1) - timedelta(days=1)
+        
+        lease_expiries = Tenant.objects.filter(
+            lease_end__gte=month_start.date(),
+            lease_end__lte=month_end.date()
+        ).count()
+        
+        monthly_data.append(lease_expiries)
+    
     lease_expiry_data = {
-        'labels': ['2024', '2025', '2026'],
-        'data': [5, 10, 15],
+        'labels': monthly_labels,
+        'data': monthly_data,
     }
 
+    # Generate debt maturity data starting from current year
+    current_year = datetime.now().year
+    debt_years = [str(current_year + i) for i in range(4)]  # Current year + 3 more years
+    debt_years[-1] = debt_years[-1] + "+"  # Last year gets a "+" suffix
+    
+    # Query actual debt data by maturity year - all zeros since no debt
+    debt_amounts = []
+    for year in debt_years[:-1]:  # Exclude the "++" year
+        year_debt = Property.objects.filter(
+            year__lte=int(year)
+        ).aggregate(total_debt=Sum('total_debt'))['total_debt'] or 0
+        debt_amounts.append(float(year_debt) / 1000000)  # Convert to millions
+    
+    # Add zero for the "+" year as well
+    debt_amounts.append(0)
+    
     debt_wall_data = {
-        'labels': ['2024', '2025', '2026'],
-        'data': [200000, 300000, 400000],
+        'labels': debt_years,
+        'data': debt_amounts,  # Real debt data (all zeros since no debt)
     }
 
     sector_allocation_data_json = json.dumps(sector_allocation_data, cls=DjangoJSONEncoder)
@@ -156,7 +216,7 @@ def dashboard_view(request):
         'total_sq_ft': total_sq_ft,
         'total_occupancy_by_erv': total_occupancy_by_erv,
         'total_yield': total_yield,
-        'total_capex': total_capex,
+        'total_capex': total_capex_formatted,
         'total_debt_ltv': total_debt_ltv,
         'total_interest': total_interest,
         'top_properties': top_properties,

@@ -88,7 +88,7 @@
         <div class="sector-chart-container">
             <h3>Sector Allocation</h3>
             <div class="pie-chart-wrapper">
-                <canvas id="sector-allocation-chart"></canvas>
+                <canvas id="sector-allocation-chart" width="200" height="200" style="width: 200px; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
                 <div class="sector-legend">
                     <div class="legend-item">
                         <span class="legend-color industrial"></span>
@@ -166,12 +166,7 @@
     <div class="chart-container-wireframe">
         <h3>Lease Expiry</h3>
         <div class="chart-wrapper">
-            <canvas id="lease-expiry-chart"></canvas>
-        </div>
-        <div class="chart-years">
-            <span>2023</span>
-            <span>2024</span>
-            <span>2025</span>
+            <canvas id="lease-expiry-chart" width="400" height="200" style="width: 100%; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
         </div>
     </div>
 
@@ -179,29 +174,12 @@
     <div class="chart-container-wireframe">
         <h3>Debt Maturity</h3>
         <div class="chart-wrapper">
-            <canvas id="debt-maturity-chart"></canvas>
-        </div>
-        <div class="chart-years">
-            <span>2023</span>
-            <span>2024</span>
-            <span>2025</span>
-            <span>2026+</span>
+            <canvas id="debt-maturity-chart" width="400" height="200" style="width: 100%; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
         </div>
     </div>
 
-    <!-- Deep Dive Section -->
-    <div class="deep-dive-container">
-        <h3>Deep Dive:</h3>
-        <div class="deep-dive-content">
-            <p>Rents<br>Tenants<br>Debt</p>
-        </div>
-    </div>
 </div>
 
-<!-- Bottom Note -->
-<div class="dynamic-note">
-    <p>All Dynamic</p>
-</div>
 
 {% endblock %}
 
@@ -211,143 +189,84 @@
 {{ debt_wall_data_json|json_script:"debt-wall-data" }}
 
 <script>
-// Chart.js configuration for dark theme
-Chart.defaults.color = '#b3b3b3';
-Chart.defaults.borderColor = '#333333';
-
-// Sector Allocation Pie Chart
-const sectorCtx = document.getElementById('sector-allocation-chart').getContext('2d');
-
-new Chart(sectorCtx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Industrial', 'Office', 'Retail', 'Resi', 'Alt'],
-        datasets: [{
-            data: [30, 28, 25, 17, 0],
-            backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444'],
-            borderWidth: 0,
-            hoverOffset: 4
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            }
-        }
-    }
-});
-
-// Lease Expiry Bar Chart
-const leaseCtx = document.getElementById('lease-expiry-chart').getContext('2d');
-
-new Chart(leaseCtx, {
-    type: 'bar',
-    data: {
-        labels: ['2023', '2024', '2025'],
-        datasets: [{
-            label: 'Lease Expiries',
-            data: [15, 25, 35],
-            backgroundColor: '#3b82f6',
-            borderRadius: 4,
-            borderSkipped: false,
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: {
-                    color: '#333333'
-                },
-                ticks: {
-                    color: '#b3b3b3'
-                }
-            },
-            x: {
-                grid: {
-                    display: false
-                },
-                ticks: {
-                    color: '#b3b3b3'
-                }
-            }
-        }
-    }
-});
-
-// Debt Maturity Chart
-const debtCtx = document.getElementById('debt-maturity-chart').getContext('2d');
-
-new Chart(debtCtx, {
-    type: 'bar',
-    data: {
-        labels: ['2023', '2024', '2025', '2026+'],
-        datasets: [{
-            label: 'Debt Maturity',
-            data: [20, 45, 30, 15],
-            backgroundColor: '#ef4444',
-            borderRadius: 4,
-            borderSkipped: false,
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: {
-                    color: '#333333'
-                },
-                ticks: {
-                    color: '#b3b3b3'
-                }
-            },
-            x: {
-                grid: {
-                    display: false
-                },
-                ticks: {
-                    color: '#b3b3b3'
-                }
-            }
-        }
-    }
-});
-
-// Interactive functionality
-document.querySelectorAll('.property-item, .tenant-item').forEach(item => {
-    item.addEventListener('click', function() {
-        // Add click handlers for navigation
-        console.log('Item clicked:', this.textContent);
-    });
-});
-
-// Generate Report functionality
-document.querySelector('.generate-report-btn').addEventListener('click', function() {
-    this.textContent = 'Generating...';
-    this.disabled = true;
+// Wait for page to fully load
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded');
     
-    setTimeout(() => {
-        this.textContent = 'Generate Report';
-        this.disabled = false;
-        alert('Report generated successfully!');
-    }, 2000);
-});
+    // Wait a bit more to ensure Chart.js is loaded
+    setTimeout(function() {
+        console.log('Chart.js available:', typeof Chart !== 'undefined');
+        
+        if (typeof Chart === 'undefined') {
+            console.error('Chart.js not loaded - charts will not work');
+            // Show error message on page
+            document.querySelectorAll('.chart-wrapper, .pie-chart-wrapper').forEach(el => {
+                el.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Chart.js failed to load</div>';
+            });
+            return;
+        }
+        
+        // Chart.js configuration for dark theme
+        Chart.defaults.color = '#b3b3b3';
+        Chart.defaults.borderColor = '#333333';
+
+        // Debug: Test Chart.js functionality with hardcoded data
+        console.log('Skipping data parsing, using hardcoded test data');
+
+        // MINIMAL TEST - Just one simple chart
+        console.log('Creating minimal test chart...');
+        
+        try {
+            const canvas = document.getElementById('sector-allocation-chart');
+            if (canvas) {
+                console.log('✅ Canvas found');
+                new Chart(canvas, {
+                    type: 'doughnut',
+                    data: {
+                        labels: ['A', 'B'],
+                        datasets: [{ data: [60, 40], backgroundColor: ['red', 'blue'] }]
+                    }
+                });
+                console.log('✅ CHART CREATED SUCCESSFULLY!');
+            } else {
+                console.log('❌ Canvas not found');
+            }
+        } catch (e) {
+            console.error('❌ Chart error:', e);
+            document.body.innerHTML += '<div style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:10px;">CHART ERROR: ' + e.message + '</div>';
+        }
+
+        // Skip other charts for now - testing minimal chart first
+        console.log('Skipping other charts for minimal test');
+        
+    } else {
+        console.error('Chart.js not loaded');
+    }
+
+    // Interactive functionality
+    document.querySelectorAll('.property-item, .tenant-item').forEach(item => {
+        item.addEventListener('click', function() {
+            // Add click handlers for navigation
+            console.log('Item clicked:', this.textContent);
+        });
+    });
+
+    // Generate Report functionality
+    const reportBtn = document.querySelector('.generate-report-btn');
+    if (reportBtn) {
+        reportBtn.addEventListener('click', function() {
+            this.textContent = 'Generating...';
+            this.disabled = true;
+            
+            setTimeout(() => {
+                this.textContent = 'Generate Report';
+                this.disabled = false;
+                alert('Report generated successfully!');
+            }, 2000);
+        });
+    }
+
+    }, 500); // Wait 500ms for Chart.js to load
+}); // End DOMContentLoaded
 </script>
 {% endblock %}
