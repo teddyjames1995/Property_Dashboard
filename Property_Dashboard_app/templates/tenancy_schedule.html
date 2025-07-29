@@ -39,140 +39,273 @@
     </div>
 </div>
 
-<!-- Portfolio Stats -->
-<div class="portfolio-stats">
-    <div class="stats-container">
-        <div class="stat-item">
-            <label>Sq Ft</label>
-            <span class="stat-value">125,000</span>
-        </div>
-        <div class="stat-item">
-            <label>Vacancy</label>
-            <span class="stat-value">8.5%</span>
-        </div>
-        <div class="stat-item">
-            <label>WAULT</label>
-            <span class="stat-value">4.2 yrs</span>
-        </div>
-        <div class="stat-item">
-            <label>Income</label>
-            <span class="stat-value">£2.4M</span>
-        </div>
-        <div class="stat-item">
-            <label>ERV</label>
-            <span class="stat-value">£2.8M</span>
-        </div>
-        <div class="stat-item">
-            <label>Commitment</label>
-            <span class="stat-value">£180k</span>
-        </div>
-    </div>
-</div>
 
 <!-- Main Content Area -->
 <div class="tenancy-layout">
-    <!-- Property Listings -->
-    <div class="properties-section">
-        <!-- Property 1 -->
-        <div class="property-container">
-            <div class="property-header">
-                <h3>1) Property 1</h3>
-                <div class="property-stats">
-                    <span>Postcode: SW1A 1AA</span>
-                    <span>NIA: 15,000 sq ft</span>
-                </div>
-            </div>
-            
-            <!-- Tenant Details -->
-            <div class="tenants-list">
-                <div class="tenant-row">
-                    <div class="tenant-info">
-                        <div class="tenant-number">1)</div>
-                        <div class="tenant-details">
-                            <div class="tenant-name">Tenant 1</div>
-                            <div class="tenant-meta">
-                                <span class="photo-icon">📷</span>
-                                <span>Photo / Lease Start / Rent Start / Break / Expiry</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <!-- Tenancy Schedule Table -->
+    <div class="table-content-container">
+        <table class="tenancy-table">
+            <thead>
+                <tr class="sticky-header">
+                    <th>Asset</th>
+                    <th>Floor</th>
+                    <th>Tenant</th>
+                    <th colspan="4">Lease Terms</th>
+                    <th colspan="2">Rent Passing</th>
+                    <th>Comments</th>
+                    <th>EPC Rating</th>
+                    <th>EPC Expiry Date</th>
+                    <th>📎</th>
+                </tr>
+                <tr class="sub-header sticky-header">
+                    <th></th>
+                    <th>sq ft</th>
+                    <th></th>
+                    <th>Start</th>
+                    <th>Rent Review</th>
+                    <th>Break</th>
+                    <th>Expiry</th>
+                    <th>£pa</th>
+                    <th>£psf</th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="portfolio-summary-row">
+                    <td><strong>Portfolio</strong></td>
+                    <td><strong>98,097</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>£641,827</strong></td>
+                    <td><strong>£6.54</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr class="property-total-row">
+                    <td><strong>Property 1</strong></td>
+                    <td><strong>55,947</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>£361,327</strong></td>
+                    <td><strong>£6.46</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Unit 1</td>
+                    <td>8,640</td>
+                    <td>Eurocar Group UK Ltd</td>
+                    <td>05/05/2003</td>
+                    <td></td>
+                    <td></td>
+                    <td>05/05/2018</td>
+                    <td>£58,894</td>
+                    <td>£6.82</td>
+                    <td></td>
+                    <td>D 79</td>
+                    <td>05/05/2028</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 2</td>
+                    <td>11,034</td>
+                    <td>Vacant</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>£68,963</td>
+                    <td>£6.25</td>
+                    <td>Vendor to provide 1 year rent rates and service charge guarantee</td>
+                    <td>C 65</td>
+                    <td>15/09/2027</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 3</td>
+                    <td>7,005</td>
+                    <td>Agility Logistics Limited</td>
+                    <td>05/06/2014</td>
+                    <td></td>
+                    <td>06/06/2015</td>
+                    <td>04/06/2017</td>
+                    <td>£46,900</td>
+                    <td>£6.70</td>
+                    <td>Mutual break option on 06/06/2015 on 6 months notice. Outside LTA 54</td>
+                    <td>D 84</td>
+                    <td>12/03/2026</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 4</td>
+                    <td>6,005</td>
+                    <td>Ryebridge Ltd</td>
+                    <td>08/03/2012</td>
+                    <td></td>
+                    <td></td>
+                    <td>07/03/2017</td>
+                    <td>£35,000</td>
+                    <td>£5.83</td>
+                    <td>Rent deposit of £7,500. Schedule of Condition.</td>
+                    <td>C 70</td>
+                    <td>22/11/2025</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 5</td>
+                    <td>6,599</td>
+                    <td>Esso Petroleum Company Ltd</td>
+                    <td>20/04/2010</td>
+                    <td>19/04/2016</td>
+                    <td>19/04/2016</td>
+                    <td>19/04/2019</td>
+                    <td>£44,650</td>
+                    <td>£6.77</td>
+                    <td>Tenant's option to break on 6 months notice. Schedule of Condition. Outside LTA 54</td>
+                    <td>E 111</td>
+                    <td>08/07/2029</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 6</td>
+                    <td>5,271</td>
+                    <td>Wizard Glass Ltd</td>
+                    <td>05/06/2013</td>
+                    <td></td>
+                    <td></td>
+                    <td>04/06/2018</td>
+                    <td>£33,200</td>
+                    <td>£6.30</td>
+                    <td>Current rent of £16,600 pa rising to £33,200 pa on 05/12/2014. Vendor will top up to £33,200 pa. Schedule of Condition.</td>
+                    <td>C 87</td>
+                    <td>14/04/2027</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 7</td>
+                    <td>5,970</td>
+                    <td>Gledhil Building Products Ltd</td>
+                    <td>20/08/2014</td>
+                    <td></td>
+                    <td></td>
+                    <td>19/08/2019</td>
+                    <td>£37,820</td>
+                    <td>£6.33</td>
+                    <td>Initial rent of £18,910 pa rising to £37,820 pa on 20/02/2015. Vendor will top up to £37,820 pa</td>
+                    <td>B 49</td>
+                    <td>03/01/2025</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 8</td>
+                    <td>5,323</td>
+                    <td>Bell Packaging Limited</td>
+                    <td>25/02/2010</td>
+                    <td></td>
+                    <td></td>
+                    <td>25/03/2020</td>
+                    <td>£35,900</td>
+                    <td>£6.74</td>
+                    <td>6 months rent free granted with effect from 25/02/2015. Rent free will be covered by the vendor. Schedule of Condition.</td>
+                    <td>F 126</td>
+                    <td>19/06/2030</td>
+                    <td>📎</td>
+                </tr>
                 
-                <div class="tenant-row">
-                    <div class="tenant-info">
-                        <div class="tenant-number">2)</div>
-                        <div class="tenant-details">
-                            <div class="tenant-name">Tenant 2</div>
-                            <div class="tenant-meta">
-                                <span class="credit-safe">🔍</span>
-                                <span>Credit Safe / Comments / Tenant Sector</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tenant-row">
-                    <div class="tenant-info">
-                        <div class="tenant-number">3)</div>
-                        <div class="tenant-details">
-                            <div class="tenant-name">Tenant 3</div>
-                            <div class="tenant-meta">
-                                <span>Asset Cluster / Location</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tenant-row">
-                    <div class="tenant-info">
-                        <div class="tenant-number">4)</div>
-                        <div class="tenant-details">
-                            <div class="tenant-name">Tenant 4</div>
-                            <div class="tenant-meta">
-                                <span>Additional tenant details</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Property 2 -->
-        <div class="property-container">
-            <div class="property-header">
-                <h3>2) Property 2</h3>
-                <div class="property-stats">
-                    <span>Postcode: M1 2AB</span>
-                    <span>NIA: 22,500 sq ft</span>
-                </div>
-            </div>
-            
-            <!-- Reminder Alert -->
-            <div class="reminder-alert">
-                <div class="reminder-icon">⚠️</div>
-                <div class="reminder-text">Reminder!</div>
-            </div>
-        </div>
+                <!-- Property 2 -->
+                <tr class="property-total-row">
+                    <td><strong>Property 2</strong></td>
+                    <td><strong>42,150</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>£280,500</strong></td>
+                    <td><strong>£6.65</strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Unit 1</td>
+                    <td>12,500</td>
+                    <td>TechCorp Solutions Ltd</td>
+                    <td>01/04/2019</td>
+                    <td>01/04/2024</td>
+                    <td></td>
+                    <td>31/03/2029</td>
+                    <td>£85,000</td>
+                    <td>£6.80</td>
+                    <td>Full repairing lease. Tenant responsible for all maintenance.</td>
+                    <td>B 42</td>
+                    <td>25/08/2032</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 2</td>
+                    <td>15,800</td>
+                    <td>Manchester Trading Co</td>
+                    <td>15/06/2020</td>
+                    <td></td>
+                    <td>15/06/2025</td>
+                    <td>14/06/2030</td>
+                    <td>£102,700</td>
+                    <td>£6.50</td>
+                    <td>Break clause exercisable on 6 months notice.</td>
+                    <td>C 75</td>
+                    <td>10/12/2030</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 3</td>
+                    <td>8,200</td>
+                    <td>Vacant</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>£55,300</td>
+                    <td>£6.75</td>
+                    <td>Recently vacated. Marketing for new tenant commenced.</td>
+                    <td>D 88</td>
+                    <td>07/04/2028</td>
+                    <td>📎</td>
+                </tr>
+                <tr>
+                    <td>Unit 4</td>
+                    <td>5,650</td>
+                    <td>Northern Logistics Ltd</td>
+                    <td>10/09/2021</td>
+                    <td>10/09/2026</td>
+                    <td></td>
+                    <td>09/09/2031</td>
+                    <td>£37,500</td>
+                    <td>£6.64</td>
+                    <td>Rent review to RPI with collar and cap. Modern lease terms.</td>
+                    <td>C 69</td>
+                    <td>28/02/2031</td>
+                    <td>📎</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+</div>
     
-    <!-- Attachments Section -->
-    <div class="attachments-section">
-        <h3>Attachments/Report when clicked</h3>
-        <div class="attachment-list">
-            <div class="attachment-item">
-                <span class="attachment-icon">📄</span>
-                <span class="attachment-name">Lease 1 PDF</span>
-            </div>
-            <div class="attachment-item">
-                <span class="attachment-icon">📄</span>
-                <span class="attachment-name">CapEx 1 PDF</span>
-            </div>
-            <div class="attachment-item">
-                <span class="attachment-icon">📄</span>
-                <span class="attachment-name">EPC 1 PDF</span>
-            </div>
-        </div>
-    </div>
 </div>
 
 <!-- Activity Log Section -->
@@ -263,12 +396,6 @@ function updateTenancyData(selection) {
     // This would typically fetch new data from the server
 }
 
-// Reminder functionality
-document.querySelectorAll('.reminder-alert').forEach(reminder => {
-    reminder.addEventListener('click', function() {
-        alert('Lease expiry reminder: Property 2 has tenants with leases expiring within 6 months!');
-    });
-});
 
 // Search and filter functionality
 function filterProperties(searchTerm) {

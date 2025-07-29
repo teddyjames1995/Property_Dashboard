@@ -46,6 +46,21 @@
     <!-- Left Section: Metrics Cards -->
     <div class="metrics-section">
         <div class="metrics-grid-compact">
+            <!-- Top Row -->
+            <div class="metric-box">
+                <label>Valuation</label>
+                <div class="metric-value">{{ total_valuation }}</div>
+            </div>
+            <div class="metric-box">
+                <label>Income</label>
+                <div class="metric-value">{{ total_income }}</div>
+            </div>
+            <div class="metric-box">
+                <label>Yield</label>
+                <div class="metric-value">{{ total_yield }}%</div>
+            </div>
+            
+            <!-- Middle Row -->
             <div class="metric-box">
                 <label>Properties</label>
                 <div class="metric-value">{{ total_properties }}</div>
@@ -58,21 +73,11 @@
                 <label>Tenants</label>
                 <div class="metric-value">{{ total_tenants }}</div>
             </div>
+            
+            <!-- Bottom Row -->
             <div class="metric-box">
                 <label>Occupancy</label>
                 <div class="metric-value">{{ total_occupancy_by_erv }}%</div>
-            </div>
-            <div class="metric-box">
-                <label>Income</label>
-                <div class="metric-value">{{ total_income }}</div>
-            </div>
-            <div class="metric-box">
-                <label>Yield</label>
-                <div class="metric-value">{{ total_yield }}%</div>
-            </div>
-            <div class="metric-box">
-                <label>Valuation</label>
-                <div class="metric-value">{{ total_valuation }}</div>
             </div>
             <div class="metric-box">
                 <label>Capex</label>
@@ -206,9 +211,9 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        // Chart.js configuration for dark theme
-        Chart.defaults.color = '#b3b3b3';
-        Chart.defaults.borderColor = '#333333';
+        // Chart.js configuration for light theme
+        Chart.defaults.color = '#475569';
+        Chart.defaults.borderColor = '#e2e8f0';
 
         // Debug: Test Chart.js functionality with hardcoded data
         console.log('Skipping data parsing, using hardcoded test data');
@@ -224,7 +229,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     type: 'doughnut',
                     data: {
                         labels: ['A', 'B'],
-                        datasets: [{ data: [60, 40], backgroundColor: ['red', 'blue'] }]
+                        datasets: [{ data: [60, 40], backgroundColor: ['#2563eb', '#7c3aed', '#059669', '#d97706', '#dc2626'] }]
                     }
                 });
                 console.log('✅ CHART CREATED SUCCESSFULLY!');

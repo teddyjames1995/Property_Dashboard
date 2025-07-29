@@ -49,47 +49,25 @@
         <button class="report-btn">Report</button>
     </div>
     
-    <!-- Comments Section -->
-    <div class="comments-section">
-        <h3>Comments</h3>
-        <p>Rent, capex, other expenses, tax etc can be added by owner/LL/Agents</p>
-        
-        <div class="top-performing">
-            <h4>Top 10 performing properties</h4>
-            <div class="performance-grades">
-                <div class="grade-item">A - 10%</div>
-                <div class="grade-item">B - 8%</div>
-                <div class="grade-item">C - 6%</div>
-                <div class="grade-item">D - -2%</div>
-            </div>
-        </div>
-        
-        <p class="auto-save">Automatically saves a copy at month end</p>
-        <p class="mod-dietz">Try to use Mod. Dietz for accuracy<br>- MSCI</p>
-    </div>
 </div>
 
 <!-- Main Performance Dashboard -->
 <div class="performance-dashboard">
-    <!-- Left Column -->
-    <div class="performance-left">
-        <!-- Performance Metrics -->
+    <!-- Top Row: Performance Metrics and Chart -->
+    <div class="performance-top-row">
+        <!-- Performance Metrics (Left Side) -->
         <div class="performance-metrics">
-            <h3>F/M Prop. TS R/P LL</h3>
-            <div class="metrics-row">
+            <div class="metrics-column">
                 <div class="metric-item">
                     <label>Total Return</label>
-                    <input type="checkbox" checked>
                     <span class="metric-value">15.2%</span>
                 </div>
                 <div class="metric-item">
-                    <label>Capital</label>
-                    <input type="checkbox">
+                    <label>Capital Return</label>
                     <span class="metric-value">8.5%</span>
                 </div>
                 <div class="metric-item">
-                    <label>Income</label>
-                    <input type="checkbox">
+                    <label>Income Return</label>
                     <span class="metric-value">6.7%</span>
                 </div>
             </div>
@@ -110,18 +88,25 @@
             </div>
         </div>
         
-        <!-- Performance Chart -->
-        <div class="performance-chart-container">
+        <!-- Performance Chart (Stretched to Right Edge) -->
+        <div class="performance-chart-container-wide">
             <div class="chart-wrapper">
                 <canvas id="performance-timeline-chart"></canvas>
             </div>
             <div class="chart-years">
-                <span>2019</span>
                 <span>2020</span>
                 <span>2021</span>
+                <span>2022</span>
+                <span>2023</span>
+                <span>2024</span>
+                <span>3Y Ann.</span>
+                <span>5Y Ann.</span>
             </div>
         </div>
-        
+    </div>
+    
+    <!-- Bottom Row: Secondary Charts and Info -->
+    <div class="performance-bottom-row">
         <!-- Contribution to Returns -->
         <div class="contribution-chart">
             <h4>Contribution to returns</h4>
@@ -135,10 +120,7 @@
             </div>
             <div class="properties-label">Properties</div>
         </div>
-    </div>
-    
-    <!-- Right Column -->
-    <div class="performance-right">
+        
         <!-- Valuation Pie Chart -->
         <div class="valuation-section">
             <h4>Valuation</h4>
@@ -199,37 +181,32 @@
     <button class="excel-btn">Export to Excel</button>
 </div>
 
-<!-- AI Notes Section -->
-<div class="ai-notes">
-    <h3>AI - How to improve property returns vs B/M</h3>
-    <p><strong>Returns Data</strong> is hidden behind in code</p>
-    <p>So Owner can request Excel workbook to reconcile</p>
-</div>
 
 {% endblock content %}
 
 {% block javascript %}
 <script>
-// Chart.js configuration for dark theme
-Chart.defaults.color = '#b3b3b3';
-Chart.defaults.borderColor = '#333333';
+// Chart.js configuration for light theme
+Chart.defaults.color = '#475569';
+Chart.defaults.borderColor = '#e2e8f0';
 
 // Performance Timeline Chart
 const performanceCtx = document.getElementById('performance-timeline-chart').getContext('2d');
 
 new Chart(performanceCtx, {
-    type: 'line',
+    type: 'bar',
     data: {
-        labels: ['2019', '2020', '2021'],
+        labels: ['2020', '2021', '2022', '2023', '2024', '3Y Ann.', '5Y Ann.'],
         datasets: [{
             label: 'Total Return %',
-            data: [12, 8, 15],
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-            tension: 0.4,
-            fill: true,
-            pointRadius: 4,
-            pointHoverRadius: 6
+            data: [8.5, 12.3, 15.7, 9.2, 11.8, 12.2, 11.5],
+            backgroundColor: [
+                '#2563eb', '#7c3aed', '#059669', '#d97706', '#dc2626', '#0891b2', '#9333ea'
+            ],
+            borderColor: [
+                '#2563eb', '#7c3aed', '#059669', '#d97706', '#dc2626', '#0891b2', '#9333ea'
+            ],
+            borderWidth: 1
         }]
     },
     options: {
@@ -243,13 +220,24 @@ new Chart(performanceCtx, {
         scales: {
             y: {
                 beginAtZero: true,
+                display: true,
                 grid: {
-                    color: '#333333'
+                    color: '#e2e8f0',
+                    display: true
                 },
                 ticks: {
-                    color: '#b3b3b3',
+                    color: '#475569',
                     callback: function(value) {
                         return value + '%';
+                    }
+                },
+                title: {
+                    display: true,
+                    text: 'Return %',
+                    color: '#475569',
+                    font: {
+                        size: 12,
+                        weight: 'bold'
                     }
                 }
             },
@@ -258,7 +246,7 @@ new Chart(performanceCtx, {
                     display: false
                 },
                 ticks: {
-                    color: '#b3b3b3'
+                    color: '#475569'
                 }
             }
         }
@@ -274,7 +262,7 @@ new Chart(valuationCtx, {
         labels: ['Property A', 'Property B'],
         datasets: [{
             data: [60, 40],
-            backgroundColor: ['#3b82f6', '#8b5cf6'],
+            backgroundColor: ['#2563eb', '#7c3aed', '#059669', '#d97706', '#dc2626'],
             borderWidth: 0,
             hoverOffset: 4
         }]

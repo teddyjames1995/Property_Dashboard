@@ -55,13 +55,6 @@
     <div class="deepdive-content">
         <!-- List View -->
         <div class="view-container list-view active" id="list-view">
-            <div class="list-header">
-                <div class="list-note">
-                    <p>📊 <strong>Attachments</strong> - Valuation/Lease/Legal/operative_in_PDF</p>
-                    <p>💬 <strong>Comment/Post</strong> - Allows owner/landlord to make comments on any property. Can do analytics to identify main risks to property</p>
-                    <p>📈 <strong>Data drawn from Tenancy Schedule</strong> - Multiple vectors</p>
-                </div>
-            </div>
             
             <div class="properties-table">
                 <table>
@@ -73,6 +66,7 @@
                             <th>Sq Ft</th>
                             <th>Income</th>
                             <th>Yield</th>
+                            <th>Debt</th>
                             <th>Comment/Ask</th>
                         </tr>
                     </thead>
@@ -86,6 +80,7 @@
                             <td>15,000</td>
                             <td>£180k</td>
                             <td>7.2%</td>
+                            <td>£1.2M</td>
                             <td>
                                 <button class="comment-btn">💬</button>
                             </td>
@@ -99,6 +94,7 @@
                             <td>12,500</td>
                             <td>£144k</td>
                             <td>8.0%</td>
+                            <td>£900k</td>
                             <td>
                                 <button class="comment-btn">💬</button>
                             </td>
@@ -112,6 +108,7 @@
                             <td>20,000</td>
                             <td>£224k</td>
                             <td>7.0%</td>
+                            <td>£1.8M</td>
                             <td>
                                 <button class="comment-btn">💬</button>
                             </td>
@@ -123,10 +120,6 @@
 
         <!-- Grid View -->
         <div class="view-container grid-view" id="grid-view">
-            <div class="grid-note">
-                <p>📸 <strong>Easily see properties in Grid view w/ Photographs</strong></p>
-                <p>🔍 <strong>High level Key metrics under each</strong></p>
-            </div>
             
             <div class="properties-grid">
                 <div class="property-card">
@@ -330,22 +323,6 @@
                 </div>
                 
                 <div class="map-center">
-                    <div class="map-container">
-                        <div class="map-placeholder">
-                            🗺️ Interactive Map
-                            <div class="map-pins">
-                                <div class="map-pin" style="top: 20%; left: 60%;" data-property="1">1</div>
-                                <div class="map-pin" style="top: 30%; left: 40%;" data-property="2">2</div>
-                                <div class="map-pin" style="top: 45%; left: 50%;" data-property="3">3</div>
-                                <div class="map-pin" style="top: 25%; left: 45%;" data-property="4">4</div>
-                                <div class="map-pin" style="top: 35%; left: 30%;" data-property="5">5</div>
-                            </div>
-                        </div>
-                        <p class="map-note">Interactive Map showing location of properties - Different colors = sectors, Dynamic = sized by EBITDA = valuation</p>
-                    </div>
-                </div>
-                
-                <div class="map-right">
                     <div class="property-details-panel">
                         <div class="property-photo-large">
                             <div class="photo-placeholder">📷</div>
@@ -388,6 +365,21 @@
                             <div class="attachments">
                                 <h5>Attachments</h5>
                                 <div class="attachment-icon">📎</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-right">
+                    <div class="map-container">
+                        <div class="map-placeholder">
+                            🗺️ Interactive Map
+                            <div class="map-pins">
+                                <div class="map-pin" style="top: 20%; left: 60%;" data-property="1">1</div>
+                                <div class="map-pin" style="top: 30%; left: 40%;" data-property="2">2</div>
+                                <div class="map-pin" style="top: 45%; left: 50%;" data-property="3">3</div>
+                                <div class="map-pin" style="top: 25%; left: 45%;" data-property="4">4</div>
+                                <div class="map-pin" style="top: 35%; left: 30%;" data-property="5">5</div>
                             </div>
                         </div>
                     </div>

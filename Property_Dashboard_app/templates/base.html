@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Capital Compass - Property Dashboard{% endblock %}</title>
+    <title>{% block title %}Tercero Capital - Property Dashboard{% endblock %}</title>
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,16 +14,16 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
     {% block styles %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2025729">
     {% endblock %}
 </head>
-<body class="dark-theme">
+<body>
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo">
                 <span class="material-symbols-outlined">apartment</span>
-                <h2>Capital Compass</h2>
+                <h2>Tercero Capital</h2>
             </div>
         </div>
         
@@ -101,6 +101,14 @@
 
     <!-- Main Content -->
     <main class="main-content">
+        <!-- Top Banner -->
+        <div class="top-banner">
+            <div class="banner-tabs">
+                <button class="banner-tab active">Portfolio</button>
+                <button class="banner-tab">Deals</button>
+            </div>
+        </div>
+        
         <!-- Top Navigation Bar -->
         <header class="top-nav">
             <div class="nav-left">
@@ -152,6 +160,19 @@
         document.querySelector('.sidebar-toggle').addEventListener('click', function() {
             document.querySelector('.sidebar').classList.toggle('collapsed');
             document.querySelector('.main-content').classList.toggle('expanded');
+        });
+
+        // Banner tab functionality
+        document.querySelectorAll('.banner-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.banner-tab').forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Here you can add logic to show/hide different content based on the selected tab
+                console.log('Selected tab:', this.textContent);
+            });
         });
 
         // Theme toggle functionality
