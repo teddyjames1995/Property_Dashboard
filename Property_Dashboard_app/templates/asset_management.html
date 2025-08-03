@@ -1,0 +1,409 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Asset Management{% endblock %}
+{% block page_title %}Asset Management{% endblock page_title %}
+
+{% block content %}
+<!-- Top Controls -->
+<div class="top-header">
+    <div class="company-info">
+        <div class="header-controls">
+            <span class="dash-label">Dash.</span>
+            <select class="header-select">
+                <option>Portfolio ▼</option>
+                <option>Core Portfolio</option>
+                <option>Value-Add Portfolio</option>
+            </select>
+            <select class="header-select">
+                <option>Property ▼</option>
+                <option>All Properties</option>
+                <option>Property A</option>
+                <option>Property B</option>
+                <option>Property C</option>
+            </select>
+        </div>
+    </div>
+    
+    <div class="user-controls">
+        <div class="faq-section">
+            <span class="faq-label">Report</span>
+            <button class="asset-report-btn">Generate</button>
+        </div>
+    </div>
+</div>
+
+<!-- Main Dashboard Layout -->
+<div class="asset-management-layout">
+    <!-- KPI Metrics Section -->
+    <div class="metrics-section">
+        <div class="metrics-grid-compact">
+            <div class="metric-box">
+                <label>Total Tenants</label>
+                <div class="metric-value">24</div>
+                <div class="metric-change">+2 this month</div>
+            </div>
+            <div class="metric-box">
+                <label>Vacancy Rate</label>
+                <div class="metric-value">12.5%</div>
+                <div class="metric-change">-1.2% vs last month</div>
+            </div>
+            <div class="metric-box">
+                <label>Refurbishments</label>
+                <div class="metric-value">3</div>
+                <div class="metric-change">In progress</div>
+            </div>
+            <div class="metric-box">
+                <label>Avg Rent (£/sqft)</label>
+                <div class="metric-value">£6.75</div>
+                <div class="metric-change">+0.25 vs ERV</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Middle Row: Charts -->
+    <div class="middle-charts-row">
+        <!-- Vacancy Tree Diagram - 50% width -->
+        <div class="chart-section" style="flex: 1;">
+            <h3>Vacancy Breakdown</h3>
+            <div class="chart-wrapper">
+                <div id="vacancyTreeChart"></div>
+            </div>
+        </div>
+        
+        <!-- Tenant Distribution - 50% width -->
+        <div class="chart-section" style="flex: 1;">
+            <h3>Tenant Distribution</h3>
+            <div class="chart-wrapper">
+                <canvas id="tenantDistributionChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Row: Detailed Sections -->
+    <div class="bottom-row">
+        <!-- Bottom Left: Vacancy Schedule -->
+        <div class="vacancy-schedule-section">
+            <h3>Vacancy Schedule</h3>
+            <div class="vacancy-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Property</th>
+                            <th>Unit</th>
+                            <th>Sq Ft</th>
+                            <th>Vacant Since</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Property 1</td>
+                            <td>Unit 2</td>
+                            <td>11,034</td>
+                            <td>Jan 2024</td>
+                            <td><span class="status-marketing">Marketing</span></td>
+                        </tr>
+                        <tr>
+                            <td>Property 2</td>
+                            <td>Unit 3</td>
+                            <td>8,200</td>
+                            <td>Mar 2024</td>
+                            <td><span class="status-refurb">Refurbishment</span></td>
+                        </tr>
+                        <tr>
+                            <td>Property 3</td>
+                            <td>Unit 1</td>
+                            <td>5,500</td>
+                            <td>Feb 2024</td>
+                            <td><span class="status-marketing">Marketing</span></td>
+                        </tr>
+                        <tr class="total-row">
+                            <td><strong>Total Vacant</strong></td>
+                            <td><strong>3 Units</strong></td>
+                            <td><strong>24,734</strong></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Bottom Right: CapEx and Renewals -->
+        <div class="capex-renewals-section">
+            <!-- Total Capital Expenditure -->
+            <div class="capex-subsection">
+                <h3>Total Capital Expenditure</h3>
+                <div class="capex-chart">
+                    <canvas id="capexChart"></canvas>
+                </div>
+                <div class="capex-summary">
+                    <div class="capex-item">
+                        <span class="capex-label">YTD Spend:</span>
+                        <span class="capex-value">£2.4M</span>
+                    </div>
+                    <div class="capex-item">
+                        <span class="capex-label">Budget:</span>
+                        <span class="capex-value">£3.2M</span>
+                    </div>
+                    <div class="capex-item">
+                        <span class="capex-label">Remaining:</span>
+                        <span class="capex-value">£0.8M</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upcoming Renewals -->
+            <div class="renewals-subsection">
+                <h3>Upcoming Renewals</h3>
+                <div class="renewals-list">
+                    <div class="renewal-item">
+                        <div class="renewal-tenant">TechCorp Solutions Ltd</div>
+                        <div class="renewal-details">
+                            <span class="renewal-date">31 Mar 2025</span>
+                            <span class="renewal-area">12,500 sq ft</span>
+                            <span class="renewal-rent">£85,000 pa</span>
+                        </div>
+                    </div>
+                    <div class="renewal-item">
+                        <div class="renewal-tenant">Manchester Trading Co</div>
+                        <div class="renewal-details">
+                            <span class="renewal-date">14 Jun 2025</span>
+                            <span class="renewal-area">15,800 sq ft</span>
+                            <span class="renewal-rent">£102,700 pa</span>
+                        </div>
+                    </div>
+                    <div class="renewal-item">
+                        <div class="renewal-tenant">Northern Logistics Ltd</div>
+                        <div class="renewal-details">
+                            <span class="renewal-date">09 Sep 2025</span>
+                            <span class="renewal-area">5,650 sq ft</span>
+                            <span class="renewal-rent">£37,500 pa</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="renewals-summary">
+                    <strong>Total at Risk: £225,200 pa (28% of income)</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://d3js.org/d3.v7.min.js"></script>
+<script>
+// Chart.js configuration for light theme
+Chart.defaults.color = '#475569';
+Chart.defaults.borderColor = '#e2e8f0';
+
+// Vacancy Tree Diagram using D3.js
+function createVacancyTreeDiagram() {
+    const container = d3.select("#vacancyTreeChart");
+    const width = 350;
+    const height = 300;
+    
+    // Clear any existing content
+    container.selectAll("*").remove();
+    
+    const svg = container
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .style("background", "transparent");
+    
+    // Tree data structure
+    const treeData = {
+        name: "Total Vacancy\n12.5%",
+        value: 12.5,
+        children: [
+            {
+                name: "Office\n45%",
+                value: 45,
+                children: [
+                    { name: "Grade A\n8%", value: 8 },
+                    { name: "Grade B\n15%", value: 15 }
+                ]
+            },
+            {
+                name: "Retail\n25%",
+                value: 25,
+                children: [
+                    { name: "High Street\n22%", value: 22 }
+                ]
+            },
+            {
+                name: "Industrial\n20%",
+                value: 20,
+                children: [
+                    { name: "Warehouse\n5%", value: 5 },
+                    { name: "Light Ind.\n12%", value: 12 }
+                ]
+            },
+            {
+                name: "Mixed Use\n10%",
+                value: 10
+            }
+        ]
+    };
+    
+    // Create tree layout
+    const tree = d3.tree().size([width - 100, height - 80]);
+    const root = d3.hierarchy(treeData);
+    tree(root);
+    
+    const g = svg.append("g")
+        .attr("transform", "translate(50, 40)");
+    
+    // Links
+    g.selectAll(".link")
+        .data(root.links())
+        .enter().append("path")
+        .attr("class", "link")
+        .attr("d", d3.linkHorizontal()
+            .x(d => d.y)
+            .y(d => d.x))
+        .style("fill", "none")
+        .style("stroke", "#94a3b8")
+        .style("stroke-width", "2px");
+    
+    // Nodes
+    const node = g.selectAll(".node")
+        .data(root.descendants())
+        .enter().append("g")
+        .attr("class", "node")
+        .attr("transform", d => `translate(${d.y}, ${d.x})`);
+    
+    // Node circles with colors based on vacancy level
+    node.append("circle")
+        .attr("r", d => d.depth === 0 ? 8 : 6)
+        .style("fill", d => {
+            if (d.depth === 0) return "#2563eb";
+            if (d.data.value > 15) return "#ef4444";
+            if (d.data.value > 10) return "#f59e0b";
+            return "#10b981";
+        })
+        .style("stroke", "#ffffff")
+        .style("stroke-width", "2px");
+    
+    // Node labels
+    node.each(function(d) {
+        const text = d3.select(this).append("text")
+            .attr("x", d.children ? -12 : 12)
+            .style("text-anchor", d.children ? "end" : "start")
+            .style("font-size", d.depth === 0 ? "12px" : "10px")
+            .style("font-weight", d.depth === 0 ? "bold" : "normal")
+            .style("fill", "#475569");
+        
+        const lines = d.data.name.split("\n");
+        lines.forEach((line, i) => {
+            text.append("tspan")
+                .attr("x", d.children ? -12 : 12)
+                .attr("dy", i === 0 ? "0.35em" : "1.1em")
+                .text(line);
+        });
+    });
+}
+
+// Initialize tree diagram when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(createVacancyTreeDiagram, 100);
+});
+
+// Tenant Distribution Chart
+const tenantDistributionCtx = document.getElementById('tenantDistributionChart').getContext('2d');
+const tenantDistributionChart = new Chart(tenantDistributionCtx, {
+    type: 'pie',
+    data: {
+        labels: ['Large Corps', 'SMEs', 'Startups', 'Vacant'],
+        datasets: [{
+            data: [40, 35, 12.5, 12.5],
+            backgroundColor: ['#059669', '#3b82f6', '#f59e0b', '#ef4444'],
+            borderWidth: 2,
+            borderColor: '#ffffff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'bottom',
+                labels: {
+                    padding: 20,
+                    usePointStyle: true
+                }
+            }
+        }
+    }
+});
+
+// Capital Expenditure Chart
+const capexCtx = document.getElementById('capexChart').getContext('2d');
+const capexChart = new Chart(capexCtx, {
+    type: 'bar',
+    data: {
+        labels: ['Q1', 'Q2', 'Q3', 'Q4'],
+        datasets: [{
+            label: 'Spent (£k)',
+            data: [650, 780, 920, 850],
+            backgroundColor: '#3b82f6',
+            borderWidth: 1
+        }, {
+            label: 'Budget (£k)',
+            data: [800, 800, 800, 800],
+            backgroundColor: '#94a3b8',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                position: 'top'
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    callback: function(value) {
+                        return '£' + value + 'k';
+                    }
+                }
+            }
+        }
+    }
+});
+
+// Generate Report Button
+document.querySelector('.asset-report-btn').addEventListener('click', function() {
+    this.textContent = 'Generating...';
+    this.disabled = true;
+    
+    setTimeout(() => {
+        this.textContent = 'Generate';
+        this.disabled = false;
+        alert('Asset management report generated successfully!');
+    }, 1500);
+});
+
+// Property dropdown change handler
+document.querySelectorAll('.asset-select').forEach(select => {
+    select.addEventListener('change', function() {
+        console.log('Selected:', this.value);
+        updateDashboardData(this.value);
+    });
+});
+
+function updateDashboardData(selection) {
+    console.log('Updating asset management data for:', selection);
+    // Update charts and tables based on selection
+}
+</script>
+{% endblock javascript %}

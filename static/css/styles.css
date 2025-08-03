@@ -104,10 +104,20 @@ body {
     transition: opacity 0.3s ease;
 }
 
+.logo-image {
+    height: 60px;
+    width: auto;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+}
+
 .sidebar.collapsed .logo h2 {
     opacity: 0;
     width: 0;
-    overflow: hidden;
+}
+
+.sidebar.collapsed .logo-image {
+    height: 40px;
 }
 
 .sidebar-nav {
@@ -2252,10 +2262,220 @@ body {
 }
 
 .income-layout {
-    display: grid;
-    grid-template-columns: 280px 1fr 200px;
-    gap: var(--spacing-xl);
+    display: block;
     min-height: calc(100vh - 200px);
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Override page-content padding for income page */
+.income-layout .page-content {
+    padding: 0;
+}
+
+/* Asset Management Dashboard Styles */
+.asset-header {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.asset-controls-row {
+    display: flex;
+    gap: var(--spacing-xl);
+    align-items: end;
+}
+
+.asset-select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    min-width: 150px;
+}
+
+.asset-report-btn {
+    background: var(--accent-primary);
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-radius: var(--radius-md);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.asset-report-btn:hover {
+    background: #1d4ed8;
+}
+
+.dash-label {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-right: var(--spacing-md);
+}
+
+.asset-management-layout {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.asset-management-layout .metrics-grid-compact {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--spacing-lg);
+    width: 100%;
+}
+
+
+.middle-charts-row {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--spacing-lg);
+}
+
+.bottom-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-lg);
+}
+
+.vacancy-schedule-section {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+}
+
+.vacancy-table table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: var(--spacing-md);
+}
+
+.vacancy-table th,
+.vacancy-table td {
+    padding: var(--spacing-sm);
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.vacancy-table th {
+    font-weight: 600;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+}
+
+.total-row {
+    border-top: 2px solid var(--border-color);
+    font-weight: 600;
+}
+
+.status-marketing {
+    background: var(--accent-success);
+    color: white;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+}
+
+.status-refurb {
+    background: var(--accent-warning);
+    color: white;
+    padding: 2px 8px;
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+}
+
+.capex-renewals-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.capex-subsection,
+.renewals-subsection {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+}
+
+.capex-chart {
+    height: 200px;
+    margin: var(--spacing-md) 0;
+}
+
+.capex-summary {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--spacing-md);
+}
+
+.capex-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.capex-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+.capex-value {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.renewals-list {
+    margin-top: var(--spacing-md);
+}
+
+.renewal-item {
+    border-bottom: 1px solid var(--border-color);
+    padding: var(--spacing-sm) 0;
+}
+
+.renewal-item:last-child {
+    border-bottom: none;
+}
+
+.renewal-tenant {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+}
+
+.renewal-details {
+    display: flex;
+    gap: var(--spacing-md);
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.renewals-summary {
+    margin-top: var(--spacing-md);
+    padding-top: var(--spacing-md);
+    border-top: 1px solid var(--border-color);
+    color: var(--accent-error);
+}
+
+@media (max-width: 1200px) {
+    .middle-charts-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .bottom-row {
+        grid-template-columns: 1fr;
+    }
 }
 
 .income-sidebar {
@@ -2336,22 +2556,38 @@ body {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
     border-radius: var(--radius-lg);
-    padding: var(--spacing-xl);
+    padding: var(--spacing-lg);
     display: flex;
     flex-direction: column;
-    gap: var(--spacing-xl);
+    gap: var(--spacing-lg);
+    height: calc(100vh - 200px);
+    overflow-y: auto;
+}
+
+.income-content-full {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+    width: 100%;
+    max-width: 100%;
 }
 
 .charts-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--spacing-xl);
+    display: flex;
+    gap: var(--spacing-md);
+    width: 100%;
 }
 
 .chart-section {
     background: var(--bg-tertiary);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
+    flex: 1;
+    min-width: 0;
 }
 
 .chart-section h3 {
@@ -2362,17 +2598,20 @@ body {
 }
 
 .chart-wrapper {
-    height: 200px;
+    height: 150px;
+    width: 100%;
 }
 
 .chart-wrapper canvas {
-    height: 200px !important;
+    height: 150px !important;
+    width: 100% !important;
 }
 
 .property-chart-section {
     background: var(--bg-tertiary);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
+    width: 100%;
 }
 
 .property-chart-section h3 {
@@ -2383,12 +2622,14 @@ body {
 }
 
 .property-chart-wrapper {
-    height: 300px;
+    height: 200px;
+    width: 100%;
     position: relative;
 }
 
 .property-chart-wrapper canvas {
-    height: 300px !important;
+    height: 200px !important;
+    width: 100% !important;
 }
 
 .chart-timeline {
@@ -2402,6 +2643,7 @@ body {
     background: var(--bg-tertiary);
     border-radius: var(--radius-lg);
     padding: var(--spacing-lg);
+    width: 100%;
 }
 
 .expenses-section h3 {
@@ -2412,12 +2654,14 @@ body {
 }
 
 .expenses-chart-wrapper {
-    height: 200px;
+    height: 150px;
+    width: 100%;
     position: relative;
 }
 
 .expenses-chart-wrapper canvas {
-    height: 200px !important;
+    height: 150px !important;
+    width: 100% !important;
 }
 
 .expenses-labels {
@@ -2585,13 +2829,13 @@ body {
     .property-chart-wrapper,
     .chart-wrapper,
     .expenses-chart-wrapper {
-        height: 250px;
+        height: 180px;
     }
     
     .property-chart-wrapper canvas,
     .chart-wrapper canvas,
     .expenses-chart-wrapper canvas {
-        height: 250px !important;
+        height: 180px !important;
     }
     
     .app-buttons {
@@ -4521,4 +4765,41 @@ body {
     color: var(--text-muted);
     font-size: 0.875rem;
     font-style: italic;
+}
+
+/* Tree Diagram Styles */
+#vacancyTreeChart {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#vacancyTreeChart svg {
+    border-radius: var(--radius-md);
+    background: var(--bg-secondary);
+}
+
+.tree-node {
+    cursor: pointer;
+}
+
+.tree-node circle {
+    transition: all 0.3s ease;
+}
+
+.tree-node:hover circle {
+    stroke-width: 3px;
+    filter: brightness(1.1);
+}
+
+.tree-link {
+    transition: all 0.3s ease;
+}
+
+.tree-node:hover ~ .tree-link,
+.tree-link:hover {
+    stroke-width: 3px;
+    stroke: var(--accent-primary);
 }
