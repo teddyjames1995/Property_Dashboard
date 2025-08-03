@@ -82,51 +82,62 @@
 
     <!-- Bottom Row: Detailed Sections -->
     <div class="bottom-row">
-        <!-- Bottom Left: Vacancy Schedule -->
-        <div class="vacancy-schedule-section">
-            <h3>Vacancy Schedule</h3>
-            <div class="vacancy-table">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Property</th>
-                            <th>Unit</th>
-                            <th>Sq Ft</th>
-                            <th>Vacant Since</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Property 1</td>
-                            <td>Unit 2</td>
-                            <td>11,034</td>
-                            <td>Jan 2024</td>
-                            <td><span class="status-marketing">Marketing</span></td>
-                        </tr>
-                        <tr>
-                            <td>Property 2</td>
-                            <td>Unit 3</td>
-                            <td>8,200</td>
-                            <td>Mar 2024</td>
-                            <td><span class="status-refurb">Refurbishment</span></td>
-                        </tr>
-                        <tr>
-                            <td>Property 3</td>
-                            <td>Unit 1</td>
-                            <td>5,500</td>
-                            <td>Feb 2024</td>
-                            <td><span class="status-marketing">Marketing</span></td>
-                        </tr>
-                        <tr class="total-row">
-                            <td><strong>Total Vacant</strong></td>
-                            <td><strong>3 Units</strong></td>
-                            <td><strong>24,734</strong></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
+        <!-- Bottom Left Column: Vacancy Schedule + Sustainability -->
+        <div class="left-column">
+            <!-- Vacancy Schedule -->
+            <div class="vacancy-schedule-section">
+                <h3>Vacancy Schedule</h3>
+                <div class="vacancy-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Property</th>
+                                <th>Unit</th>
+                                <th>Sq Ft</th>
+                                <th>Vacant Since</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Property 1</td>
+                                <td>Unit 2</td>
+                                <td>11,034</td>
+                                <td>Jan 2024</td>
+                                <td><span class="status-marketing">Marketing</span></td>
+                            </tr>
+                            <tr>
+                                <td>Property 2</td>
+                                <td>Unit 3</td>
+                                <td>8,200</td>
+                                <td>Mar 2024</td>
+                                <td><span class="status-refurb">Refurbishment</span></td>
+                            </tr>
+                            <tr>
+                                <td>Property 3</td>
+                                <td>Unit 1</td>
+                                <td>5,500</td>
+                                <td>Feb 2024</td>
+                                <td><span class="status-marketing">Marketing</span></td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>Total Vacant</strong></td>
+                                <td><strong>3 Units</strong></td>
+                                <td><strong>24,734</strong></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- Sustainability EPC Chart -->
+            <div class="sustainability-section">
+                <h3>Sustainability - EPC Ratings</h3>
+                <div class="sustainability-chart">
+                    <canvas id="epcChart"></canvas>
+                </div>
             </div>
         </div>
 
@@ -157,34 +168,62 @@
             <!-- Upcoming Renewals -->
             <div class="renewals-subsection">
                 <h3>Upcoming Renewals</h3>
-                <div class="renewals-list">
-                    <div class="renewal-item">
-                        <div class="renewal-tenant">TechCorp Solutions Ltd</div>
-                        <div class="renewal-details">
-                            <span class="renewal-date">31 Mar 2025</span>
-                            <span class="renewal-area">12,500 sq ft</span>
-                            <span class="renewal-rent">£85,000 pa</span>
-                        </div>
-                    </div>
-                    <div class="renewal-item">
-                        <div class="renewal-tenant">Manchester Trading Co</div>
-                        <div class="renewal-details">
-                            <span class="renewal-date">14 Jun 2025</span>
-                            <span class="renewal-area">15,800 sq ft</span>
-                            <span class="renewal-rent">£102,700 pa</span>
-                        </div>
-                    </div>
-                    <div class="renewal-item">
-                        <div class="renewal-tenant">Northern Logistics Ltd</div>
-                        <div class="renewal-details">
-                            <span class="renewal-date">09 Sep 2025</span>
-                            <span class="renewal-area">5,650 sq ft</span>
-                            <span class="renewal-rent">£37,500 pa</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="renewals-summary">
-                    <strong>Total at Risk: £225,200 pa (28% of income)</strong>
+                <div class="renewals-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Asset</th>
+                                <th>Tenant</th>
+                                <th>RAG</th>
+                                <th>% ERV</th>
+                                <th>Rent p.a.</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Property 1</td>
+                                <td>TechCorp Solutions Ltd</td>
+                                <td><span class="rag-status rag-amber">A</span></td>
+                                <td>15.2%</td>
+                                <td>£85,000</td>
+                            </tr>
+                            <tr>
+                                <td>Property 2</td>
+                                <td>Manchester Trading Co</td>
+                                <td><span class="rag-status rag-green">G</span></td>
+                                <td>18.4%</td>
+                                <td>£102,700</td>
+                            </tr>
+                            <tr>
+                                <td>Property 3</td>
+                                <td>Northern Logistics Ltd</td>
+                                <td><span class="rag-status rag-red">R</span></td>
+                                <td>6.7%</td>
+                                <td>£37,500</td>
+                            </tr>
+                            <tr>
+                                <td>Property 4</td>
+                                <td>Retail Express Ltd</td>
+                                <td><span class="rag-status rag-amber">A</span></td>
+                                <td>8.9%</td>
+                                <td>£48,200</td>
+                            </tr>
+                            <tr>
+                                <td>Property 5</td>
+                                <td>Industrial Partners</td>
+                                <td><span class="rag-status rag-green">G</span></td>
+                                <td>12.3%</td>
+                                <td>£67,800</td>
+                            </tr>
+                            <tr class="total-row">
+                                <td><strong>Total</strong></td>
+                                <td><strong>5 Tenants</strong></td>
+                                <td></td>
+                                <td><strong>61.5%</strong></td>
+                                <td><strong>£341,200</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -375,6 +414,68 @@ const capexChart = new Chart(capexCtx, {
                     callback: function(value) {
                         return '£' + value + 'k';
                     }
+                }
+            }
+        }
+    }
+});
+
+// EPC Ratings Sustainability Chart
+const epcCtx = document.getElementById('epcChart').getContext('2d');
+const epcChart = new Chart(epcCtx, {
+    type: 'bar',
+    data: {
+        labels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'N/A'],
+        datasets: [{
+            label: '% of ERV',
+            data: [5, 15, 25, 20, 18, 10, 5, 2],
+            backgroundColor: [
+                '#059669', // A - Dark Green
+                '#10b981', // B - Green
+                '#34d399', // C - Light Green
+                '#fbbf24', // D - Yellow
+                '#f59e0b', // E - Orange
+                '#f97316', // F - Dark Orange
+                '#ef4444', // G - Red
+                '#6b7280'  // N/A - Gray
+            ],
+            borderWidth: 1,
+            borderColor: '#ffffff'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: false
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(context) {
+                        return `EPC ${context.label}: ${context.parsed.y}% of ERV`;
+                    }
+                }
+            }
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 30,
+                ticks: {
+                    callback: function(value) {
+                        return value + '%';
+                    }
+                },
+                title: {
+                    display: true,
+                    text: '% of ERV'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'EPC Rating'
                 }
             }
         }

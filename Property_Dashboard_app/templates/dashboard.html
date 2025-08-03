@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}Dashboard - XYZ Company{% endblock title %}
+{% block title %}Dashboard - CeCe Travels{% endblock title %}
 {% block page_title %}Dashboard{% endblock page_title %}
 
 {% block content %}
 <!-- Top Navigation Bar with Company Info and User Controls -->
 <div class="top-header">
     <div class="company-info">
-        <h1>XYZ Company</h1>
+        <h1>CeCe Travels</h1>
         <div class="header-controls">
             <select class="header-select">
                 <option>Portfolio ▼</option>
@@ -175,11 +175,11 @@
         </div>
     </div>
 
-    <!-- Debt Maturity Chart -->
+    <!-- Future Income & Yield Chart -->
     <div class="chart-container-wireframe">
-        <h3>Debt Maturity</h3>
+        <h3>Future Income & Running Yield</h3>
         <div class="chart-wrapper">
-            <canvas id="debt-maturity-chart" width="400" height="200" style="width: 100%; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
+            <canvas id="future-income-chart" width="400" height="200" style="width: 100%; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
         </div>
     </div>
 
@@ -241,8 +241,78 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.innerHTML += '<div style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:10px;">CHART ERROR: ' + e.message + '</div>';
         }
 
-        // Skip other charts for now - testing minimal chart first
-        console.log('Skipping other charts for minimal test');
+        // Future Income & Yield Chart
+        try {
+            const futureIncomeCanvas = document.getElementById('future-income-chart');
+            if (futureIncomeCanvas) {
+                console.log('Creating future income chart...');
+                new Chart(futureIncomeCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025'],
+                        datasets: [{
+                            label: 'Future Income (£k)',
+                            data: [2850, 2950, 3100, 3200, 3300, 3400, 3500, 3600],
+                            backgroundColor: '#3b82f6',
+                            borderColor: '#2563eb',
+                            borderWidth: 1,
+                            yAxisID: 'y'
+                        }, {
+                            label: 'Running Yield (%)',
+                            data: [4.2, 4.3, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0],
+                            type: 'line',
+                            borderColor: '#ef4444',
+                            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            yAxisID: 'y1'
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'top',
+                                labels: {
+                                    color: '#475569',
+                                    font: { size: 12 }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: { color: '#475569', font: { size: 10 } },
+                                grid: { color: '#e2e8f0' }
+                            },
+                            y: {
+                                type: 'linear',
+                                display: true,
+                                position: 'left',
+                                title: { display: true, text: 'Income (£k)', color: '#475569' },
+                                ticks: { color: '#475569', font: { size: 10 } },
+                                grid: { color: '#e2e8f0' }
+                            },
+                            y1: {
+                                type: 'linear',
+                                display: true,
+                                position: 'right',
+                                title: { display: true, text: 'Yield (%)', color: '#475569' },
+                                ticks: { 
+                                    color: '#475569', 
+                                    font: { size: 10 },
+                                    callback: function(value) { return value + '%'; }
+                                },
+                                grid: { drawOnChartArea: false }
+                            }
+                        }
+                    }
+                });
+                console.log('✅ Future income chart created');
+            }
+        } catch (e) {
+            console.error('❌ Future income chart error:', e);
+        }
         
     } else {
         console.error('Chart.js not loaded');

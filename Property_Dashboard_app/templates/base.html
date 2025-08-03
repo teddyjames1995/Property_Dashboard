@@ -14,7 +14,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
     
     {% block styles %}
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2025729">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2025731">
     {% endblock %}
 </head>
 <body>
@@ -22,8 +22,7 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo">
-                <span class="material-symbols-outlined">apartment</span>
-                <h2>Tercero Capital</h2>
+                <img src="{% static 'images/tercero-capital-logo.png' %}" alt="Tercero Capital" class="logo-image">
             </div>
         </div>
         
@@ -54,6 +53,12 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{% url 'asset_management' %}" class="nav-item">
+                        <span class="material-symbols-outlined">home_work</span>
+                        <span>Asset Management</span>
+                    </a>
+                </li>
+                <li>
                     <a href="{% url 'financial_modelling' %}" class="nav-item">
                         <span class="material-symbols-outlined">calculate</span>
                         <span>Financial Modelling</span>
@@ -69,18 +74,6 @@
                     <a href="{% url 'income_and_expenses' %}" class="nav-item">
                         <span class="material-symbols-outlined">receipt_long</span>
                         <span>Income & Expenses</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'forecasting' %}" class="nav-item">
-                        <span class="material-symbols-outlined">analytics</span>
-                        <span>Forecasting</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'artificial_intelligence' %}" class="nav-item">
-                        <span class="material-symbols-outlined">psychology</span>
-                        <span>AI Insights</span>
                     </a>
                 </li>
             </ul>
@@ -104,8 +97,8 @@
         <!-- Top Banner -->
         <div class="top-banner">
             <div class="banner-tabs">
-                <button class="banner-tab active">Portfolio</button>
-                <button class="banner-tab">Deals</button>
+                <a href="{% url 'dashboard' %}" class="banner-tab {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Portfolio</a>
+                <a href="{% url 'deals' %}" class="banner-tab {% if request.resolver_match.url_name == 'deals' %}active{% endif %}">Deals</a>
             </div>
         </div>
         

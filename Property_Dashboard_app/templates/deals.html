@@ -1,0 +1,574 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Deals{% endblock %}
+{% block page_title %}Deals{% endblock page_title %}
+
+{% block content %}
+<!-- Top Controls -->
+<div class="deepdive-header">
+    <div class="filter-controls-row">
+        <div class="control-group">
+            <label>View</label>
+            <div class="view-toggle">
+                <button class="view-btn active" data-view="list">
+                    <span class="material-symbols-outlined">view_list</span>
+                    List View
+                </button>
+                <button class="view-btn" data-view="grid">
+                    <span class="material-symbols-outlined">grid_view</span>
+                    Grid View
+                </button>
+                <button class="view-btn" data-view="map">
+                    <span class="material-symbols-outlined">map</span>
+                    Map View
+                </button>
+            </div>
+        </div>
+        
+        <div class="control-group">
+            <label>Stage ▼</label>
+            <select class="deepdive-select">
+                <option>All Stages</option>
+                <option>Under Offer</option>
+                <option>Legal Progress</option>
+                <option>Due Diligence</option>
+                <option>Completed</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Location ▼</label>
+            <select class="deepdive-select">
+                <option>All Locations</option>
+                <option>London</option>
+                <option>Manchester</option>
+                <option>Birmingham</option>
+                <option>Leeds</option>
+                <option>Liverpool</option>
+                <option>Bristol</option>
+                <option>Edinburgh</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Sector ▼</label>
+            <select class="deepdive-select">
+                <option>All Sectors</option>
+                <option>Office</option>
+                <option>Retail</option>
+                <option>Industrial</option>
+                <option>Residential</option>
+                <option>Mixed Use</option>
+                <option>Warehouse</option>
+                <option>Logistics</option>
+            </select>
+        </div>
+        
+        <div class="control-group">
+            <label>Price ▼</label>
+            <select class="deepdive-select">
+                <option>All Prices</option>
+                <option>Under £1M</option>
+                <option>£1M - £2M</option>
+                <option>£2M - £5M</option>
+                <option>£5M - £10M</option>
+                <option>£10M+</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content Area -->
+<div class="deepdive-layout">
+    <!-- Main Content Views -->
+    <div class="deepdive-content">
+        <!-- List View -->
+        <div class="view-container list-view active" id="list-view">
+            
+            <div class="properties-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Deal</th>
+                            <th>Photo</th>
+                            <th>Target Price</th>
+                            <th>Sq Ft</th>
+                            <th>Target Yield</th>
+                            <th>Stage</th>
+                            <th>Completion</th>
+                            <th>Comment/Ask</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Deal Alpha</td>
+                            <td>
+                                <div class="photo-placeholder">📷</div>
+                            </td>
+                            <td>£3.2M</td>
+                            <td>25,000</td>
+                            <td>6.8%</td>
+                            <td><span class="status-legal">Legal Progress</span></td>
+                            <td>Q2 2024</td>
+                            <td>
+                                <button class="comment-btn">💬</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Deal Beta</td>
+                            <td>
+                                <div class="photo-placeholder">📷</div>
+                            </td>
+                            <td>£2.1M</td>
+                            <td>18,500</td>
+                            <td>7.2%</td>
+                            <td><span class="status-offer">Under Offer</span></td>
+                            <td>Q3 2024</td>
+                            <td>
+                                <button class="comment-btn">💬</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Deal Gamma</td>
+                            <td>
+                                <div class="photo-placeholder">📷</div>
+                            </td>
+                            <td>£4.5M</td>
+                            <td>35,000</td>
+                            <td>6.5%</td>
+                            <td><span class="status-dd">Due Diligence</span></td>
+                            <td>Q4 2024</td>
+                            <td>
+                                <button class="comment-btn">💬</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Deal Delta</td>
+                            <td>
+                                <div class="photo-placeholder">📷</div>
+                            </td>
+                            <td>£1.8M</td>
+                            <td>14,200</td>
+                            <td>7.5%</td>
+                            <td><span class="status-completed">Completed</span></td>
+                            <td>Q1 2024</td>
+                            <td>
+                                <button class="comment-btn">💬</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Grid View -->
+        <div class="view-container grid-view" id="grid-view">
+            
+            <div class="properties-grid">
+                <div class="property-card deal-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                        <div class="deal-status status-legal">Legal Progress</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Deal Alpha</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Target Price:</span>
+                                <span class="value">£3.2M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Target Yield:</span>
+                                <span class="value">6.8%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Size:</span>
+                                <span class="value">25,000 sq ft</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Completion:</span>
+                                <span class="value">Q2 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card deal-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                        <div class="deal-status status-offer">Under Offer</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Deal Beta</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Target Price:</span>
+                                <span class="value">£2.1M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Target Yield:</span>
+                                <span class="value">7.2%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Size:</span>
+                                <span class="value">18,500 sq ft</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Completion:</span>
+                                <span class="value">Q3 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card deal-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                        <div class="deal-status status-dd">Due Diligence</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Deal Gamma</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Target Price:</span>
+                                <span class="value">£4.5M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Target Yield:</span>
+                                <span class="value">6.5%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Size:</span>
+                                <span class="value">35,000 sq ft</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Completion:</span>
+                                <span class="value">Q4 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card deal-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                        <div class="deal-status status-completed">Completed</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Deal Delta</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Target Price:</span>
+                                <span class="value">£1.8M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Target Yield:</span>
+                                <span class="value">7.5%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Size:</span>
+                                <span class="value">14,200 sq ft</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Completion:</span>
+                                <span class="value">Q1 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card deal-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                        <div class="deal-status status-offer">Under Offer</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Deal Epsilon</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Target Price:</span>
+                                <span class="value">£2.7M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Target Yield:</span>
+                                <span class="value">6.9%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Size:</span>
+                                <span class="value">22,100 sq ft</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Completion:</span>
+                                <span class="value">Q3 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="property-card deal-card">
+                    <div class="property-photo">
+                        <div class="photo-placeholder">📷</div>
+                        <div class="deal-status status-legal">Legal Progress</div>
+                    </div>
+                    <div class="property-info">
+                        <h4>Deal Zeta</h4>
+                        <div class="property-metrics">
+                            <div class="metric">
+                                <span class="label">Target Price:</span>
+                                <span class="value">£3.8M</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Target Yield:</span>
+                                <span class="value">7.1%</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Size:</span>
+                                <span class="value">28,500 sq ft</span>
+                            </div>
+                            <div class="metric">
+                                <span class="label">Completion:</span>
+                                <span class="value">Q4 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Map View -->
+        <div class="view-container map-view" id="map-view">
+            <div class="map-layout">
+                <div class="map-left">
+                    <div class="property-list-panel">
+                        <h4>List of Deals</h4>
+                        <div class="map-property-list">
+                            <div class="map-property-item active" data-property="1">
+                                <span class="property-number">1)</span>
+                                <span class="property-name">Deal Alpha</span>
+                                <span class="property-location">London</span>
+                            </div>
+                            <div class="map-property-item" data-property="2">
+                                <span class="property-number">2)</span>
+                                <span class="property-name">Deal Beta</span>
+                                <span class="property-location">Manchester</span>
+                            </div>
+                            <div class="map-property-item" data-property="3">
+                                <span class="property-number">3)</span>
+                                <span class="property-name">Deal Gamma</span>
+                                <span class="property-location">Birmingham</span>
+                            </div>
+                            <div class="map-property-item" data-property="4">
+                                <span class="property-number">4)</span>
+                                <span class="property-name">Deal Delta</span>
+                                <span class="property-location">Leeds</span>
+                            </div>
+                            <div class="map-property-item" data-property="5">
+                                <span class="property-number">5)</span>
+                                <span class="property-name">Deal Epsilon</span>
+                                <span class="property-location">Liverpool</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-center">
+                    <div class="property-details-panel">
+                        <div class="property-photo-large">
+                            <div class="photo-placeholder">📷</div>
+                        </div>
+                        
+                        <div class="property-details">
+                            <h4>Deal Alpha</h4>
+                            <div class="property-address">
+                                <p><strong>Address:</strong><br>456 Commercial Park<br>London, EC1A 1BB</p>
+                            </div>
+                            
+                            <div class="property-metrics-detailed">
+                                <h5>Target Price</h5>
+                                <p>£3.2M</p>
+                                
+                                <h5>Stage</h5>
+                                <p>Legal Progress</p>
+                                
+                                <h5>Target Yield</h5>
+                                <p>6.8% p.a.</p>
+                                
+                                <h5>Completion</h5>
+                                <p>Q2 2024</p>
+                            </div>
+                            
+                            <div class="tenants-section">
+                                <h5>Current Tenants</h5>
+                                <div class="tenant-list">
+                                    <div class="tenant-item">1) TechStart Ltd</div>
+                                    <div class="tenant-item">2) Digital Agency</div>
+                                    <div class="tenant-item">3) ConsultingCo</div>
+                                </div>
+                            </div>
+                            
+                            <div class="lease-expiry">
+                                <h5>Due Diligence Status</h5>
+                                <div class="lease-chart-placeholder">
+                                    ✅ Building Survey Complete<br>
+                                    ⏳ Legal Review in Progress<br>
+                                    📋 Financial Review Complete
+                                </div>
+                            </div>
+                            
+                            <div class="attachments">
+                                <h5>Deal Documents</h5>
+                                <div class="attachment-icon">📎</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="map-right">
+                    <div class="map-container">
+                        <div class="map-placeholder">
+                            🗺️ Interactive Deals Map
+                            <div class="map-pins">
+                                <div class="map-pin deal-pin" style="top: 20%; left: 60%;" data-property="1">1</div>
+                                <div class="map-pin deal-pin" style="top: 30%; left: 40%;" data-property="2">2</div>
+                                <div class="map-pin deal-pin" style="top: 45%; left: 50%;" data-property="3">3</div>
+                                <div class="map-pin deal-pin" style="top: 25%; left: 45%;" data-property="4">4</div>
+                                <div class="map-pin deal-pin" style="top: 35%; left: 30%;" data-property="5">5</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block javascript %}
+<script>
+// View Toggle Functionality
+document.querySelectorAll('.view-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const viewType = this.dataset.view;
+        
+        // Update active button
+        document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+        
+        // Show/hide view containers
+        document.querySelectorAll('.view-container').forEach(container => {
+            container.classList.remove('active');
+        });
+        document.getElementById(viewType + '-view').classList.add('active');
+    });
+});
+
+// Map property selection
+document.querySelectorAll('.map-property-item, .map-pin').forEach(item => {
+    item.addEventListener('click', function() {
+        const propertyId = this.dataset.property;
+        
+        // Update active property in list
+        document.querySelectorAll('.map-property-item').forEach(p => p.classList.remove('active'));
+        document.querySelector(`.map-property-item[data-property="${propertyId}"]`).classList.add('active');
+        
+        // Update property details panel
+        updateDealDetails(propertyId);
+    });
+});
+
+function updateDealDetails(dealId) {
+    // Sample deal data
+    const deals = {
+        '1': {
+            name: 'Deal Alpha',
+            address: '456 Commercial Park<br>London, EC1A 1BB',
+            price: '£3.2M',
+            stage: 'Legal Progress',
+            yield: '6.8% p.a.',
+            completion: 'Q2 2024',
+            tenants: ['TechStart Ltd', 'Digital Agency', 'ConsultingCo']
+        },
+        '2': {
+            name: 'Deal Beta', 
+            address: '789 Business Centre<br>Manchester, M2 3CD',
+            price: '£2.1M',
+            stage: 'Under Offer',
+            yield: '7.2% p.a.',
+            completion: 'Q3 2024',
+            tenants: ['Manufacturing Ltd', 'Logistics Firm', 'Trading Co']
+        },
+        '3': {
+            name: 'Deal Gamma',
+            address: '321 Industrial Park<br>Birmingham, B4 5EF',
+            price: '£4.5M',
+            stage: 'Due Diligence',
+            yield: '6.5% p.a.',
+            completion: 'Q4 2024',
+            tenants: ['Warehouse Corp', 'Distribution Inc', 'Storage Ltd', 'Freight Co']
+        }
+    };
+    
+    const deal = deals[dealId] || deals['1'];
+    
+    // Update details panel
+    document.querySelector('.property-details h4').textContent = deal.name;
+    document.querySelector('.property-address p').innerHTML = '<strong>Address:</strong><br>' + deal.address;
+    
+    const metrics = document.querySelectorAll('.property-metrics-detailed p');
+    metrics[0].textContent = deal.price;
+    metrics[1].textContent = deal.stage;
+    metrics[2].textContent = deal.yield;
+    metrics[3].textContent = deal.completion;
+    
+    // Update tenants list
+    const tenantsList = document.querySelector('.tenant-list');
+    tenantsList.innerHTML = '';
+    deal.tenants.forEach((tenant, index) => {
+        const tenantDiv = document.createElement('div');
+        tenantDiv.className = 'tenant-item';
+        tenantDiv.textContent = `${index + 1}) ${tenant}`;
+        tenantsList.appendChild(tenantDiv);
+    });
+}
+
+// Filter functionality
+document.querySelectorAll('.deepdive-select').forEach(select => {
+    select.addEventListener('change', function() {
+        const filterType = this.previousElementSibling.textContent.replace(' ▼', '');
+        const filterValue = this.value;
+        console.log(`${filterType} filter changed to:`, filterValue);
+        
+        // Apply filters to deals
+        applyDealsFilters();
+    });
+});
+
+function applyDealsFilters() {
+    const stageFilter = document.querySelector('select').value;
+    const locationFilter = document.querySelectorAll('select')[1].value;
+    const sectorFilter = document.querySelectorAll('select')[2].value;
+    const priceFilter = document.querySelectorAll('select')[3].value;
+    
+    console.log('Applying filters:', {
+        stage: stageFilter,
+        location: locationFilter,
+        sector: sectorFilter,
+        price: priceFilter
+    });
+    
+    // Filter logic would go here
+    // This would filter the deals in list view, grid view, and map view
+    // For now, just logging the filters
+}
+
+// Comment button functionality
+document.querySelectorAll('.comment-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        alert('Deal comment functionality would open here');
+    });
+});
+
+</script>
+{% endblock javascript %}

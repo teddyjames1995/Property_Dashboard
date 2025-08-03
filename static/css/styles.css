@@ -250,6 +250,8 @@ body {
     border-bottom: 3px solid transparent;
     transition: all 0.3s ease;
     position: relative;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .banner-tab:hover {
@@ -4802,4 +4804,181 @@ body {
 .tree-link:hover {
     stroke-width: 3px;
     stroke: var(--accent-primary);
+}
+
+/* Left Column: Vacancy Schedule + Sustainability */
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+/* Vacancy Schedule Section - 50% height */
+.vacancy-schedule-section {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    flex: 1;
+    min-height: 200px;
+}
+
+.vacancy-table {
+    margin-bottom: 0;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+/* Asset Management Sustainability Section */
+.sustainability-section {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    flex: 1;
+}
+
+.sustainability-section h3 {
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+}
+
+.sustainability-chart {
+    height: 200px;
+    background: transparent;
+    border-radius: var(--radius-md);
+}
+
+/* CapEx and Renewals Section */
+.capex-renewals-section {
+    background: var(--bg-secondary);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-lg);
+}
+
+.capex-subsection,
+.renewals-subsection {
+    flex: 1;
+}
+
+/* Renewals Table Styling */
+.renewals-table {
+    overflow-x: auto;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    max-height: 250px;
+    overflow-y: auto;
+}
+
+.renewals-table table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.renewals-table th,
+.renewals-table td {
+    padding: var(--spacing-sm) var(--spacing-md);
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    font-size: 0.875rem;
+}
+
+.renewals-table th {
+    background: var(--bg-tertiary);
+    font-weight: 600;
+    color: var(--text-primary);
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.renewals-table td {
+    color: var(--text-secondary);
+}
+
+.renewals-table tbody tr:hover {
+    background: var(--bg-tertiary);
+}
+
+.renewals-table .total-row {
+    border-top: 2px solid var(--border-color);
+    background: var(--bg-tertiary);
+}
+
+.renewals-table .total-row td {
+    color: var(--text-primary);
+}
+
+/* RAG Status Indicators */
+.rag-status {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    font-weight: bold;
+    font-size: 0.75rem;
+    color: white;
+}
+
+.rag-red {
+    background-color: #ef4444;
+}
+
+.rag-amber {
+    background-color: #f59e0b;
+}
+
+.rag-green {
+    background-color: #059669;
+}
+
+/* Deals Page Specific Styling */
+.deal-card {
+    position: relative;
+}
+
+.deal-status {
+    position: absolute;
+    top: var(--spacing-sm);
+    right: var(--spacing-sm);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: white;
+    z-index: 2;
+}
+
+.status-offer {
+    background-color: #f59e0b;
+}
+
+.status-legal {
+    background-color: #3b82f6;
+}
+
+.status-dd {
+    background-color: #7c3aed;
+}
+
+.status-completed {
+    background-color: #059669;
+}
+
+.deal-pin {
+    background-color: #ef4444;
+    border: 2px solid white;
+}
+
+.deal-pin:hover {
+    background-color: #dc2626;
+    transform: scale(1.2);
 }

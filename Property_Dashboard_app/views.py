@@ -262,6 +262,16 @@ def tenancy_schedule_view(request):
     }
     return render(request, 'tenancy_schedule.html', context)
 
+def deals_view(request):
+    # Add any logic to gather data for the deals dashboard here
+    context = {}  # For now, we'll use an empty context
+    return render(request, 'deals.html', context)
+
+def asset_management_view(request):
+    # Add any logic to gather data for the asset management dashboard here
+    context = {}  # For now, we'll use an empty context
+    return render(request, 'asset_management.html', context)
+
 def portfolio_performance_view(request):
     # Add any logic to gather data for the dashboard here
     context = {}  # For now, we'll use an empty context
