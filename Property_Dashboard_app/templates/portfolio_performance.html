@@ -4,49 +4,194 @@
 {% block title %}Portfolio Performance{% endblock %}
 {% block page_title %}Portfolio Performance{% endblock page_title %}
 
+{% block styles %}
+{{ block.super }}
+<style>
+/* CSS Chart Styles */
+.css-chart-container {
+    width: 100%;
+    height: 300px;
+    padding: 20px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.css-chart {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+.chart-legend {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #475569;
+}
+
+.legend-color {
+    width: 16px;
+    height: 12px;
+    border-radius: 2px;
+}
+
+.legend-line {
+    width: 20px;
+    height: 1px;
+}
+
+.chart-area {
+    display: flex;
+    height: 220px;
+    position: relative;
+}
+
+.y-axis-left, .y-axis-right {
+    width: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 10px;
+    color: #475569;
+    padding: 10px 0;
+}
+
+.y-axis-right {
+    text-align: right;
+}
+
+.chart-bars {
+    flex: 1;
+    display: flex;
+    align-items: end;
+    justify-content: space-around;
+    padding: 10px 0 40px 0;
+    border-bottom: 1px solid #e2e8f0;
+    border-left: 1px solid #e2e8f0;
+    position: relative;
+    background: linear-gradient(to top, 
+        transparent 0%, transparent 49%, 
+        #e2e8f0 50%, #e2e8f0 50%, 
+        transparent 51%, transparent 100%);
+}
+
+.bar-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60px;
+    position: relative;
+    height: 100%;
+}
+
+.bar {
+    width: 40px;
+    border-radius: 2px 2px 0 0;
+    position: relative;
+    transition: opacity 0.3s ease;
+}
+
+.bar.positive {
+    background: #10B981;
+}
+
+.bar.negative {
+    background: #EF4444;
+    align-self: flex-start;
+    margin-top: auto;
+    border-radius: 0 0 2px 2px;
+}
+
+.bar:hover {
+    opacity: 0.8;
+}
+
+.gilt-point {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: #374151;
+    border-radius: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 2px solid white;
+    box-shadow: 0 0 0 1px #374151;
+}
+
+.bar-label {
+    margin-top: 8px;
+    font-size: 10px;
+    color: #475569;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.bar-value {
+    font-size: 9px;
+    color: #374151;
+    font-weight: 600;
+    margin-top: 2px;
+}
+
+/* Grid lines */
+.chart-bars::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 40px;
+    background-image: 
+        linear-gradient(to top, transparent 0%, transparent 19%, #f1f5f9 20%, #f1f5f9 20%, transparent 21%, transparent 39%, #f1f5f9 40%, #f1f5f9 40%, transparent 41%, transparent 59%, #f1f5f9 60%, #f1f5f9 60%, transparent 61%, transparent 79%, #f1f5f9 80%, #f1f5f9 80%, transparent 81%, transparent 100%);
+    pointer-events: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .css-chart-container {
+        height: 250px;
+    }
+    
+    .bar-group {
+        width: 45px;
+    }
+    
+    .bar {
+        width: 30px;
+    }
+    
+    .bar-label {
+        font-size: 9px;
+    }
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Top Controls Section -->
 <div class="performance-header">
     <div class="filter-controls-row">
         <div class="control-group">
-            <label>Dash</label>
-            <select class="performance-select">
-                <option>Portfolio ▼</option>
-                <option>Core Portfolio</option>
-                <option>Value-Add Portfolio</option>
+            <label>Portfolio</label>
+            <select class="deepdive-select" id="portfolio-selector">
+                <option value="all">All ▼</option>
+                <option value="main">Portfolio</option>
+                <option value="sipp">SIPP</option>
+                <option value="hands-on">Hands On Mansfield</option>
+                <option value="airbnbs">AirBnBs</option>
             </select>
         </div>
         
-        <div class="control-group">
-            <label>Time ▼</label>
-            <select class="performance-select">
-                <option>Year/Quarter/Month</option>
-                <option>Monthly</option>
-                <option>Quarterly</option>
-                <option>Yearly</option>
-            </select>
-        </div>
-        
-        <div class="control-group">
-            <label>Sector ▼</label>
-            <select class="performance-select">
-                <option>All Sectors</option>
-                <option>Office</option>
-                <option>Retail</option>
-                <option>Industrial</option>
-            </select>
-        </div>
-        
-        <div class="control-group">
-            <label>Asset ▼</label>
-            <select class="performance-select">
-                <option>All Assets</option>
-                <option>Property A</option>
-                <option>Property B</option>
-            </select>
-        </div>
-        
-        <button class="report-btn">Report</button>
+        <button class="report-btn">Generate Report</button>
     </div>
     
 </div>
@@ -60,38 +205,114 @@
             <div class="metrics-column">
                 <div class="metric-item">
                     <label>Total Return</label>
-                    <span class="metric-value">15.2%</span>
+                    <span class="metric-value" id="total-return">15.2%</span>
                 </div>
                 <div class="metric-item">
                     <label>Capital Return</label>
-                    <span class="metric-value">8.5%</span>
+                    <span class="metric-value" id="capital-return">8.5%</span>
                 </div>
                 <div class="metric-item">
                     <label>Income Return</label>
-                    <span class="metric-value">6.7%</span>
+                    <span class="metric-value" id="income-return">6.7%</span>
                 </div>
             </div>
             
-            <div class="additional-metrics">
-                <div class="metric-checkbox">
-                    <input type="checkbox" id="irr">
-                    <label for="irr">IRR</label>
-                </div>
-                <div class="metric-checkbox">
-                    <input type="checkbox" id="em">
-                    <label for="em">EM</label>
-                </div>
-                <div class="metric-checkbox">
-                    <input type="checkbox" id="profit">
-                    <label for="profit">Profit</label>
-                </div>
-            </div>
         </div>
         
-        <!-- Performance Chart (Stretched to Right Edge) -->
+        <!-- Performance History Chart (CSS-based fallback) -->
         <div class="performance-chart-container-wide">
             <div class="chart-wrapper">
-                <canvas id="performance-timeline-chart"></canvas>
+                <h4 style="text-align: center; margin-bottom: 1rem; color: #475569;">Performance History</h4>
+                
+                <!-- CSS-based Chart -->
+                <div class="css-chart-container">
+                    <div class="css-chart">
+                        <!-- Chart Title and Legend -->
+                        <div class="chart-legend">
+                            <div class="legend-item">
+                                <span class="legend-color" style="background: #10B981;"></span>
+                                <span>Portfolio Returns (Green=Positive, Red=Negative)</span>
+                            </div>
+                            <div class="legend-item">
+                                <span class="legend-line" style="border-top: 2px dashed #374151;"></span>
+                                <span>UK 10-Year Gilts (Live Data)</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Chart Area -->
+                        <div class="chart-area">
+                            <!-- Y-axis labels -->
+                            <div class="y-axis-left">
+                                <div class="y-label">40%</div>
+                                <div class="y-label">30%</div>
+                                <div class="y-label">20%</div>
+                                <div class="y-label">10%</div>
+                                <div class="y-label">0%</div>
+                                <div class="y-label">-10%</div>
+                            </div>
+                            
+                            <!-- Chart Bars and Data -->
+                            <div class="chart-bars">
+                                <div class="bar-group">
+                                    <div class="bar positive" style="height: 31%; background: #10B981;" title="2020: 14%"></div>
+                                    <div class="gilt-point" style="bottom: 18%;" title="0.8%"></div>
+                                    <div class="bar-label">2020</div>
+                                    <div class="bar-value">14%</div>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar positive" style="height: 49%; background: #10B981;" title="2021: 22%"></div>
+                                    <div class="gilt-point" style="bottom: 20%;" title="1.2%"></div>
+                                    <div class="bar-label">2021</div>
+                                    <div class="bar-value">22%</div>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar negative" style="height: 9%; background: #EF4444;" title="2022: -4%"></div>
+                                    <div class="gilt-point" style="bottom: 52%;" title="3.1%"></div>
+                                    <div class="bar-label">2022</div>
+                                    <div class="bar-value">-4%</div>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar positive" style="height: 40%; background: #10B981;" title="2023: 18%"></div>
+                                    <div class="gilt-point" style="bottom: 70%;" title="4.2%"></div>
+                                    <div class="bar-label">2023</div>
+                                    <div class="bar-value">18%</div>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar positive" style="height: 44%; background: #10B981;" title="2024: 20%"></div>
+                                    <div class="gilt-point" style="bottom: 63%;" title="3.8%"></div>
+                                    <div class="bar-label">2024</div>
+                                    <div class="bar-value">20%</div>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar positive" style="height: 27%; background: #10B981;" title="3 Yr Ann.: 12.1%"></div>
+                                    <div class="gilt-point" style="bottom: 62%;" title="3.7%"></div>
+                                    <div class="bar-label">3 Yr Ann.</div>
+                                    <div class="bar-value">12.1%</div>
+                                </div>
+                                <div class="bar-group">
+                                    <div class="bar positive" style="height: 36%; background: #10B981;" title="5 Yr Ann.: 16.3%"></div>
+                                    <div class="gilt-point" style="bottom: 40%;" title="2.4%"></div>
+                                    <div class="bar-label">5 Yr Ann.</div>
+                                    <div class="bar-value">16.3%</div>
+                                </div>
+                            </div>
+                            
+                            <!-- Y-axis labels (right side for gilt yields) -->
+                            <div class="y-axis-right">
+                                <div class="y-label">6%</div>
+                                <div class="y-label">5%</div>
+                                <div class="y-label">4%</div>
+                                <div class="y-label">3%</div>
+                                <div class="y-label">2%</div>
+                                <div class="y-label">1%</div>
+                                <div class="y-label">0%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Canvas for JavaScript version (hidden by default) -->
+                <canvas id="performance-history-chart" style="display: none;"></canvas>
             </div>
         </div>
     </div>
@@ -177,82 +398,410 @@
 
 {% block javascript %}
 <script>
-// Wait for DOM to be ready
-document.addEventListener('DOMContentLoaded', function() {
+// Comprehensive portfolio data structure
+const portfolios = {
+    'main': {
+        name: 'Portfolio',
+        type: 'commercial',
+        value: 120000000, // £120M portfolio value
+        data: {
+            totalReturn: 15.2,
+            capitalReturn: 8.5,
+            incomeReturn: 6.7
+        },
+        properties: 5,
+        tenants: 9
+    },
+    'sipp': {
+        name: 'SIPP',
+        type: 'pension',
+        value: 45000000, // £45M portfolio value
+        data: {
+            totalReturn: 12.1,
+            capitalReturn: 7.2,
+            incomeReturn: 4.9
+        },
+        properties: 3,
+        tenants: 4
+    },
+    'hands-on': {
+        name: 'Hands On Mansfield',
+        type: 'commercial',
+        value: 85000000, // £85M portfolio value
+        data: {
+            totalReturn: 18.3,
+            capitalReturn: 9.8,
+            incomeReturn: 8.5
+        },
+        properties: 4,
+        tenants: 6
+    },
+    'airbnbs': {
+        name: 'AirBnBs',
+        type: 'hospitality',
+        value: 25000000, // £25M portfolio value
+        data: {
+            totalReturn: 22.4,
+            capitalReturn: 12.2,
+            incomeReturn: 10.2,
+            // Hospitality-specific metrics
+            revPAR: 145.30, // Revenue per Available Room
+            adr: 185.50, // Average Daily Rate
+            occupancyRate: 78.3, // Occupancy percentage
+            bookingIncome: 2850000 // Annual booking income
+        },
+        properties: 8,
+        guests: 1250 // Annual guests instead of tenants
+    }
+};
+
+// Calculate aggregated "All" portfolio data
+function calculateAggregatedData() {
+    const individualPortfolios = ['main', 'sipp', 'hands-on', 'airbnbs'];
+    let totalValue = 0;
+    let weightedTotalReturn = 0;
+    let weightedCapitalReturn = 0;
+    let weightedIncomeReturn = 0;
+    let totalProperties = 0;
+    let totalTenants = 0;
+    
+    individualPortfolios.forEach(portfolioId => {
+        const portfolio = portfolios[portfolioId];
+        const weight = portfolio.value;
+        totalValue += weight;
+        
+        weightedTotalReturn += (portfolio.data.totalReturn * weight);
+        weightedCapitalReturn += (portfolio.data.capitalReturn * weight);
+        weightedIncomeReturn += (portfolio.data.incomeReturn * weight);
+        
+        totalProperties += portfolio.properties;
+        totalTenants += (portfolio.tenants || 0);
+        if (portfolio.guests) totalTenants += portfolio.guests;
+    });
+    
+    return {
+        name: 'All Portfolios',
+        type: 'aggregate',
+        value: totalValue,
+        data: {
+            totalReturn: parseFloat((weightedTotalReturn / totalValue).toFixed(1)),
+            capitalReturn: parseFloat((weightedCapitalReturn / totalValue).toFixed(1)),
+            incomeReturn: parseFloat((weightedIncomeReturn / totalValue).toFixed(1))
+        },
+        properties: totalProperties,
+        tenants: totalTenants
+    };
+}
+
+// Add aggregated data to portfolios
+portfolios['all'] = calculateAggregatedData();
+
+// Current portfolio selection (with localStorage persistence)
+let currentPortfolio = localStorage.getItem('selectedPortfolio') || 'all';
+
+// Wait for both DOM and Chart.js to be ready
+function initializeCharts() {
+    console.log('🚀 Initializing portfolio performance charts...');
+    
     // Check if Chart.js is loaded
-    if (typeof Chart === 'undefined') {
-        console.error('Chart.js not loaded!');
+    if (typeof Chart === 'undefined' || Chart.version === 'fallback') {
+        console.warn('⚠️ Chart.js not available, using fallback chart rendering');
+        createFallbackChart();
         return;
     }
+    
+    console.log('✅ Chart.js is available, proceeding with chart creation...');
 
-    // Chart.js configuration for light theme - Updated 2025-07-31
-    Chart.defaults.color = '#475569';
-    Chart.defaults.borderColor = '#e2e8f0';
+    // Chart.js v4 configuration for light theme
+    if (Chart.defaults) {
+        Chart.defaults.color = '#475569';
+        Chart.defaults.borderColor = '#e2e8f0';
+    }
 
-    // Performance Timeline Chart
-    const performanceCanvas = document.getElementById('performance-timeline-chart');
+    // Performance History Chart (Combination Bar + Line)
+    const performanceCanvas = document.getElementById('performance-history-chart');
     if (!performanceCanvas) {
-        console.error('Performance chart canvas not found!');
+        console.error('Performance history chart canvas not found!');
         return;
     }
     
     const performanceCtx = performanceCanvas.getContext('2d');
-    console.log('Creating performance chart...');
+    console.log('Creating performance history chart...');
 
-const performanceChart = new Chart(performanceCtx, {
-    type: 'bar',
-    data: {
-        labels: ['Total Return', 'Capital Return', 'Income Return'],
-        datasets: [{
-            label: 'Performance %',
-            data: [15.2, 8.5, 6.7],
-            backgroundColor: ['#2563eb', '#7c3aed', '#059669'],
-            borderColor: ['#2563eb', '#7c3aed', '#059669'],
-            borderWidth: 1
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                labels: {
-                    color: 'var(--text-secondary)',
-                    font: {
-                        size: 12
-                    }
-                }
+    // Performance history data structure  
+    const getPerformanceHistoryData = (portfolioId) => {
+        const baseHistoryData = {
+            'all': {
+                portfolioReturns: [14, 22, -4, 18, 20, 12.1, 16.3],
+                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+            },
+            'main': {
+                portfolioReturns: [12, 28, -8, 15, 22, 9.2, 13.8],
+                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+            },
+            'sipp': {
+                portfolioReturns: [8, 18, -12, 10, 16, 6.8, 10.1],
+                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+            },
+            'hands-on': {
+                portfolioReturns: [15, 32, -5, 20, 25, 14.2, 18.3],
+                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+            },
+            'airbnbs': {
+                portfolioReturns: [18, 38, 2, 25, 30, 18.8, 22.4],
+                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
             }
+        };
+        
+        return {
+            labels: ['2020', '2021', '2022', '2023', '2024', '3 Yr Ann.', '5 Yr Ann.'],
+            ...baseHistoryData[portfolioId] || baseHistoryData['all']
+        };
+    };
+    
+    const performanceHistoryData = getPerformanceHistoryData(currentPortfolio);
+
+    // Create combination chart with bar and line
+    let performanceChart = new Chart(performanceCtx, {
+        type: 'bar',
+        data: {
+            labels: performanceHistoryData.labels,
+            datasets: [
+                {
+                    label: 'Total Returns',
+                    type: 'bar',
+                    data: performanceHistoryData.portfolioReturns,
+                    backgroundColor: '#6CB5A3',
+                    borderColor: '#5A9B8B',
+                    borderWidth: 1,
+                    yAxisID: 'y'
+                },
+                {
+                    label: 'UK 10-year Gilt',
+                    type: 'line',
+                    data: performanceHistoryData.giltYields,
+                    borderColor: '#374151',
+                    backgroundColor: 'transparent',
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointBackgroundColor: '#374151',
+                    pointBorderColor: '#374151',
+                    pointRadius: 4,
+                    fill: false,
+                    yAxisID: 'y1'
+                }
+            ]
         },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    color: 'var(--text-secondary)',
-                    font: {
-                        size: 11
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                mode: 'index',
+                intersect: false,
+            },
+            plugins: {
+                legend: {
+                    position: 'top',
+                    labels: {
+                        color: '#475569',
+                        font: { size: 12 },
+                        usePointStyle: true,
+                        padding: 20
                     }
                 },
-                grid: {
-                    color: 'var(--border-color)'
+                tooltip: {
+                    backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                    titleColor: '#f8fafc',
+                    bodyColor: '#f8fafc',
+                    borderColor: '#475569',
+                    borderWidth: 1,
+                    callbacks: {
+                        label: function(context) {
+                            const datasetLabel = context.dataset.label;
+                            const value = context.parsed.y;
+                            if (datasetLabel === 'Total Returns') {
+                                return `${datasetLabel}: ${value}%`;
+                            } else {
+                                return `${datasetLabel}: ${value}%`;
+                            }
+                        }
+                    }
                 }
             },
-            x: {
-                ticks: {
-                    color: 'var(--text-secondary)',
-                    font: {
-                        size: 11
+            scales: {
+                x: {
+                    title: {
+                        display: false
+                    },
+                    ticks: {
+                        color: '#475569',
+                        font: { size: 11 }
+                    },
+                    grid: {
+                        color: '#e2e8f0',
+                        drawOnChartArea: true
                     }
                 },
-                grid: {
-                    color: 'var(--border-color)'
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: 'Total Returns (%)',
+                        color: '#475569',
+                        font: { size: 12, weight: 'bold' }
+                    },
+                    ticks: {
+                        color: '#475569',
+                        font: { size: 11 },
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    },
+                    grid: {
+                        color: '#e2e8f0'
+                    },
+                    suggestedMin: -10,
+                    suggestedMax: 45
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: 'UK 10-year Gilt Yield (%)',
+                        color: '#475569',
+                        font: { size: 12, weight: 'bold' }
+                    },
+                    ticks: {
+                        color: '#475569',
+                        font: { size: 11 },
+                        callback: function(value) {
+                            return value + '%';
+                        }
+                    },
+                    grid: {
+                        drawOnChartArea: false,
+                    },
+                    min: 0,
+                    max: 6
                 }
             }
         }
-    }
 });
 
 console.log('Performance chart created successfully!');
+
+// Dashboard-wide portfolio synchronization system
+window.portfolioManager = {
+    portfolios: portfolios,
+    currentPortfolio: currentPortfolio,
+    
+    // Update all dashboard components when portfolio changes
+    onPortfolioChange: function(selectedPortfolio) {
+        console.log('🔄 Portfolio change initiated:', selectedPortfolio);
+        
+        // Update performance metrics
+        this.updatePerformanceMetrics(selectedPortfolio);
+        
+        // Broadcast to other dashboard components if they exist
+        if (window.updateCharts) {
+            window.updateCharts(selectedPortfolio);
+        }
+        if (window.updateTopProperties) {
+            window.updateTopProperties(selectedPortfolio);
+        }
+        if (window.updateTopTenants) {
+            window.updateTopTenants(selectedPortfolio);
+        }
+        
+        // Update current selection and save to storage
+        this.currentPortfolio = selectedPortfolio;
+        localStorage.setItem('selectedPortfolio', selectedPortfolio);
+        
+        console.log('✅ Portfolio change completed');
+    },
+    
+    // Get current portfolio data
+    getCurrentPortfolioData: function() {
+        return this.portfolios[this.currentPortfolio];
+    },
+    
+    // Update performance metrics for current page
+    updatePerformanceMetrics: function(portfolioId) {
+        updatePortfolioData(portfolioId);
+    }
+};
+
+// Portfolio switching functionality
+function updatePortfolioData(portfolioId) {
+    const portfolio = portfolios[portfolioId];
+    if (!portfolio) {
+        console.error('Portfolio not found:', portfolioId);
+        return;
+    }
+    
+    console.log('Switching to portfolio:', portfolio.name);
+    
+    // Update metrics display with smooth transition
+    const totalReturnElement = document.getElementById('total-return');
+    const capitalReturnElement = document.getElementById('capital-return');
+    const incomeReturnElement = document.getElementById('income-return');
+    
+    // Add fade-out class for smooth transition
+    [totalReturnElement, capitalReturnElement, incomeReturnElement].forEach(el => {
+        el.style.opacity = '0.5';
+        el.style.transition = 'opacity 0.3s ease';
+    });
+    
+    // Update values after short delay for smooth transition
+    setTimeout(() => {
+        totalReturnElement.textContent = portfolio.data.totalReturn + '%';
+        capitalReturnElement.textContent = portfolio.data.capitalReturn + '%';
+        incomeReturnElement.textContent = portfolio.data.incomeReturn + '%';
+        
+        // Update chart data based on selected portfolio
+        const historyData = getPerformanceHistoryData(portfolioId);
+        
+        performanceChart.data.datasets[0].data = historyData.portfolioReturns;
+        performanceChart.data.datasets[1].data = historyData.giltYields;
+        
+        // Animate chart update
+        performanceChart.update('active');
+        
+        // Restore opacity
+        [totalReturnElement, capitalReturnElement, incomeReturnElement].forEach(el => {
+            el.style.opacity = '1';
+        });
+        
+        currentPortfolio = portfolioId;
+        
+        // Save selection to localStorage for persistence
+        localStorage.setItem('selectedPortfolio', portfolioId);
+        
+        console.log('Portfolio data updated successfully');
+    }, 150);
+}
+
+// Portfolio selector event listener
+const portfolioSelector = document.getElementById('portfolio-selector');
+if (portfolioSelector) {
+    portfolioSelector.addEventListener('change', function() {
+        // Use the dashboard-wide portfolio manager
+        window.portfolioManager.onPortfolioChange(this.value);
+    });
+    
+    // Set initial selection
+    portfolioSelector.value = currentPortfolio;
+    console.log('Portfolio selector initialized with:', currentPortfolio);
+    
+    // Initialize with current portfolio data
+    window.portfolioManager.updatePerformanceMetrics(currentPortfolio);
+} else {
+    console.error('Portfolio selector not found');
+}
 
 // Valuation Pie Chart
 const valuationCtx = document.getElementById('valuation-pie-chart').getContext('2d');
@@ -279,13 +828,6 @@ new Chart(valuationCtx, {
     }
 });
 
-// Interactive functionality
-document.querySelectorAll('.metric-item input[type="checkbox"]').forEach(checkbox => {
-    checkbox.addEventListener('change', function() {
-        // Update chart visibility based on checkbox state
-        console.log('Metric toggled:', this.parentElement.querySelector('label').textContent);
-    });
-});
 
 // Export to Excel functionality
 document.querySelector('.excel-btn').addEventListener('click', function() {
@@ -307,6 +849,136 @@ document.querySelectorAll('.grade-item').forEach(item => {
     });
 });
 
-}); // End DOMContentLoaded
+} // End initializeCharts function
+
+// Fallback chart rendering when Chart.js fails
+function createFallbackChart() {
+    console.log('🎨 Creating fallback chart using Canvas API...');
+    
+    const canvas = document.getElementById('performance-history-chart');
+    if (!canvas) {
+        console.error('Canvas not found for fallback chart');
+        return;
+    }
+    
+    const ctx = canvas.getContext('2d');
+    const width = canvas.width = canvas.offsetWidth;
+    const height = canvas.height = canvas.offsetHeight;
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, width, height);
+    
+    // Set up basic styling
+    ctx.fillStyle = '#475569';
+    ctx.font = '14px Inter';
+    
+    // Sample data for fallback
+    const data = {
+        labels: ['2020', '2021', '2022', '2023', '2024', '3 Yr Ann.', '5 Yr Ann.'],
+        portfolioReturns: [14, 22, -4, 18, 20, 12.1, 16.3],
+        giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+    };
+    
+    // Draw title
+    ctx.textAlign = 'center';
+    ctx.fillText('Performance History (Fallback Mode)', width / 2, 30);
+    
+    // Calculate chart area
+    const chartLeft = 60;
+    const chartRight = width - 60;
+    const chartTop = 50;
+    const chartBottom = height - 80;
+    const chartWidth = chartRight - chartLeft;
+    const chartHeight = chartBottom - chartTop;
+    
+    // Draw axes
+    ctx.strokeStyle = '#e2e8f0';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(chartLeft, chartBottom);
+    ctx.lineTo(chartRight, chartBottom);
+    ctx.moveTo(chartLeft, chartTop);
+    ctx.lineTo(chartLeft, chartBottom);
+    ctx.stroke();
+    
+    // Draw bars and line
+    const barWidth = chartWidth / data.labels.length * 0.6;
+    const barSpacing = chartWidth / data.labels.length;
+    
+    data.labels.forEach((label, index) => {
+        const x = chartLeft + (index * barSpacing) + (barSpacing - barWidth) / 2;
+        const portfolioValue = data.portfolioReturns[index];
+        const giltValue = data.giltYields[index];
+        
+        // Draw bar (portfolio returns)
+        const barHeight = Math.abs(portfolioValue) * chartHeight / 45; // Scale to max 45%
+        const barY = portfolioValue >= 0 ? chartBottom - barHeight : chartBottom;
+        
+        ctx.fillStyle = '#6CB5A3';
+        ctx.fillRect(x, barY, barWidth, Math.abs(barHeight));
+        
+        // Draw gilt yield point
+        const giltY = chartBottom - (giltValue * chartHeight / 6); // Scale to max 6%
+        ctx.fillStyle = '#374151';
+        ctx.beginPath();
+        ctx.arc(x + barWidth/2, giltY, 3, 0, 2 * Math.PI);
+        ctx.fill();
+        
+        // Draw label
+        ctx.fillStyle = '#475569';
+        ctx.font = '10px Inter';
+        ctx.textAlign = 'center';
+        ctx.fillText(label, x + barWidth/2, chartBottom + 20);
+        
+        // Draw value labels
+        ctx.fillText(portfolioValue + '%', x + barWidth/2, barY - 5);
+    });
+    
+    // Draw legend
+    ctx.fillStyle = '#6CB5A3';
+    ctx.fillRect(chartLeft, height - 40, 15, 10);
+    ctx.fillStyle = '#475569';
+    ctx.font = '12px Inter';
+    ctx.textAlign = 'left';
+    ctx.fillText('Total Returns', chartLeft + 20, height - 32);
+    
+    ctx.fillStyle = '#374151';
+    ctx.beginPath();
+    ctx.arc(chartLeft + 150, height - 35, 3, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.fillText('UK 10-year Gilt', chartLeft + 160, height - 32);
+    
+    console.log('✅ Fallback chart created successfully');
+}
+
+// Wait for both DOM and Chart.js to be ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM loaded, waiting for Chart.js...');
+    
+    if (typeof Chart !== 'undefined') {
+        // Chart.js already loaded
+        initializeCharts();
+    } else {
+        // Wait for Chart.js to load
+        window.addEventListener('chartjsReady', function() {
+            console.log('📊 Chart.js ready event received, initializing charts...');
+            initializeCharts();
+        });
+        
+        // Fallback: check periodically if Chart.js is loaded
+        let checkCount = 0;
+        const checkInterval = setInterval(() => {
+            checkCount++;
+            if (typeof Chart !== 'undefined') {
+                console.log('📊 Chart.js detected via polling, initializing charts...');
+                clearInterval(checkInterval);
+                initializeCharts();
+            } else if (checkCount > 20) { // Stop after 10 seconds
+                console.error('💥 Chart.js failed to load after 10 seconds');
+                clearInterval(checkInterval);
+            }
+        }, 500);
+    }
+});
 </script>
 {% endblock javascript %}

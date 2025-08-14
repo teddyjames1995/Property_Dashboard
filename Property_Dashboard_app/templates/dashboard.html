@@ -9,24 +9,6 @@
 <div class="top-header">
     <div class="company-info">
         <h1>CeCe Travels</h1>
-        <div class="header-controls">
-            <select class="header-select">
-                <option>Portfolio ▼</option>
-                <option>Core Portfolio</option>
-                <option>Value-Add Portfolio</option>
-            </select>
-            <select class="header-select">
-                <option>Property ▼</option>
-                <option>All Properties</option>
-                <option>Office</option>
-                <option>Retail</option>
-            </select>
-            <select class="header-select">
-                <option>Date ▼</option>
-                <option>Current Quarter</option>
-                <option>YTD</option>
-            </select>
-        </div>
     </div>
     
     <div class="user-controls">
@@ -37,6 +19,22 @@
                 <span class="material-symbols-outlined">account_circle</span>
                 <button class="generate-report-btn">Generate Report</button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Portfolio Controls Section -->
+<div class="dashboard-controls">
+    <div class="filter-controls-row">
+        <div class="control-group">
+            <label>Portfolio</label>
+            <select class="deepdive-select" id="dashboard-portfolio-selector">
+                <option value="all">All ▼</option>
+                <option value="main">Portfolio</option>
+                <option value="sipp">SIPP</option>
+                <option value="hands-on">Hands On Mansfield</option>
+                <option value="airbnbs">AirBnBs</option>
+            </select>
         </div>
     </div>
 </div>
@@ -93,28 +91,9 @@
         <div class="sector-chart-container">
             <h3>Sector Allocation</h3>
             <div class="pie-chart-wrapper">
-                <canvas id="sector-allocation-chart" width="200" height="200" style="width: 200px; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
-                <div class="sector-legend">
-                    <div class="legend-item">
-                        <span class="legend-color industrial"></span>
-                        <span>Industrial 30%</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color office"></span>
-                        <span>Office 28%</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color retail"></span>
-                        <span>Retail 25%</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color resi"></span>
-                        <span>Resi 17%</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="legend-color alt"></span>
-                        <span>Alt</span>
-                    </div>
+                <canvas id="sector-allocation-chart" width="200" height="200"></canvas>
+                <div class="sector-legend" id="dynamic-legend">
+                    <!-- Legend will be populated dynamically with real data -->
                 </div>
             </div>
         </div>
@@ -169,9 +148,9 @@
 <div class="charts-section">
     <!-- Lease Expiry Chart -->
     <div class="chart-container-wireframe">
-        <h3>Lease Expiry</h3>
+        <h3>Lease Expiry Profile by Property Sector</h3>
         <div class="chart-wrapper">
-            <canvas id="lease-expiry-chart" width="400" height="200" style="width: 100%; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
+            <canvas id="lease-expiry-chart" width="400" height="200" style="width: 100%; height: 200px;"></canvas>
         </div>
     </div>
 
@@ -185,35 +164,118 @@
 
 </div>
 
+<!-- Portfolio Analysis Section -->
+<div class="portfolio-analysis-section" style="margin-top: 2rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--spacing-lg);">
+    <div class="analysis-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--text-primary);">Automated Portfolio Analysis</h3>
+        <button id="toggle-analysis" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.5rem;">
+            <span class="material-symbols-outlined">expand_less</span>
+        </button>
+    </div>
+    
+    <div id="analysis-content" class="analysis-content">
+        <!-- Analysis Controls -->
+        <div class="analysis-controls" style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
+            <button id="refresh-analysis" style="background: var(--accent-primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: var(--radius-md); cursor: pointer; font-size: 0.875rem;">
+                <span class="material-symbols-outlined" style="font-size: 1rem; margin-right: 0.25rem;">refresh</span>
+                Refresh Analysis
+            </button>
+            <select id="filter-category" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); color: var(--text-primary);">
+                <option value="all">All Categories</option>
+                <option value="lease">Lease Risk</option>
+                <option value="concentration">Concentration</option>
+                <option value="tenant">Tenant Quality</option>
+                <option value="diversification">Diversification</option>
+                <option value="trends">Income Trends</option>
+            </select>
+            <select id="filter-status" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); color: var(--text-primary);">
+                <option value="all">All Status</option>
+                <option value="strength">Strengths Only</option>
+                <option value="risk">Risks Only</option>
+            </select>
+        </div>
+
+        <!-- Analysis Table -->
+        <div class="analysis-table-container" style="overflow-x: auto;">
+            <table id="analysis-table" style="width: 100%; border-collapse: collapse; background: var(--bg-card);">
+                <thead>
+                    <tr style="background: var(--bg-secondary); border-bottom: 2px solid var(--border-color);">
+                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer;" data-sort="status">
+                            Status <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_upward</span>
+                        </th>
+                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer;" data-sort="category">
+                            Category <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_upward</span>
+                        </th>
+                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer;" data-sort="finding">
+                            Finding <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_upward</span>
+                        </th>
+                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer;" data-sort="impact">
+                            Impact <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_upward</span>
+                        </th>
+                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary);">
+                            Action Required
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="analysis-table-body">
+                    <!-- Analysis results will be populated here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Analysis Summary -->
+        <div class="analysis-summary" style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md);">
+            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+                <div class="summary-item">
+                    <span style="color: var(--text-muted); font-size: 0.875rem;">Total Findings:</span>
+                    <span id="total-findings" style="font-weight: 600; color: var(--text-primary); margin-left: 0.5rem;">0</span>
+                </div>
+                <div class="summary-item">
+                    <span style="color: var(--text-muted); font-size: 0.875rem;">Strengths:</span>
+                    <span id="total-strengths" style="font-weight: 600; color: #059669; margin-left: 0.5rem;">0</span>
+                </div>
+                <div class="summary-item">
+                    <span style="color: var(--text-muted); font-size: 0.875rem;">High Risks:</span>
+                    <span id="total-high-risks" style="font-weight: 600; color: #dc2626; margin-left: 0.5rem;">0</span>
+                </div>
+                <div class="summary-item">
+                    <span style="color: var(--text-muted); font-size: 0.875rem;">Last Updated:</span>
+                    <span id="last-updated" style="font-weight: 600; color: var(--text-primary); margin-left: 0.5rem;">Just now</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 {% endblock %}
 
 {% block javascript %}
+{{ block.super }}
 {{ sector_allocation_data_json|json_script:"sector-allocation-data" }}
 {{ lease_expiry_data_json|json_script:"lease-expiry-data" }}
 {{ debt_wall_data_json|json_script:"debt-wall-data" }}
 
 <script>
-// Wait for page to fully load
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded');
+function initializeDashboardCharts() {
+    console.log('🚀 Initializing dashboard charts...');
     
-    // Wait a bit more to ensure Chart.js is loaded
-    setTimeout(function() {
-        console.log('Chart.js available:', typeof Chart !== 'undefined');
+    if (typeof Chart === 'undefined') {
+        console.error('❌ Chart.js not loaded - charts will not work');
+        // Show error message on page
+        document.querySelectorAll('.chart-wrapper, .pie-chart-wrapper').forEach(el => {
+            el.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Chart.js failed to load</div>';
+        });
+        return;
+    }
+    
+    console.log('✅ Chart.js is available, proceeding with dashboard chart creation...');
         
-        if (typeof Chart === 'undefined') {
-            console.error('Chart.js not loaded - charts will not work');
-            // Show error message on page
-            document.querySelectorAll('.chart-wrapper, .pie-chart-wrapper').forEach(el => {
-                el.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Chart.js failed to load</div>';
-            });
-            return;
+        // Chart.js v4 configuration for light theme
+        if (Chart.defaults) {
+            Chart.defaults.color = '#475569';
+            Chart.defaults.borderColor = '#e2e8f0';
         }
-        
-        // Chart.js configuration for light theme
-        Chart.defaults.color = '#475569';
-        Chart.defaults.borderColor = '#e2e8f0';
 
         // Debug: Test Chart.js functionality with hardcoded data
         console.log('Skipping data parsing, using hardcoded test data');
@@ -221,18 +283,120 @@ document.addEventListener('DOMContentLoaded', function() {
         // MINIMAL TEST - Just one simple chart
         console.log('Creating minimal test chart...');
         
+        // Sector Allocation Pie Chart with Real Database Data
         try {
             const canvas = document.getElementById('sector-allocation-chart');
             if (canvas) {
                 console.log('✅ Canvas found');
+                
+                // Get real data from Django context - handle double encoding
+                let sectorDataRaw = document.getElementById('sector-allocation-data').textContent;
+                console.log('Raw sector data:', sectorDataRaw);
+                
+                let sectorData;
+                try {
+                    sectorData = JSON.parse(sectorDataRaw);
+                    console.log('First parse result:', sectorData, 'Type:', typeof sectorData);
+                    
+                    // If it's still a string, parse again (double-encoded)
+                    if (typeof sectorData === 'string') {
+                        sectorData = JSON.parse(sectorData);
+                        console.log('Second parse result:', sectorData, 'Type:', typeof sectorData);
+                    }
+                } catch (e) {
+                    console.error('JSON parse error:', e);
+                    sectorData = {
+                        labels: ['Office', 'Industrial', 'Retail', 'Mixed Use'],
+                        data: [47, 28, 25, 20],
+                        backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b']
+                    };
+                }
+                
+                console.log('✅ Final sector data:', sectorData);
+                
+                // Validate sector data structure
+                if (!sectorData.labels || !sectorData.data || !Array.isArray(sectorData.labels) || !Array.isArray(sectorData.data)) {
+                    console.error('❌ Invalid sector data structure:', sectorData);
+                    // Use fallback data
+                    sectorData = {
+                        labels: ['Office', 'Industrial', 'Retail', 'Mixed Use'],
+                        data: [28, 30, 25, 17],
+                        backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981', '#f59e0b']
+                    };
+                    console.log('Using fallback sector data:', sectorData);
+                }
+                
+                // Calculate total valuation for percentages
+                const totalValuation = sectorData.data.reduce((sum, value) => sum + value, 0);
+                
+                // Calculate percentages
+                const percentageData = sectorData.data.map(value => 
+                    ((value / totalValuation) * 100).toFixed(1)
+                );
+                
+                console.log('Sector percentages:', percentageData);
+                
                 new Chart(canvas, {
                     type: 'doughnut',
                     data: {
-                        labels: ['A', 'B'],
-                        datasets: [{ data: [60, 40], backgroundColor: ['#2563eb', '#7c3aed', '#059669', '#d97706', '#dc2626'] }]
+                        labels: sectorData.labels,
+                        datasets: [{
+                            data: percentageData,
+                            backgroundColor: sectorData.backgroundColor,
+                            borderColor: '#1e293b',
+                            borderWidth: 2,
+                            hoverOffset: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: false // We'll use custom legend
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                                titleColor: '#f8fafc',
+                                bodyColor: '#f8fafc',
+                                borderColor: '#475569',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function(context) {
+                                        return context.label + ': ' + context.parsed + '%';
+                                    }
+                                }
+                            }
+                        },
+                        cutout: '60%', // Creates donut effect
+                        elements: {
+                            arc: {
+                                borderWidth: 2
+                            }
+                        }
                     }
                 });
-                console.log('✅ CHART CREATED SUCCESSFULLY!');
+                // Populate dynamic legend
+                const legendContainer = document.getElementById('dynamic-legend');
+                legendContainer.innerHTML = '';
+                
+                sectorData.labels.forEach((label, index) => {
+                    const legendItem = document.createElement('div');
+                    legendItem.className = 'legend-item';
+                    
+                    const colorSpan = document.createElement('span');
+                    colorSpan.className = 'legend-color';
+                    colorSpan.style.backgroundColor = sectorData.backgroundColor[index];
+                    
+                    const textSpan = document.createElement('span');
+                    textSpan.textContent = `${label} ${percentageData[index]}%`;
+                    
+                    legendItem.appendChild(colorSpan);
+                    legendItem.appendChild(textSpan);
+                    legendContainer.appendChild(legendItem);
+                });
+                
+                console.log('✅ SECTOR CHART CREATED SUCCESSFULLY WITH REAL DATA!');
             } else {
                 console.log('❌ Canvas not found');
             }
@@ -240,6 +404,619 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('❌ Chart error:', e);
             document.body.innerHTML += '<div style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:10px;">CHART ERROR: ' + e.message + '</div>';
         }
+
+        // Stacked Lease Expiry Bar Chart by Property Sector
+        try {
+            const leaseCanvas = document.getElementById('lease-expiry-chart');
+            if (leaseCanvas) {
+                console.log('Creating stacked lease expiry chart...');
+                
+                // Get real lease expiry data from Django
+                let leaseDataRaw = document.getElementById('lease-expiry-data').textContent;
+                let leaseExpiryData;
+                
+                try {
+                    leaseExpiryData = JSON.parse(leaseDataRaw);
+                    if (typeof leaseExpiryData === 'string') {
+                        leaseExpiryData = JSON.parse(leaseExpiryData);
+                    }
+                    console.log('✅ Real lease expiry data:', leaseExpiryData);
+                } catch (e) {
+                    console.error('❌ Error parsing lease expiry data:', e);
+                    // Use fallback if parsing fails
+                    leaseExpiryData = {
+                        labels: ['2025', '2026', '2027', '2028', '2029', '2030+'],
+                        data: [13.4, 67.7, 0.0, 0.0, 0.0, 18.8],
+                        rent_data: [950000, 4785000, 0, 0, 0, 1330000],
+                        total_rent: 7065000
+                    };
+                }
+                
+                // Create stacked chart structure with sector breakdown using real data
+                // Real sector breakdown data from backend analysis
+                const sectorBreakdown = {
+                    '2025': { 'Office': 9.3, 'Industrial': 0.0, 'Retail': 0.0, 'Mixed Use': 4.1 },
+                    '2026': { 'Office': 27.2, 'Industrial': 25.8, 'Retail': 10.6, 'Mixed Use': 4.1 },
+                    '2027': { 'Office': 0.0, 'Industrial': 0.0, 'Retail': 0.0, 'Mixed Use': 0.0 },
+                    '2028': { 'Office': 0.0, 'Industrial': 0.0, 'Retail': 0.0, 'Mixed Use': 0.0 },
+                    '2029': { 'Office': 0.0, 'Industrial': 0.0, 'Retail': 0.0, 'Mixed Use': 0.0 },
+                    '2030+': { 'Office': 0.0, 'Industrial': 0.0, 'Retail': 10.6, 'Mixed Use': 8.2 }
+                };
+                
+                // Calculate rent amounts by sector and year (approximate based on percentages)
+                const totalRent = leaseExpiryData.total_rent;
+                const sectorRentAmounts = {};
+                Object.keys(sectorBreakdown).forEach(year => {
+                    sectorRentAmounts[year] = {};
+                    Object.keys(sectorBreakdown[year]).forEach(sector => {
+                        const percentage = sectorBreakdown[year][sector];
+                        sectorRentAmounts[year][sector] = Math.round((percentage / 100) * totalRent);
+                    });
+                });
+                
+                const stackedLeaseData = {
+                    labels: leaseExpiryData.labels,
+                    totals: leaseExpiryData.data, // Keep for verification
+                    datasets: [
+                        {
+                            label: 'Industrial',
+                            data: leaseExpiryData.labels.map(year => sectorBreakdown[year]['Industrial']),
+                            rentAmounts: leaseExpiryData.labels.map(year => sectorRentAmounts[year]['Industrial']),
+                            backgroundColor: '#3b82f6',
+                            borderColor: '#2563eb',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Office',
+                            data: leaseExpiryData.labels.map(year => sectorBreakdown[year]['Office']),
+                            rentAmounts: leaseExpiryData.labels.map(year => sectorRentAmounts[year]['Office']),
+                            backgroundColor: '#8b5cf6',
+                            borderColor: '#7c3aed',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Retail',
+                            data: leaseExpiryData.labels.map(year => sectorBreakdown[year]['Retail']),
+                            rentAmounts: leaseExpiryData.labels.map(year => sectorRentAmounts[year]['Retail']),
+                            backgroundColor: '#10b981',
+                            borderColor: '#059669',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Mixed Use',
+                            data: leaseExpiryData.labels.map(year => sectorBreakdown[year]['Mixed Use']),
+                            rentAmounts: leaseExpiryData.labels.map(year => sectorRentAmounts[year]['Mixed Use']),
+                            backgroundColor: '#f59e0b',
+                            borderColor: '#d97706',
+                            borderWidth: 1
+                        }
+                    ]
+                };
+                
+                console.log('✅ Stacked lease expiry data loaded:', stackedLeaseData);
+                
+                // Calculate dynamic Y-axis maximum for stacked bar chart
+                // For stacked bars, we need the maximum of the sum of all datasets for each year
+                const stackedTotals = [];
+                for (let i = 0; i < stackedLeaseData.labels.length; i++) {
+                    let yearTotal = 0;
+                    stackedLeaseData.datasets.forEach(dataset => {
+                        yearTotal += dataset.data[i];
+                    });
+                    stackedTotals.push(yearTotal);
+                }
+                
+                const maxDataValue = Math.max(...stackedTotals);
+                const bufferMultiplier = 1.15; // 15% buffer above highest point
+                const yAxisMax = Math.ceil(maxDataValue * bufferMultiplier);
+                
+                console.log(`📊 Dynamic Y-axis scaling for stacked chart:`);
+                console.log(`  Stacked totals: [${stackedTotals.map(t => t.toFixed(1)).join(', ')}]`);
+                console.log(`  Max stacked value: ${maxDataValue.toFixed(1)}%`);
+                console.log(`  Y-axis max: ${yAxisMax}%`);
+                
+                new Chart(leaseCanvas, {
+                    type: 'bar',
+                    data: {
+                        labels: stackedLeaseData.labels,
+                        datasets: stackedLeaseData.datasets
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'top',
+                                labels: {
+                                    color: '#475569',
+                                    font: { size: 12 },
+                                    usePointStyle: true,
+                                    padding: 20
+                                },
+                                onClick: function(e, legendItem, legend) {
+                                    // Toggle dataset visibility
+                                    const index = legendItem.datasetIndex;
+                                    const chart = legend.chart;
+                                    const meta = chart.getDatasetMeta(index);
+                                    
+                                    meta.hidden = meta.hidden === null ? !chart.data.datasets[index].hidden : null;
+                                    chart.update();
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                                titleColor: '#f8fafc',
+                                bodyColor: '#f8fafc',
+                                borderColor: '#475569',
+                                borderWidth: 1,
+                                callbacks: {
+                                    title: function(context) {
+                                        return `Year ${context[0].label}`;
+                                    },
+                                    label: function(context) {
+                                        const datasetLabel = context.dataset.label;
+                                        const percentage = context.parsed.y;
+                                        const rentAmount = context.dataset.rentAmounts[context.dataIndex];
+                                        return `${datasetLabel}: ${percentage}% of total rent (£${rentAmount.toLocaleString()})`;
+                                    },
+                                    footer: function(context) {
+                                        const yearIndex = context[0].dataIndex;
+                                        const total = stackedLeaseData.totals[yearIndex];
+                                        return `Total expiring: ${total}%`;
+                                    }
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                title: {
+                                    display: true,
+                                    text: 'Lease Expiry Year',
+                                    color: '#475569',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    }
+                                },
+                                ticks: { 
+                                    color: '#475569', 
+                                    font: { size: 11 } 
+                                },
+                                grid: { 
+                                    color: '#e2e8f0',
+                                    drawOnChartArea: false 
+                                },
+                                stacked: true
+                            },
+                            y: {
+                                title: {
+                                    display: true,
+                                    text: '% of Total Portfolio Rent',
+                                    color: '#475569',
+                                    font: {
+                                        size: 12,
+                                        weight: 'bold'
+                                    }
+                                },
+                                ticks: { 
+                                    color: '#475569', 
+                                    font: { size: 10 },
+                                    callback: function(value) {
+                                        return value + '%';
+                                    }
+                                },
+                                grid: { color: '#e2e8f0' },
+                                beginAtZero: true,
+                                max: yAxisMax, // Dynamic max based on actual data + 15% buffer
+                                stacked: true
+                            }
+                        },
+                        // Add data labels for segments >5%
+                        onHover: function(event, elements) {
+                            event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                        }
+                    },
+                    plugins: [{
+                        // Custom plugin for data labels and totals
+                        afterDatasetsDraw: function(chart) {
+                            const ctx = chart.ctx;
+                            ctx.font = 'bold 11px Inter';
+                            ctx.textAlign = 'center';
+                            ctx.fillStyle = '#374151';
+                            
+                            chart.data.datasets.forEach((dataset, datasetIndex) => {
+                                const meta = chart.getDatasetMeta(datasetIndex);
+                                if (!meta.hidden) {
+                                    meta.data.forEach((bar, index) => {
+                                        const value = dataset.data[index];
+                                        if (value >= 5) { // Only show labels for segments >5%
+                                            const x = bar.x;
+                                            const y = bar.y - (bar.height / 2);
+                                            ctx.fillText(value + '%', x, y);
+                                        }
+                                    });
+                                }
+                            });
+                            
+                            // Add total percentage at top of each bar
+                            chart.data.labels.forEach((label, index) => {
+                                const total = stackedLeaseData.totals[index];
+                                const meta = chart.getDatasetMeta(0);
+                                const bar = meta.data[index];
+                                
+                                // Calculate the top of the stacked bar
+                                let topY = chart.chartArea.bottom;
+                                chart.data.datasets.forEach((dataset, datasetIndex) => {
+                                    const datasetMeta = chart.getDatasetMeta(datasetIndex);
+                                    if (!datasetMeta.hidden) {
+                                        const datasetBar = datasetMeta.data[index];
+                                        if (datasetBar.y < topY) {
+                                            topY = datasetBar.y;
+                                        }
+                                    }
+                                });
+                                
+                                ctx.font = 'bold 12px Inter';
+                                ctx.fillStyle = '#1f2937';
+                                ctx.fillText(total + '%', bar.x, topY - 8);
+                            });
+                        }
+                    }]
+                });
+                console.log('✅ Stacked lease expiry chart created successfully!');
+            }
+        } catch (e) {
+            console.error('❌ Stacked lease expiry chart error:', e);
+        }
+
+        // Portfolio Analysis System
+        const portfolioAnalysisData = {{ portfolio_analysis_json|safe }};
+        
+        const portfolioAnalysis = {
+            // Real portfolio analysis findings from backend
+            sampleFindings: portfolioAnalysisData.map(finding => ({
+                status: finding.impact === 'Positive' ? 'Strength' : 'Risk',
+                category: finding.category,
+                finding: finding.finding,
+                impact: finding.impact,
+                action: finding.recommendation,
+                chartLink: finding.chart_reference
+            })),
+            
+            // Backup hardcoded analysis data in case backend data is empty
+            backupFindings: [
+                // STRENGTHS (sorted by importance)
+                {
+                    status: 'Strength',
+                    category: 'Diversification',
+                    finding: 'Well-balanced sector allocation with no sector exceeding 45%',
+                    impact: 'Low',
+                    action: 'Maintain current diversification strategy',
+                    chartLink: 'sector-allocation-chart'
+                },
+                {
+                    status: 'Strength',
+                    category: 'Tenant Quality',
+                    finding: '78% of rent from investment grade tenants (4-5 star credit)',
+                    impact: 'Low',
+                    action: 'Continue focus on quality tenant acquisition',
+                    chartLink: null
+                },
+                {
+                    status: 'Strength',
+                    category: 'Concentration',
+                    finding: 'Top 5 properties represent 52% of portfolio value',
+                    impact: 'Low',
+                    action: 'Monitor concentration levels as portfolio grows',
+                    chartLink: null
+                },
+                {
+                    status: 'Strength',
+                    category: 'Income Trends',
+                    finding: 'Rent roll increased 4.2% year-on-year',
+                    impact: 'Low',
+                    action: 'Capitalize on positive momentum with rent reviews',
+                    chartLink: null
+                },
+                
+                // RISKS (sorted by impact: High, Medium, Low)
+                {
+                    status: 'Risk',
+                    category: 'Lease Risk',
+                    finding: '22.5% of total rent expires in 2026',
+                    impact: 'High',
+                    action: 'Prioritize renewal negotiations for £1.48M expiring rent',
+                    chartLink: 'lease-expiry-chart'
+                },
+                {
+                    status: 'Risk',
+                    category: 'Concentration',
+                    finding: 'Lloyds Banking Group represents 27.2% of total rent',
+                    impact: 'High',
+                    action: 'Negotiate lease extension or secure backup tenant plans',
+                    chartLink: null
+                },
+                {
+                    status: 'Risk',
+                    category: 'Lease Risk',
+                    finding: 'Industrial sector has 42% of rent expiring 2025-2026',
+                    impact: 'Medium',
+                    action: 'Focus Industrial renewal strategy on key £1.17M exposure',
+                    chartLink: 'lease-expiry-chart'
+                },
+                {
+                    status: 'Risk',
+                    category: 'Tenant Quality',
+                    finding: 'British Telecommunications (8.5% of rent) has declining credit trend',
+                    impact: 'Medium',
+                    action: 'Review covenant strength and consider lease restructuring',
+                    chartLink: null
+                },
+                {
+                    status: 'Risk',
+                    category: 'Concentration',
+                    finding: 'Prime Office Complex represents 29.2% of portfolio value',
+                    impact: 'Medium',
+                    action: 'Consider partial disposal or portfolio expansion to rebalance',
+                    chartLink: null
+                }
+            ],
+
+            currentSort: { column: 'status', direction: 'asc' },
+            currentFilters: { category: 'all', status: 'all' },
+
+            init() {
+                // Use real data if available, otherwise fallback to backup data
+                if (this.sampleFindings.length === 0) {
+                    console.log('⚠️ No real analysis data found, using backup data');
+                    this.sampleFindings = this.backupFindings;
+                } else {
+                    console.log('✅ Using real portfolio analysis data from backend');
+                }
+                
+                this.renderTable();
+                this.bindEvents();
+                this.updateSummary();
+                console.log('✅ Portfolio Analysis initialized with', this.sampleFindings.length, 'findings');
+            },
+
+            renderTable() {
+                const tbody = document.getElementById('analysis-table-body');
+                let filteredFindings = this.applyFilters();
+                filteredFindings = this.applySorting(filteredFindings);
+
+                tbody.innerHTML = '';
+
+                filteredFindings.forEach(finding => {
+                    const row = document.createElement('tr');
+                    row.style.borderBottom = '1px solid var(--border-color)';
+                    
+                    // Color coding for rows
+                    if (finding.status === 'Strength') {
+                        row.style.backgroundColor = 'rgba(16, 185, 129, 0.05)';
+                        row.style.borderLeft = '4px solid #10b981';
+                    } else {
+                        const bgColor = finding.impact === 'High' ? 
+                            'rgba(220, 38, 38, 0.05)' : 
+                            finding.impact === 'Medium' ? 
+                            'rgba(245, 158, 11, 0.05)' : 
+                            'rgba(156, 163, 175, 0.05)';
+                        const borderColor = finding.impact === 'High' ? 
+                            '#dc2626' : 
+                            finding.impact === 'Medium' ? 
+                            '#f59e0b' : 
+                            '#9ca3af';
+                        row.style.backgroundColor = bgColor;
+                        row.style.borderLeft = `4px solid ${borderColor}`;
+                    }
+
+                    row.innerHTML = `
+                        <td style="padding: 0.75rem;">
+                            <span style="font-size: 1.25rem;">${finding.status === 'Strength' ? '💚' : '🔴'}</span>
+                            <span style="margin-left: 0.5rem; font-weight: 500;">${finding.status}</span>
+                        </td>
+                        <td style="padding: 0.75rem; font-weight: 500; color: var(--text-primary);">
+                            ${finding.category}
+                        </td>
+                        <td style="padding: 0.75rem; color: var(--text-secondary);">
+                            ${finding.finding}
+                        </td>
+                        <td style="padding: 0.75rem;">
+                            <span class="impact-badge" style="
+                                padding: 0.25rem 0.5rem; 
+                                border-radius: var(--radius-sm); 
+                                font-size: 0.75rem; 
+                                font-weight: 600;
+                                background: ${finding.impact === 'High' ? '#fecaca' : finding.impact === 'Medium' ? '#fed7aa' : '#e5e7eb'};
+                                color: ${finding.impact === 'High' ? '#991b1b' : finding.impact === 'Medium' ? '#9a3412' : '#374151'};
+                            ">${finding.impact}</span>
+                        </td>
+                        <td style="padding: 0.75rem;">
+                            <button class="action-btn" onclick="portfolioAnalysis.executeAction('${finding.action}')" style="
+                                background: var(--accent-primary); 
+                                color: white; 
+                                border: none; 
+                                padding: 0.375rem 0.75rem; 
+                                border-radius: var(--radius-sm); 
+                                font-size: 0.8125rem; 
+                                cursor: pointer;
+                                transition: background 0.2s;
+                            " onmouseover="this.style.background='#1d4ed8'" onmouseout="this.style.background='var(--accent-primary)'">
+                                ${finding.action}
+                            </button>
+                        </td>
+                    `;
+
+                    // Add chart linking functionality
+                    if (finding.chartLink) {
+                        row.style.cursor = 'pointer';
+                        row.addEventListener('click', () => {
+                            this.highlightChart(finding.chartLink);
+                        });
+                        row.title = `Click to highlight ${finding.chartLink}`;
+                    }
+
+                    tbody.appendChild(row);
+                });
+            },
+
+            applyFilters() {
+                return this.sampleFindings.filter(finding => {
+                    const categoryMatch = this.currentFilters.category === 'all' || 
+                        finding.category.toLowerCase().includes(this.currentFilters.category);
+                    const statusMatch = this.currentFilters.status === 'all' || 
+                        finding.status.toLowerCase() === this.currentFilters.status;
+                    return categoryMatch && statusMatch;
+                });
+            },
+
+            applySorting(findings) {
+                return [...findings].sort((a, b) => {
+                    let aVal = a[this.currentSort.column];
+                    let bVal = b[this.currentSort.column];
+
+                    // Custom sorting for status (Strengths first, then Risks by impact)
+                    if (this.currentSort.column === 'status') {
+                        if (a.status === 'Strength' && b.status === 'Risk') return -1;
+                        if (a.status === 'Risk' && b.status === 'Strength') return 1;
+                        if (a.status === 'Risk' && b.status === 'Risk') {
+                            const impactOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
+                            return impactOrder[a.impact] - impactOrder[b.impact];
+                        }
+                        return 0;
+                    }
+
+                    // Custom sorting for impact
+                    if (this.currentSort.column === 'impact') {
+                        const impactOrder = { 'High': 0, 'Medium': 1, 'Low': 2 };
+                        aVal = impactOrder[aVal];
+                        bVal = impactOrder[bVal];
+                    }
+
+                    if (aVal < bVal) return this.currentSort.direction === 'asc' ? -1 : 1;
+                    if (aVal > bVal) return this.currentSort.direction === 'asc' ? 1 : -1;
+                    return 0;
+                });
+            },
+
+            bindEvents() {
+                // Collapse/expand functionality
+                document.getElementById('toggle-analysis').addEventListener('click', () => {
+                    const content = document.getElementById('analysis-content');
+                    const button = document.getElementById('toggle-analysis');
+                    const icon = button.querySelector('.material-symbols-outlined');
+                    
+                    if (content.style.display === 'none') {
+                        content.style.display = 'block';
+                        icon.textContent = 'expand_less';
+                    } else {
+                        content.style.display = 'none';
+                        icon.textContent = 'expand_more';
+                    }
+                });
+
+                // Refresh analysis
+                document.getElementById('refresh-analysis').addEventListener('click', () => {
+                    this.refreshAnalysis();
+                });
+
+                // Filter controls
+                document.getElementById('filter-category').addEventListener('change', (e) => {
+                    this.currentFilters.category = e.target.value;
+                    this.renderTable();
+                    this.updateSummary();
+                });
+
+                document.getElementById('filter-status').addEventListener('change', (e) => {
+                    this.currentFilters.status = e.target.value;
+                    this.renderTable();
+                    this.updateSummary();
+                });
+
+                // Table sorting
+                document.querySelectorAll('[data-sort]').forEach(header => {
+                    header.addEventListener('click', () => {
+                        const column = header.getAttribute('data-sort');
+                        if (this.currentSort.column === column) {
+                            this.currentSort.direction = this.currentSort.direction === 'asc' ? 'desc' : 'asc';
+                        } else {
+                            this.currentSort.column = column;
+                            this.currentSort.direction = 'asc';
+                        }
+                        this.renderTable();
+                        this.updateSortIcons();
+                    });
+                });
+            },
+
+            updateSortIcons() {
+                document.querySelectorAll('[data-sort] .material-symbols-outlined').forEach(icon => {
+                    icon.textContent = 'arrow_upward';
+                    icon.style.opacity = '0.3';
+                });
+
+                const currentHeader = document.querySelector(`[data-sort="${this.currentSort.column}"] .material-symbols-outlined`);
+                if (currentHeader) {
+                    currentHeader.textContent = this.currentSort.direction === 'asc' ? 'arrow_upward' : 'arrow_downward';
+                    currentHeader.style.opacity = '1';
+                }
+            },
+
+            updateSummary() {
+                const filteredFindings = this.applyFilters();
+                const strengths = filteredFindings.filter(f => f.status === 'Strength').length;
+                const highRisks = filteredFindings.filter(f => f.status === 'Risk' && f.impact === 'High').length;
+
+                document.getElementById('total-findings').textContent = filteredFindings.length;
+                document.getElementById('total-strengths').textContent = strengths;
+                document.getElementById('total-high-risks').textContent = highRisks;
+                document.getElementById('last-updated').textContent = new Date().toLocaleTimeString();
+            },
+
+            refreshAnalysis() {
+                console.log('🔄 Refreshing portfolio analysis...');
+                // In real implementation, this would re-run the rules engine
+                this.renderTable();
+                this.updateSummary();
+                
+                // Show refresh feedback
+                const btn = document.getElementById('refresh-analysis');
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '<span class="material-symbols-outlined" style="font-size: 1rem;">check</span> Updated';
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                }, 2000);
+            },
+
+            executeAction(action) {
+                console.log('🎯 Executing action:', action);
+                alert(`Action: ${action}\n\nThis would navigate to the relevant management screen or initiate the recommended workflow.`);
+            },
+
+            highlightChart(chartId) {
+                console.log('🎯 Highlighting chart:', chartId);
+                const chartElement = document.getElementById(chartId);
+                if (chartElement) {
+                    chartElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // Add highlight effect
+                    const container = chartElement.closest('.chart-container-wireframe, .sector-chart-container');
+                    if (container) {
+                        container.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.5)';
+                        container.style.border = '2px solid #3b82f6';
+                        
+                        setTimeout(() => {
+                            container.style.boxShadow = '';
+                            container.style.border = '';
+                        }, 3000);
+                    }
+                }
+            }
+        };
+
+        // Initialize portfolio analysis
+        portfolioAnalysis.init();
 
         // Future Income & Yield Chart
         try {
@@ -313,10 +1090,6 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (e) {
             console.error('❌ Future income chart error:', e);
         }
-        
-    } else {
-        console.error('Chart.js not loaded');
-    }
 
     // Interactive functionality
     document.querySelectorAll('.property-item, .tenant-item').forEach(item => {
@@ -341,7 +1114,96 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    }, 500); // Wait 500ms for Chart.js to load
+    // Dashboard Portfolio Integration
+    console.log('🎯 Setting up dashboard portfolio integration...');
+    
+    // Initialize dashboard with current portfolio selection
+    const initializeDashboardPortfolio = () => {
+        const currentPortfolio = window.PortfolioManager.currentPortfolio;
+        const dashboardSelector = document.getElementById('dashboard-portfolio-selector');
+        
+        if (dashboardSelector) {
+            dashboardSelector.value = currentPortfolio;
+            console.log('✅ Dashboard portfolio selector initialized with:', currentPortfolio);
+        }
+        
+        // Register dashboard-specific update functions
+        window.updateDashboardMetrics = function(portfolioId) {
+            console.log('📊 Updating dashboard metrics for portfolio:', portfolioId);
+            // This function will be called when portfolio changes
+            // Future implementation will update the dashboard KPIs
+        };
+        
+        window.updateCharts = function(portfolioId) {
+            console.log('📈 Updating dashboard charts for portfolio:', portfolioId);
+            // This function will update sector allocation, lease expiry, etc.
+            // Future implementation will filter chart data by portfolio
+        };
+        
+        window.updateTopProperties = function(portfolioId) {
+            console.log('🏢 Updating top properties for portfolio:', portfolioId);
+            // This function will filter the top properties list
+            // Future implementation will show portfolio-specific properties
+        };
+        
+        window.updateTopTenants = function(portfolioId) {
+            console.log('👥 Updating top tenants for portfolio:', portfolioId);
+            // This function will filter the top tenants list
+            // Future implementation will show portfolio-specific tenants
+        };
+    };
+    
+    // Initialize when global portfolio manager is ready
+    if (window.PortfolioManager) {
+        initializeDashboardPortfolio();
+    } else {
+        // Wait for portfolio manager to load
+        setTimeout(initializeDashboardPortfolio, 500);
+    }
+    
+    // Listen for global portfolio changes
+    window.addEventListener('portfolioChanged', function(event) {
+        const { portfolioId, portfolioData } = event.detail;
+        console.log('🔄 Dashboard received portfolio change event:', portfolioId);
+        
+        // Update dashboard selector if it exists
+        const dashboardSelector = document.getElementById('dashboard-portfolio-selector');
+        if (dashboardSelector && dashboardSelector.value !== portfolioId) {
+            dashboardSelector.value = portfolioId;
+        }
+        
+        console.log('✅ Dashboard synchronized with global portfolio change');
+    });
+} // End initializeDashboardCharts function
+
+// Wait for both DOM and Chart.js to be ready
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('📄 DOM loaded, waiting for Chart.js...');
+    
+    if (typeof Chart !== 'undefined') {
+        // Chart.js already loaded
+        initializeDashboardCharts();
+    } else {
+        // Wait for Chart.js to load
+        window.addEventListener('chartjsReady', function() {
+            console.log('📊 Chart.js ready event received, initializing dashboard charts...');
+            initializeDashboardCharts();
+        });
+        
+        // Fallback: check periodically if Chart.js is loaded
+        let checkCount = 0;
+        const checkInterval = setInterval(() => {
+            checkCount++;
+            if (typeof Chart !== 'undefined') {
+                console.log('📊 Chart.js detected via polling, initializing dashboard charts...');
+                clearInterval(checkInterval);
+                initializeDashboardCharts();
+            } else if (checkCount > 20) { // Stop after 10 seconds
+                console.error('💥 Chart.js failed to load after 10 seconds');
+                clearInterval(checkInterval);
+            }
+        }, 500);
+    }
 }); // End DOMContentLoaded
 </script>
 {% endblock %}

@@ -17,7 +17,7 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}?v=2025731">
     {% endblock %}
 </head>
-<body>
+<body {% block body_attrs %}{% endblock %}>
     <!-- Sidebar Navigation -->
     <aside class="sidebar">
         <div class="sidebar-header">
@@ -59,12 +59,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'financial_modelling' %}" class="nav-item">
-                        <span class="material-symbols-outlined">calculate</span>
-                        <span>Financial Modelling</span>
-                    </a>
-                </li>
-                <li>
                     <a href="{% url 'debt' %}" class="nav-item">
                         <span class="material-symbols-outlined">account_balance</span>
                         <span>Debt Management</span>
@@ -98,7 +92,9 @@
         <div class="top-banner">
             <div class="banner-tabs">
                 <a href="{% url 'dashboard' %}" class="banner-tab {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">Portfolio</a>
-                <a href="{% url 'deals' %}" class="banner-tab {% if request.resolver_match.url_name == 'deals' %}active{% endif %}">Deals</a>
+                <!-- Temporarily hidden - will be re-added later -->
+                <!-- <a href="{% comment %}{% url 'deals' %}{% endcomment %}" class="banner-tab {% if request.resolver_match.url_name == 'deals' %}active{% endif %}">Deals</a> -->
+                <!-- <a href="{% comment %}{% url 'financial_modelling' %}{% endcomment %}" class="banner-tab {% if request.resolver_match.url_name == 'financial_modelling' %}active{% endif %}">Financial Modelling</a> -->
             </div>
         </div>
         
@@ -139,15 +135,43 @@
     </main>
 
     {% block javascript %}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
-    <script>
-        // Verify Chart.js loaded
-        if (typeof Chart === 'undefined') {
-            console.error('Chart.js failed to load from CDN');
-        } else {
-            console.log('Chart.js loaded successfully, version:', Chart.version);
-        }
+    <!-- Direct Chart.js include with fallback -->
+    <script src="{% static 'js/chart.min.js' %}?v=2025813" async
+            onload="console.log('✅ Chart.js loaded directly'); window.dispatchEvent(new CustomEvent('chartjsReady'));"
+            onerror="console.log('❌ Direct load failed, trying fallback'); window.loadChartJSFallback();">
     </script>
+    
+    <script>
+        // Fallback function for when direct loading fails
+        window.loadChartJSFallback = function() {
+            console.log('🔄 Loading Chart.js via dynamic script...');
+            
+            // Try to load dynamically
+            const script = document.createElement('script');
+            script.src = '{% static "js/chart.min.js" %}?v=2025813-fallback';
+            script.async = true;
+            
+            script.onload = function() {
+                console.log('✅ Chart.js loaded via fallback');
+                window.dispatchEvent(new CustomEvent('chartjsReady'));
+            };
+            
+            script.onerror = function() {
+                console.error('💥 All Chart.js loading methods failed');
+                // Set up fallback chart functionality
+                window.Chart = window.Chart || {
+                    version: 'fallback',
+                    defaults: { color: '#475569', borderColor: '#e2e8f0' }
+                };
+                window.dispatchEvent(new CustomEvent('chartjsReady'));
+            };
+            
+            document.head.appendChild(script);
+        };
+    </script>
+    
+    <!-- Global Portfolio Manager -->
+    <script src="{% static 'js/portfolio-manager.js' %}?v=2025813b"></script>
     <script>
         // Sidebar toggle functionality
         document.querySelector('.sidebar-toggle').addEventListener('click', function() {
