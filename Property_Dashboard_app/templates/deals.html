@@ -4,6 +4,8 @@
 {% block title %}Deals{% endblock %}
 {% block page_title %}Deals{% endblock page_title %}
 
+{% block body_attrs %}data-page="deals"{% endblock %}
+
 {% block content %}
 <!-- Top Controls -->
 <div class="deepdive-header">
@@ -25,55 +27,65 @@
                 </button>
             </div>
         </div>
-        
+    </div>
+    
+    <!-- Filter Controls Row -->
+    <div class="deals-filter-row">
         <div class="control-group">
-            <label>Stage ▼</label>
-            <select class="deepdive-select">
-                <option>All Stages</option>
-                <option>Under Offer</option>
-                <option>Legal Progress</option>
-                <option>Due Diligence</option>
-                <option>Completed</option>
+            <label>Valuation</label>
+            <select class="deals-filter-select" id="valuation-filter">
+                <option value="">All Valuations</option>
+                <option value="under-1m">Under £1M</option>
+                <option value="1m-2m">£1M - £2M</option>
+                <option value="2m-5m">£2M - £5M</option>
+                <option value="5m-10m">£5M - £10M</option>
+                <option value="over-10m">£10M+</option>
             </select>
         </div>
         
         <div class="control-group">
-            <label>Location ▼</label>
-            <select class="deepdive-select">
-                <option>All Locations</option>
-                <option>London</option>
-                <option>Manchester</option>
-                <option>Birmingham</option>
-                <option>Leeds</option>
-                <option>Liverpool</option>
-                <option>Bristol</option>
-                <option>Edinburgh</option>
+            <label>Location</label>
+            <select class="deals-filter-select" id="location-filter">
+                <option value="">All Locations</option>
+                <optgroup label="Major Cities">
+                    <option value="london">London</option>
+                    <option value="manchester">Manchester</option>
+                    <option value="birmingham">Birmingham</option>
+                    <option value="edinburgh">Edinburgh</option>
+                    <option value="glasgow">Glasgow</option>
+                    <option value="leeds">Leeds</option>
+                    <option value="liverpool">Liverpool</option>
+                    <option value="bristol">Bristol</option>
+                    <option value="cardiff">Cardiff</option>
+                    <option value="belfast">Belfast</option>
+                </optgroup>
+                <optgroup label="Regions">
+                    <option value="south-east">South East</option>
+                    <option value="north-west">North West</option>
+                    <option value="midlands">Midlands</option>
+                    <option value="yorkshire">Yorkshire</option>
+                    <option value="south-west">South West</option>
+                    <option value="north-east">North East</option>
+                    <option value="scotland">Scotland</option>
+                    <option value="wales">Wales</option>
+                    <option value="northern-ireland">Northern Ireland</option>
+                </optgroup>
             </select>
         </div>
         
         <div class="control-group">
-            <label>Sector ▼</label>
-            <select class="deepdive-select">
-                <option>All Sectors</option>
-                <option>Office</option>
-                <option>Retail</option>
-                <option>Industrial</option>
-                <option>Residential</option>
-                <option>Mixed Use</option>
-                <option>Warehouse</option>
-                <option>Logistics</option>
-            </select>
-        </div>
-        
-        <div class="control-group">
-            <label>Price ▼</label>
-            <select class="deepdive-select">
-                <option>All Prices</option>
-                <option>Under £1M</option>
-                <option>£1M - £2M</option>
-                <option>£2M - £5M</option>
-                <option>£5M - £10M</option>
-                <option>£10M+</option>
+            <label>Sector</label>
+            <select class="deals-filter-select" id="sector-filter">
+                <option value="">All Sectors</option>
+                <option value="office">Office</option>
+                <option value="retail">Retail</option>
+                <option value="industrial">Industrial</option>
+                <option value="residential">Residential</option>
+                <option value="mixed-use">Mixed Use</option>
+                <option value="warehouse">Warehouse</option>
+                <option value="logistics">Logistics</option>
+                <option value="hotel">Hotel</option>
+                <option value="airbnb">AirBnB</option>
             </select>
         </div>
     </div>
@@ -94,9 +106,7 @@
                             <th>Photo</th>
                             <th>Target Price</th>
                             <th>Sq Ft</th>
-                            <th>Target Yield</th>
-                            <th>Stage</th>
-                            <th>Completion</th>
+                            <th>Net Initial Yield</th>
                             <th>Comment/Ask</th>
                         </tr>
                     </thead>
@@ -109,8 +119,6 @@
                             <td>£3.2M</td>
                             <td>25,000</td>
                             <td>6.8%</td>
-                            <td><span class="status-legal">Legal Progress</span></td>
-                            <td>Q2 2024</td>
                             <td>
                                 <button class="comment-btn">💬</button>
                             </td>
@@ -123,8 +131,6 @@
                             <td>£2.1M</td>
                             <td>18,500</td>
                             <td>7.2%</td>
-                            <td><span class="status-offer">Under Offer</span></td>
-                            <td>Q3 2024</td>
                             <td>
                                 <button class="comment-btn">💬</button>
                             </td>
@@ -137,8 +143,6 @@
                             <td>£4.5M</td>
                             <td>35,000</td>
                             <td>6.5%</td>
-                            <td><span class="status-dd">Due Diligence</span></td>
-                            <td>Q4 2024</td>
                             <td>
                                 <button class="comment-btn">💬</button>
                             </td>
@@ -151,8 +155,6 @@
                             <td>£1.8M</td>
                             <td>14,200</td>
                             <td>7.5%</td>
-                            <td><span class="status-completed">Completed</span></td>
-                            <td>Q1 2024</td>
                             <td>
                                 <button class="comment-btn">💬</button>
                             </td>
@@ -179,16 +181,12 @@
                                 <span class="value">£3.2M</span>
                             </div>
                             <div class="metric">
-                                <span class="label">Target Yield:</span>
+                                <span class="label">Net Initial Yield:</span>
                                 <span class="value">6.8%</span>
                             </div>
                             <div class="metric">
                                 <span class="label">Size:</span>
                                 <span class="value">25,000 sq ft</span>
-                            </div>
-                            <div class="metric">
-                                <span class="label">Completion:</span>
-                                <span class="value">Q2 2024</span>
                             </div>
                         </div>
                     </div>
@@ -207,16 +205,12 @@
                                 <span class="value">£2.1M</span>
                             </div>
                             <div class="metric">
-                                <span class="label">Target Yield:</span>
+                                <span class="label">Net Initial Yield:</span>
                                 <span class="value">7.2%</span>
                             </div>
                             <div class="metric">
                                 <span class="label">Size:</span>
                                 <span class="value">18,500 sq ft</span>
-                            </div>
-                            <div class="metric">
-                                <span class="label">Completion:</span>
-                                <span class="value">Q3 2024</span>
                             </div>
                         </div>
                     </div>
@@ -235,16 +229,12 @@
                                 <span class="value">£4.5M</span>
                             </div>
                             <div class="metric">
-                                <span class="label">Target Yield:</span>
+                                <span class="label">Net Initial Yield:</span>
                                 <span class="value">6.5%</span>
                             </div>
                             <div class="metric">
                                 <span class="label">Size:</span>
                                 <span class="value">35,000 sq ft</span>
-                            </div>
-                            <div class="metric">
-                                <span class="label">Completion:</span>
-                                <span class="value">Q4 2024</span>
                             </div>
                         </div>
                     </div>
@@ -263,16 +253,12 @@
                                 <span class="value">£1.8M</span>
                             </div>
                             <div class="metric">
-                                <span class="label">Target Yield:</span>
+                                <span class="label">Net Initial Yield:</span>
                                 <span class="value">7.5%</span>
                             </div>
                             <div class="metric">
                                 <span class="label">Size:</span>
                                 <span class="value">14,200 sq ft</span>
-                            </div>
-                            <div class="metric">
-                                <span class="label">Completion:</span>
-                                <span class="value">Q1 2024</span>
                             </div>
                         </div>
                     </div>
@@ -291,16 +277,12 @@
                                 <span class="value">£2.7M</span>
                             </div>
                             <div class="metric">
-                                <span class="label">Target Yield:</span>
+                                <span class="label">Net Initial Yield:</span>
                                 <span class="value">6.9%</span>
                             </div>
                             <div class="metric">
                                 <span class="label">Size:</span>
                                 <span class="value">22,100 sq ft</span>
-                            </div>
-                            <div class="metric">
-                                <span class="label">Completion:</span>
-                                <span class="value">Q3 2024</span>
                             </div>
                         </div>
                     </div>
@@ -319,16 +301,12 @@
                                 <span class="value">£3.8M</span>
                             </div>
                             <div class="metric">
-                                <span class="label">Target Yield:</span>
+                                <span class="label">Net Initial Yield:</span>
                                 <span class="value">7.1%</span>
                             </div>
                             <div class="metric">
                                 <span class="label">Size:</span>
                                 <span class="value">28,500 sq ft</span>
-                            </div>
-                            <div class="metric">
-                                <span class="label">Completion:</span>
-                                <span class="value">Q4 2024</span>
                             </div>
                         </div>
                     </div>
@@ -534,9 +512,9 @@ function updateDealDetails(dealId) {
 }
 
 // Filter functionality
-document.querySelectorAll('.deepdive-select').forEach(select => {
+document.querySelectorAll('.deals-filter-select').forEach(select => {
     select.addEventListener('change', function() {
-        const filterType = this.previousElementSibling.textContent.replace(' ▼', '');
+        const filterType = this.id.replace('-filter', '');
         const filterValue = this.value;
         console.log(`${filterType} filter changed to:`, filterValue);
         
@@ -546,21 +524,61 @@ document.querySelectorAll('.deepdive-select').forEach(select => {
 });
 
 function applyDealsFilters() {
-    const stageFilter = document.querySelector('select').value;
-    const locationFilter = document.querySelectorAll('select')[1].value;
-    const sectorFilter = document.querySelectorAll('select')[2].value;
-    const priceFilter = document.querySelectorAll('select')[3].value;
+    const valuationFilter = document.getElementById('valuation-filter').value;
+    const locationFilter = document.getElementById('location-filter').value;
+    const sectorFilter = document.getElementById('sector-filter').value;
     
     console.log('Applying filters:', {
-        stage: stageFilter,
+        valuation: valuationFilter,
         location: locationFilter,
-        sector: sectorFilter,
-        price: priceFilter
+        sector: sectorFilter
     });
     
-    // Filter logic would go here
-    // This would filter the deals in list view, grid view, and map view
-    // For now, just logging the filters
+    // Filter deals in all views
+    filterDealsInAllViews({
+        valuation: valuationFilter,
+        location: locationFilter,
+        sector: sectorFilter
+    });
+}
+
+function filterDealsInAllViews(filters) {
+    // This would implement actual filtering logic
+    // For now, just show how many deals match the filters
+    
+    // Sample filtering logic - count visible deals
+    let visibleDeals = 0;
+    const allDeals = document.querySelectorAll('.airbnb-property-card, tr');
+    
+    allDeals.forEach(deal => {
+        // Sample logic - in a real implementation, this would check deal data against filters
+        let shouldShow = true;
+        
+        // For demo purposes, randomly hide some deals when filters are applied
+        if (filters.valuation || filters.location || filters.sector) {
+            shouldShow = Math.random() > 0.3; // Show 70% of deals when filtered
+        }
+        
+        if (shouldShow) {
+            deal.style.display = '';
+            visibleDeals++;
+        } else {
+            deal.style.display = 'none';
+        }
+    });
+    
+    // Update results count in map view
+    const resultsCount = document.querySelector('.results-count');
+    if (resultsCount) {
+        const activeFilters = Object.values(filters).filter(f => f).length;
+        if (activeFilters > 0) {
+            resultsCount.textContent = `${visibleDeals} properties match your filters`;
+        } else {
+            resultsCount.textContent = '24 properties within map area';
+        }
+    }
+    
+    console.log(`Filtered results: ${visibleDeals} deals visible`);
 }
 
 // Comment button functionality

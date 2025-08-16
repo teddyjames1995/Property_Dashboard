@@ -288,98 +288,152 @@
 
         <!-- Map View -->
         <div class="view-container map-view" id="map-view">
-            <div class="map-layout">
-                <div class="map-left">
-                    <div class="property-list-panel">
-                        <h4>List of Properties</h4>
-                        <div class="map-property-list">
-                            <div class="map-property-item active" data-property="1">
-                                <span class="property-number">1)</span>
-                                <span class="property-name">Property A</span>
-                                <span class="property-location">London</span>
-                            </div>
-                            <div class="map-property-item" data-property="2">
-                                <span class="property-number">2)</span>
-                                <span class="property-name">Property B</span>
-                                <span class="property-location">Manchester</span>
-                            </div>
-                            <div class="map-property-item" data-property="3">
-                                <span class="property-number">3)</span>
-                                <span class="property-name">Property C</span>
-                                <span class="property-location">Birmingham</span>
-                            </div>
-                            <div class="map-property-item" data-property="4">
-                                <span class="property-number">4)</span>
-                                <span class="property-name">Property D</span>
-                                <span class="property-location">Leeds</span>
-                            </div>
-                            <div class="map-property-item" data-property="5">
-                                <span class="property-number">5)</span>
-                                <span class="property-name">Property E</span>
-                                <span class="property-location">Liverpool</span>
-                            </div>
-                        </div>
+            <div class="airbnb-map-layout">
+                <!-- Property Cards Column -->
+                <div class="property-cards-column">
+                    <div class="map-results-header">
+                        <span class="results-count">24 properties within map area</span>
                     </div>
-                </div>
-                
-                <div class="map-center">
-                    <div class="property-details-panel">
-                        <div class="property-photo-large">
-                            <div class="photo-placeholder">📷</div>
+                    
+                    <div class="property-cards-list">
+                        <div class="airbnb-property-card" data-property="1">
+                            <div class="card-image">
+                                <div class="photo-placeholder">📷</div>
+                                <button class="heart-btn">♡</button>
+                                <div class="guest-favourite">Guest favourite</div>
+                            </div>
+                            <div class="card-info">
+                                <div class="property-title">Office in Central London</div>
+                                <div class="property-subtitle">★ 4.67 (183) · Professional</div>
+                                <div class="property-description">Amazing location, Individual Unit</div>
+                                <div class="property-dates">1 double bed</div>
+                                <div class="property-price">
+                                    <strong>£450</strong> per month
+                                </div>
+                            </div>
                         </div>
                         
-                        <div class="property-details">
-                            <h4>Property 1</h4>
-                            <div class="property-address">
-                                <p><strong>Address:</strong><br>123 Business Park<br>London, SW1A 1AA</p>
+                        <div class="airbnb-property-card" data-property="2">
+                            <div class="card-image">
+                                <div class="photo-placeholder">📷</div>
+                                <button class="heart-btn">♡</button>
+                                <div class="guest-favourite">Guest favourite</div>
                             </div>
-                            
-                            <div class="property-metrics-detailed">
-                                <h5>Valuation</h5>
-                                <p>£2.5M</p>
-                                
-                                <h5>Debt/LTV</h5>
-                                <p>£1.2M (48%)</p>
-                                
-                                <h5>Income</h5>
-                                <p>£180k p.a.</p>
-                            </div>
-                            
-                            <div class="tenants-section">
-                                <h5>Tenants</h5>
-                                <div class="tenant-list">
-                                    <div class="tenant-item">1) TechCorp Ltd</div>
-                                    <div class="tenant-item">2) RetailCo</div>
-                                    <div class="tenant-item">3) ServiceFirm</div>
-                                    <div class="tenant-item">4) StartupInc</div>
+                            <div class="card-info">
+                                <div class="property-title">Retail in Edinburgh</div>
+                                <div class="property-subtitle">★ 4.93 (156) · Professional</div>
+                                <div class="property-description">Stay with Claire</div>
+                                <div class="property-dates">Double room w/ private</div>
+                                <div class="property-price">
+                                    <strong>£340</strong> per month
                                 </div>
                             </div>
-                            
-                            <div class="lease-expiry">
-                                <h5>Lease Expiry</h5>
-                                <div class="lease-chart-placeholder">
-                                    📊 Chart
+                        </div>
+                        
+                        <div class="airbnb-property-card" data-property="3">
+                            <div class="card-image">
+                                <div class="photo-placeholder">📷</div>
+                                <button class="heart-btn">♡</button>
+                            </div>
+                            <div class="card-info">
+                                <div class="property-title">Industrial in Birmingham</div>
+                                <div class="property-subtitle">★ 4.94 (190) · Professional</div>
+                                <div class="property-description">Stay with Luke</div>
+                                <div class="property-dates">Individual Unit</div>
+                                <div class="property-price">
+                                    <strong>£525</strong> per month
                                 </div>
                             </div>
-                            
-                            <div class="attachments">
-                                <h5>Attachments</h5>
-                                <div class="attachment-icon">📎</div>
+                        </div>
+                        
+                        <div class="airbnb-property-card" data-property="4">
+                            <div class="card-image">
+                                <div class="photo-placeholder">📷</div>
+                                <button class="heart-btn">♡</button>
+                            </div>
+                            <div class="card-info">
+                                <div class="property-title">Warehouse in Manchester</div>
+                                <div class="property-subtitle">★ 4.85 (142) · Professional</div>
+                                <div class="property-description">Amazing location</div>
+                                <div class="property-dates">Large Industrial Space</div>
+                                <div class="property-price">
+                                    <strong>£680</strong> per month
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="airbnb-property-card" data-property="5">
+                            <div class="card-image">
+                                <div class="photo-placeholder">📷</div>
+                                <button class="heart-btn">♡</button>
+                            </div>
+                            <div class="card-info">
+                                <div class="property-title">Mixed Use in Liverpool</div>
+                                <div class="property-subtitle">★ 4.78 (98) · Professional</div>
+                                <div class="property-description">Great connectivity</div>
+                                <div class="property-dates">Multi-purpose facility</div>
+                                <div class="property-price">
+                                    <strong>£390</strong> per month
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="airbnb-property-card" data-property="6">
+                            <div class="card-image">
+                                <div class="photo-placeholder">📷</div>
+                                <button class="heart-btn">♡</button>
+                            </div>
+                            <div class="card-info">
+                                <div class="property-title">Office in Bristol</div>
+                                <div class="property-subtitle">★ 4.92 (201) · Professional</div>
+                                <div class="property-description">Modern workspace</div>
+                                <div class="property-dates">Open plan office</div>
+                                <div class="property-price">
+                                    <strong>£420</strong> per month
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="map-right">
-                    <div class="map-container">
+                <!-- Map Column -->
+                <div class="map-column">
+                    <div class="interactive-map">
                         <div class="map-placeholder">
-                            🗺️ Interactive Map
+                            🗺️ Interactive UK Property Map
                             <div class="map-pins">
-                                <div class="map-pin" style="top: 20%; left: 60%;" data-property="1">1</div>
-                                <div class="map-pin" style="top: 30%; left: 40%;" data-property="2">2</div>
-                                <div class="map-pin" style="top: 45%; left: 50%;" data-property="3">3</div>
-                                <div class="map-pin" style="top: 25%; left: 45%;" data-property="4">4</div>
-                                <div class="map-pin" style="top: 35%; left: 30%;" data-property="5">5</div>
+                                <div class="price-pin" style="top: 25%; left: 65%;" data-property="1">
+                                    <span class="price-tag">£450</span>
+                                </div>
+                                <div class="price-pin" style="top: 15%; left: 55%;" data-property="2">
+                                    <span class="price-tag">£340</span>
+                                </div>
+                                <div class="price-pin" style="top: 45%; left: 52%;" data-property="3">
+                                    <span class="price-tag">£525</span>
+                                </div>
+                                <div class="price-pin" style="top: 35%; left: 45%;" data-property="4">
+                                    <span class="price-tag">£680</span>
+                                </div>
+                                <div class="price-pin" style="top: 40%; left: 38%;" data-property="5">
+                                    <span class="price-tag">£390</span>
+                                </div>
+                                <div class="price-pin" style="top: 50%; left: 42%;" data-property="6">
+                                    <span class="price-tag">£420</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Map Controls -->
+                            <div class="map-controls">
+                                <button class="map-control-btn zoom-in">+</button>
+                                <button class="map-control-btn zoom-out">−</button>
+                            </div>
+                            
+                            <!-- Map Attribution -->
+                            <div class="map-attribution">
+                                <span>Keyboard shortcuts</span>
+                                <span>Map data ©2024 Google</span>
+                                <span>100 m</span>
+                                <span>Report a map error</span>
                             </div>
                         </div>
                     </div>
@@ -410,68 +464,56 @@ document.querySelectorAll('.view-btn').forEach(btn => {
     });
 });
 
-// Map property selection
-document.querySelectorAll('.map-property-item, .map-pin').forEach(item => {
+// Airbnb-style map interactions
+document.querySelectorAll('.airbnb-property-card, .price-pin').forEach(item => {
     item.addEventListener('click', function() {
         const propertyId = this.dataset.property;
         
-        // Update active property in list
-        document.querySelectorAll('.map-property-item').forEach(p => p.classList.remove('active'));
-        document.querySelector(`.map-property-item[data-property="${propertyId}"]`).classList.add('active');
+        // Highlight corresponding property card and map pin
+        document.querySelectorAll('.airbnb-property-card').forEach(card => card.classList.remove('active'));
+        document.querySelectorAll('.price-pin').forEach(pin => pin.classList.remove('active'));
         
-        // Update property details panel
-        updatePropertyDetails(propertyId);
+        if (this.classList.contains('airbnb-property-card')) {
+            this.classList.add('active');
+            document.querySelector(`.price-pin[data-property="${propertyId}"]`).classList.add('active');
+        } else {
+            this.classList.add('active');
+            document.querySelector(`.airbnb-property-card[data-property="${propertyId}"]`).classList.add('active');
+            
+            // Scroll property card into view
+            const propertyCard = document.querySelector(`.airbnb-property-card[data-property="${propertyId}"]`);
+            propertyCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        
+        console.log('Selected property:', propertyId);
     });
 });
 
-function updatePropertyDetails(propertyId) {
-    // Sample property data
-    const properties = {
-        '1': {
-            name: 'Property A',
-            address: '123 Business Park<br>London, SW1A 1AA',
-            valuation: '£2.5M',
-            debt: '£1.2M (48%)',
-            income: '£180k p.a.',
-            tenants: ['TechCorp Ltd', 'RetailCo', 'ServiceFirm', 'StartupInc']
-        },
-        '2': {
-            name: 'Property B', 
-            address: '456 Commerce Street<br>Manchester, M1 2AB',
-            valuation: '£1.8M',
-            debt: '£900k (50%)',
-            income: '£144k p.a.',
-            tenants: ['ManufacturingCo', 'LogisticsFirm', 'TradingLtd']
-        },
-        '3': {
-            name: 'Property C',
-            address: '789 Industrial Estate<br>Birmingham, B1 3CD',
-            valuation: '£3.2M',
-            debt: '£1.8M (56%)',
-            income: '£224k p.a.',
-            tenants: ['WarehouseCorp', 'DistributionInc', 'StorageLtd', 'FreightCo']
+// Heart button functionality
+document.querySelectorAll('.heart-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.stopPropagation(); // Prevent card click
+        
+        if (this.textContent === '♡') {
+            this.textContent = '♥';
+            this.style.color = '#ff385c';
+        } else {
+            this.textContent = '♡';
+            this.style.color = '';
         }
-    };
-    
-    const property = properties[propertyId] || properties['1'];
-    
-    // Update details panel
-    document.querySelector('.property-details h4').textContent = property.name;
-    document.querySelector('.property-address p').innerHTML = '<strong>Address:</strong><br>' + property.address;
-    document.querySelector('.property-metrics-detailed p').textContent = property.valuation;
-    document.querySelectorAll('.property-metrics-detailed p')[1].textContent = property.debt;
-    document.querySelectorAll('.property-metrics-detailed p')[2].textContent = property.income;
-    
-    // Update tenants list
-    const tenantsList = document.querySelector('.tenant-list');
-    tenantsList.innerHTML = '';
-    property.tenants.forEach((tenant, index) => {
-        const tenantDiv = document.createElement('div');
-        tenantDiv.className = 'tenant-item';
-        tenantDiv.textContent = `${index + 1}) ${tenant}`;
-        tenantsList.appendChild(tenantDiv);
     });
-}
+});
+
+// Map controls
+document.querySelector('.zoom-in').addEventListener('click', function() {
+    console.log('Zoom in');
+    // Add zoom in functionality
+});
+
+document.querySelector('.zoom-out').addEventListener('click', function() {
+    console.log('Zoom out');
+    // Add zoom out functionality
+});
 
 // Filter functionality
 document.querySelectorAll('.filter-group input[type="checkbox"]').forEach(checkbox => {

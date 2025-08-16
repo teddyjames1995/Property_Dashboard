@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Charts</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.js"></script>
+    <style>
+        .chart-container {
+            width: 400px;
+            height: 400px;
+            margin: 20px;
+            background: #1a1a1a;
+            padding: 20px;
+        }
+        canvas {
+            background: white;
+        }
+    </style>
+</head>
+<body style="background: #0a0a0a; color: white;">
+    <h1>Chart.js Test</h1>
+    
+    <div class="chart-container">
+        <h2>Test Pie Chart</h2>
+        <canvas id="test-pie" width="300" height="300"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Test Bar Chart</h2>
+        <canvas id="test-bar" width="300" height="300"></canvas>
+    </div>
+
+    <script>
+        console.log('Chart.js version:', Chart.version);
+        
+        // Simple pie chart
+        const pieCtx = document.getElementById('test-pie');
+        new Chart(pieCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Office', 'Industrial', 'Retail'],
+                datasets: [{
+                    data: [47, 28, 25],
+                    backgroundColor: ['#3b82f6', '#8b5cf6', '#10b981']
+                }]
+            }
+        });
+        
+        // Simple bar chart
+        const barCtx = document.getElementById('test-bar');
+        new Chart(barCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Jul', 'Aug', 'Sep'],
+                datasets: [{
+                    data: [1, 2, 0],
+                    backgroundColor: '#3b82f6'
+                }]
+            }
+        });
+    </script>
+</body>
+</html>

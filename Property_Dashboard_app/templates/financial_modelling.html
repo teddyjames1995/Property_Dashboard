@@ -4,37 +4,35 @@
 {% block title %}Financial Modelling{% endblock %}
 {% block page_title %}Financial Modelling{% endblock page_title %}
 
+{% block body_attrs %}data-page="financial_modelling"{% endblock %}
+
 {% block content %}
-<!-- Top Controls -->
-<div class="financial-header">
-    <div class="financial-controls-row">
-        <div class="control-group">
-            <label>Dashboard</label>
-            <select class="financial-select">
-                <option>Portfolio ▼</option>
-                <option>Core Portfolio</option>
-                <option>Value-Add Portfolio</option>
-                <option>Development Portfolio</option>
-            </select>
+<!-- Navigation Tabs for Financial Model Sections -->
+<div class="model-navigation">
+    <div class="nav-tabs">
+        <div class="nav-tab active" data-section="dashboard">
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Dashboard</span>
         </div>
-        
-        <div class="control-group">
-            <label>Status</label>
-            <select class="financial-select">
-                <option>All Status ▼</option>
-                <option>New</option>
-                <option>In Progress</option>
-                <option>Completed</option>
-            </select>
+        <div class="nav-tab" data-section="general-assumptions">
+            <span class="nav-icon">📋</span>
+            <span class="nav-text">General Assumptions</span>
         </div>
-        
-        <div class="control-group">
-            <label>Actions</label>
-            <button class="financial-btn primary">New Model</button>
-            <button class="financial-btn secondary">Export</button>
+        <div class="nav-tab" data-section="tenancy-schedule">
+            <span class="nav-icon">🏢</span>
+            <span class="nav-text">Tenancy Schedule</span>
+        </div>
+        <div class="nav-tab" data-section="projected-returns">
+            <span class="nav-icon">📈</span>
+            <span class="nav-text">Projected Returns</span>
+        </div>
+        <div class="nav-tab" data-section="pro-forma">
+            <span class="nav-icon">📊</span>
+            <span class="nav-text">Pro-forma Portfolio</span>
         </div>
     </div>
 </div>
+
 
 <!-- Status Dashboard -->
 <div class="status-dashboard">
@@ -114,6 +112,307 @@
                 <div class="status-item">
                     <span class="property-name">King's Cross Apartments</span>
                     <span class="status-date">Completed: 02/10/24</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- General Assumptions Form -->
+<div class="general-assumptions-form" id="general-assumptions-content" style="display: none;">
+    <div class="assumptions-layout">
+        <!-- Left Column -->
+        <div class="assumptions-left-column">
+            <!-- Rent Section -->
+            <div class="form-section">
+                <h3>Rent</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Current rent p.a.</label>
+                        <input type="text" id="current-rent" class="form-input currency" placeholder="£0">
+                    </div>
+                    <div class="form-group">
+                        <label>Rent psf</label>
+                        <input type="text" id="rent-psf" class="form-input currency calculated" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Rental Growth p.a. (%)</label>
+                        <input type="number" id="rental-growth" class="form-input percentage" step="0.1" placeholder="0.0">
+                    </div>
+                    <div class="form-group">
+                        <label>Next rent review</label>
+                        <input type="date" id="next-rent-review" class="form-input">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>% rent lost each year to voids</label>
+                        <input type="number" id="void-percentage" class="form-input percentage" step="0.1" placeholder="0.0">
+                    </div>
+                    <div class="form-group">
+                        <label>Estimated expenses</label>
+                        <input type="text" id="estimated-expenses" class="form-input currency" placeholder="£0">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Gross rent</label>
+                        <input type="text" id="gross-rent" class="form-input currency calculated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Net Income after Voids and expense</label>
+                        <input type="text" id="net-income-voids-expense" class="form-input currency calculated" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group full-width">
+                        <label>Net income after voids, income and interest</label>
+                        <input type="text" id="net-income-final" class="form-input currency calculated" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Debt Section -->
+            <div class="form-section">
+                <h3>Debt</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loan Amount</label>
+                        <input type="text" id="loan-amount" class="form-input currency" placeholder="£0">
+                    </div>
+                    <div class="form-group">
+                        <label>LTV</label>
+                        <input type="text" id="ltv" class="form-input percentage calculated" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Interest rate</label>
+                        <input type="number" id="interest-rate" class="form-input percentage" step="0.1" placeholder="0.0">
+                    </div>
+                    <div class="form-group">
+                        <label>Loan term</label>
+                        <input type="number" id="loan-term" class="form-input" placeholder="Years">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Interest Only?</label>
+                        <input type="checkbox" id="interest-only" class="form-checkbox">
+                    </div>
+                    <div class="form-group">
+                        <label>Amortisation?</label>
+                        <input type="checkbox" id="amortisation" class="form-checkbox">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Loan arrangement fee</label>
+                        <input type="text" id="loan-arrangement-fee" class="form-input currency" placeholder="£0">
+                    </div>
+                    <div class="form-group">
+                        <label>Gross annual Loan payment</label>
+                        <input type="text" id="gross-annual-payment" class="form-input currency calculated" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Monthly Interest Payment</label>
+                        <input type="text" id="monthly-interest" class="form-input currency calculated" readonly>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="assumptions-right-column">
+            <!-- Investment Inputs Section -->
+            <div class="form-section">
+                <h3>Investment Inputs</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Acquisition Date</label>
+                        <input type="date" id="acquisition-date" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Hold Period</label>
+                        <input type="number" id="hold-period" class="form-input" placeholder="Years">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Exit Date</label>
+                        <input type="date" id="exit-date" class="form-input calculated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Sector</label>
+                        <select id="sector" class="form-input">
+                            <option value="">Select Sector</option>
+                            <option value="office">Office</option>
+                            <option value="retail">Retail</option>
+                            <option value="industrial">Industrial</option>
+                            <option value="residential">Residential</option>
+                            <option value="mixed-use">Mixed Use</option>
+                            <option value="warehouse">Warehouse</option>
+                            <option value="logistics">Logistics</option>
+                            <option value="hotel">Hotel</option>
+                            <option value="airbnb">AirBnB</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Property Details Section -->
+            <div class="form-section">
+                <h3>Property Details</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Net Purchase Price</label>
+                        <input type="text" id="net-purchase-price" class="form-input currency" placeholder="£0">
+                    </div>
+                    <div class="form-group">
+                        <label>Purchase Costs (6.8%)</label>
+                        <input type="text" id="purchase-costs" class="form-input percentage calculated" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Gross Purchase Price</label>
+                        <input type="text" id="gross-purchase-price" class="form-input currency calculated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Area</label>
+                        <input type="number" id="area" class="form-input" placeholder="sq ft">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Current NIY</label>
+                        <input type="text" id="current-niy" class="form-input percentage calculated" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exit Section -->
+            <div class="form-section">
+                <h3>Exit</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Estimated NIY</label>
+                        <input type="text" id="estimated-niy" class="form-input percentage calculated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Future Value of Asset</label>
+                        <input type="text" id="future-value" class="form-input currency calculated" readonly>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Outstanding Loan</label>
+                        <input type="text" id="outstanding-loan" class="form-input currency calculated" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Sellers Costs (1.8%)</label>
+                        <input type="text" id="sellers-costs" class="form-input currency calculated" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sensitivity Tables Section -->
+            <div class="form-section">
+                <h3>Sensitivity Analysis</h3>
+                <div class="sensitivity-tables">
+                    <div class="sensitivity-table">
+                        <h4>Exit Yield vs Rental Growth</h4>
+                        <table id="sensitivity-table-1" class="sensitivity-grid">
+                            <thead>
+                                <tr>
+                                    <th>Exit Yield \ Rental Growth</th>
+                                    <th>2%</th>
+                                    <th>3%</th>
+                                    <th>4%</th>
+                                    <th>5%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>4.5%</td>
+                                    <td class="sens-cell" data-exit="4.5" data-growth="2">-</td>
+                                    <td class="sens-cell" data-exit="4.5" data-growth="3">-</td>
+                                    <td class="sens-cell" data-exit="4.5" data-growth="4">-</td>
+                                    <td class="sens-cell" data-exit="4.5" data-growth="5">-</td>
+                                </tr>
+                                <tr>
+                                    <td>5%</td>
+                                    <td class="sens-cell" data-exit="5" data-growth="2">-</td>
+                                    <td class="sens-cell" data-exit="5" data-growth="3">-</td>
+                                    <td class="sens-cell" data-exit="5" data-growth="4">-</td>
+                                    <td class="sens-cell" data-exit="5" data-growth="5">-</td>
+                                </tr>
+                                <tr>
+                                    <td>5.5%</td>
+                                    <td class="sens-cell" data-exit="5.5" data-growth="2">-</td>
+                                    <td class="sens-cell" data-exit="5.5" data-growth="3">-</td>
+                                    <td class="sens-cell" data-exit="5.5" data-growth="4">-</td>
+                                    <td class="sens-cell" data-exit="5.5" data-growth="5">-</td>
+                                </tr>
+                                <tr>
+                                    <td>6%</td>
+                                    <td class="sens-cell" data-exit="6" data-growth="2">-</td>
+                                    <td class="sens-cell" data-exit="6" data-growth="3">-</td>
+                                    <td class="sens-cell" data-exit="6" data-growth="4">-</td>
+                                    <td class="sens-cell" data-exit="6" data-growth="5">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="sensitivity-table">
+                        <h4>Purchase Price vs LTV</h4>
+                        <table id="sensitivity-table-2" class="sensitivity-grid">
+                            <thead>
+                                <tr>
+                                    <th>Purchase Price \ LTV</th>
+                                    <th>60%</th>
+                                    <th>65%</th>
+                                    <th>70%</th>
+                                    <th>75%</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>£2M</td>
+                                    <td class="sens-cell" data-price="2000000" data-ltv="60">-</td>
+                                    <td class="sens-cell" data-price="2000000" data-ltv="65">-</td>
+                                    <td class="sens-cell" data-price="2000000" data-ltv="70">-</td>
+                                    <td class="sens-cell" data-price="2000000" data-ltv="75">-</td>
+                                </tr>
+                                <tr>
+                                    <td>£3M</td>
+                                    <td class="sens-cell" data-price="3000000" data-ltv="60">-</td>
+                                    <td class="sens-cell" data-price="3000000" data-ltv="65">-</td>
+                                    <td class="sens-cell" data-price="3000000" data-ltv="70">-</td>
+                                    <td class="sens-cell" data-price="3000000" data-ltv="75">-</td>
+                                </tr>
+                                <tr>
+                                    <td>£4M</td>
+                                    <td class="sens-cell" data-price="4000000" data-ltv="60">-</td>
+                                    <td class="sens-cell" data-price="4000000" data-ltv="65">-</td>
+                                    <td class="sens-cell" data-price="4000000" data-ltv="70">-</td>
+                                    <td class="sens-cell" data-price="4000000" data-ltv="75">-</td>
+                                </tr>
+                                <tr>
+                                    <td>£5M</td>
+                                    <td class="sens-cell" data-price="5000000" data-ltv="60">-</td>
+                                    <td class="sens-cell" data-price="5000000" data-ltv="65">-</td>
+                                    <td class="sens-cell" data-price="5000000" data-ltv="70">-</td>
+                                    <td class="sens-cell" data-price="5000000" data-ltv="75">-</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -270,66 +569,6 @@
     </div>
 </div>
 
-<!-- Navigation Tabs for Financial Model Sections -->
-<div class="model-navigation">
-    <div class="nav-tabs">
-        <div class="nav-tab active" data-section="dashboard">
-            <span class="nav-icon">📊</span>
-            <span class="nav-text">Dashboard</span>
-        </div>
-        <div class="nav-tab" data-section="general-assumptions">
-            <span class="nav-icon">📋</span>
-            <span class="nav-text">General Assumptions</span>
-        </div>
-        <div class="nav-tab" data-section="detailed-assumptions">
-            <span class="nav-icon">📝</span>
-            <span class="nav-text">Detailed Assumptions</span>
-        </div>
-        <div class="nav-tab" data-section="tenancy-schedule">
-            <span class="nav-icon">🏢</span>
-            <span class="nav-text">Tenancy Schedule</span>
-        </div>
-        <div class="nav-tab" data-section="projected-returns">
-            <span class="nav-icon">📈</span>
-            <span class="nav-text">Projected Returns</span>
-        </div>
-        <div class="nav-tab" data-section="pro-forma">
-            <span class="nav-icon">📊</span>
-            <span class="nav-text">Pro-forma Portfolio</span>
-        </div>
-        <div class="nav-tab" data-section="lp-gp-split">
-            <span class="nav-icon">💰</span>
-            <span class="nav-text">LP/GP Split</span>
-        </div>
-    </div>
-</div>
-
-<!-- Model Summary Stats -->
-<div class="model-summary">
-    <div class="summary-cards">
-        <div class="summary-card">
-            <h4>Total Portfolio Value</h4>
-            <span class="summary-value">£18.75M</span>
-            <span class="summary-change positive">+12.5%</span>
-        </div>
-        <div class="summary-card">
-            <h4>Total Investment</h4>
-            <span class="summary-value">£13.55M</span>
-            <span class="summary-change">Cost Basis</span>
-        </div>
-        <div class="summary-card">
-            <h4>Total Profit</h4>
-            <span class="summary-value">£5.20M</span>
-            <span class="summary-change positive">+38.4%</span>
-        </div>
-        <div class="summary-card">
-            <h4>Average IRR</h4>
-            <span class="summary-value">12.8%</span>
-            <span class="summary-change positive">Target: 10%</span>
-        </div>
-    </div>
-</div>
-
 {% endblock content %}
 
 {% block javascript %}
@@ -361,10 +600,192 @@ document.querySelectorAll('.nav-tab').forEach(tab => {
         const section = this.getAttribute('data-section');
         console.log('Switching to section:', section);
         
-        // In a real implementation, this would load the appropriate section
-        navigateToSection(section);
+        // Show/hide appropriate content
+        showSection(section);
     });
 });
+
+function showSection(section) {
+    // Hide all sections
+    document.querySelectorAll('.status-dashboard, .appraisal-matrix, .general-assumptions-form').forEach(el => {
+        el.style.display = 'none';
+    });
+    
+    // Show the selected section
+    switch(section) {
+        case 'dashboard':
+            document.querySelector('.status-dashboard').style.display = 'block';
+            document.querySelector('.appraisal-matrix').style.display = 'block';
+            break;
+        case 'general-assumptions':
+            document.querySelector('.general-assumptions-form').style.display = 'block';
+            initializeCalculations();
+            break;
+        default:
+            console.log('Section not implemented yet:', section);
+            break;
+    }
+}
+
+// General Assumptions Form Calculations
+function initializeCalculations() {
+    // Add event listeners for all input fields that trigger calculations
+    const inputs = [
+        'current-rent', 'area', 'void-percentage', 'estimated-expenses', 'interest-rate', 
+        'loan-amount', 'net-purchase-price', 'purchase-costs', 'acquisition-date', 'hold-period'
+    ];
+    
+    inputs.forEach(inputId => {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('input', calculateAllFields);
+            input.addEventListener('change', calculateAllFields);
+        }
+    });
+    
+    // Checkbox listeners
+    document.getElementById('interest-only').addEventListener('change', calculateAllFields);
+    document.getElementById('amortisation').addEventListener('change', calculateAllFields);
+}
+
+// Helper functions for formatting
+function formatCurrency(value) {
+    return '£' + Math.round(value).toLocaleString();
+}
+
+function formatPercentage(value) {
+    return value.toFixed(2) + '%';
+}
+
+function parseCurrency(value) {
+    return parseFloat(value.replace(/[£,]/g, '')) || 0;
+}
+
+function calculateAllFields() {
+    // Get input values (parse currency fields)
+    const currentRent = parseCurrency(document.getElementById('current-rent').value);
+    const area = parseFloat(document.getElementById('area').value) || 0;
+    const voidPercentage = parseFloat(document.getElementById('void-percentage').value) || 0;
+    const estimatedExpenses = parseCurrency(document.getElementById('estimated-expenses').value);
+    const interestRate = parseFloat(document.getElementById('interest-rate').value) || 0;
+    const loanAmount = parseCurrency(document.getElementById('loan-amount').value);
+    const netPurchasePrice = parseCurrency(document.getElementById('net-purchase-price').value);
+    const acquisitionDate = document.getElementById('acquisition-date').value;
+    const holdPeriod = parseFloat(document.getElementById('hold-period').value) || 0;
+    
+    // Calculate Purchase Costs (6.8% of net purchase price)
+    const purchaseCosts = netPurchasePrice * 0.068;
+    document.getElementById('purchase-costs').value = formatPercentage(6.8);
+    
+    // Calculate Gross Purchase Price (Net + Purchase Costs)
+    const grossPurchasePrice = netPurchasePrice + purchaseCosts;
+    document.getElementById('gross-purchase-price').value = formatCurrency(grossPurchasePrice);
+    
+    // Calculate Rent psf
+    if (currentRent && area) {
+        document.getElementById('rent-psf').value = formatCurrency(currentRent / area);
+    }
+    
+    // Calculate Gross rent (same as current rent)
+    document.getElementById('gross-rent').value = formatCurrency(currentRent);
+    
+    // Calculate Net Income after Voids and expense
+    const grossRent = currentRent;
+    const voidLoss = grossRent * (voidPercentage / 100);
+    const netIncomeVoidsExpense = grossRent - voidLoss - estimatedExpenses;
+    document.getElementById('net-income-voids-expense').value = formatCurrency(Math.max(0, netIncomeVoidsExpense));
+    
+    // Calculate Monthly Interest Payment
+    const monthlyInterest = (loanAmount * interestRate / 100) / 12;
+    document.getElementById('monthly-interest').value = formatCurrency(monthlyInterest);
+    
+    // Calculate Net income after voids, income and interest
+    const annualInterest = monthlyInterest * 12;
+    const netIncomeFinal = netIncomeVoidsExpense - annualInterest;
+    document.getElementById('net-income-final').value = formatCurrency(netIncomeFinal);
+    
+    // Calculate LTV
+    if (loanAmount && grossPurchasePrice) {
+        const ltv = (loanAmount / grossPurchasePrice) * 100;
+        document.getElementById('ltv').value = formatPercentage(ltv);
+    }
+    
+    // Calculate Gross annual Loan payment
+    document.getElementById('gross-annual-payment').value = formatCurrency(monthlyInterest * 12);
+    
+    // Calculate Exit Date
+    if (acquisitionDate && holdPeriod) {
+        const acquisitionDateObj = new Date(acquisitionDate);
+        const exitDateObj = new Date(acquisitionDateObj.getFullYear() + holdPeriod, acquisitionDateObj.getMonth(), acquisitionDateObj.getDate());
+        document.getElementById('exit-date').value = exitDateObj.toISOString().split('T')[0];
+    }
+    
+    // Calculate Current NIY
+    if (currentRent && grossPurchasePrice) {
+        const currentNIY = (currentRent / grossPurchasePrice) * 100;
+        document.getElementById('current-niy').value = formatPercentage(currentNIY);
+    }
+    
+    // Calculate estimated fields (placeholder calculations)
+    document.getElementById('estimated-niy').value = formatPercentage(5.5);
+    const futureValue = grossPurchasePrice * 1.2;
+    document.getElementById('future-value').value = formatCurrency(futureValue);
+    document.getElementById('outstanding-loan').value = formatCurrency(loanAmount * 0.8);
+    
+    // Calculate Sellers Costs (always 1.8% of Future Value)
+    const sellersCosts = futureValue * 0.018;
+    document.getElementById('sellers-costs').value = formatCurrency(sellersCosts);
+    
+    // Update sensitivity tables
+    updateSensitivityTables();
+}
+
+function updateSensitivityTables() {
+    // Update Exit Yield vs Rental Growth table
+    const baseFutureValue = parseCurrency(document.getElementById('future-value').value) || 1000000;
+    
+    document.querySelectorAll('#sensitivity-table-1 .sens-cell').forEach(cell => {
+        const exitYield = parseFloat(cell.dataset.exit);
+        const rentalGrowth = parseFloat(cell.dataset.growth);
+        
+        // Simple calculation for demonstration
+        const value = baseFutureValue * (1 + rentalGrowth/100) / (exitYield/100);
+        const irr = ((value / baseFutureValue) - 1) * 100;
+        
+        cell.textContent = irr.toFixed(2) + '%';
+        
+        // Apply conditional formatting
+        if (irr > 15) {
+            cell.className = 'sens-cell positive';
+        } else if (irr < 8) {
+            cell.className = 'sens-cell negative';
+        } else {
+            cell.className = 'sens-cell neutral';
+        }
+    });
+    
+    // Update Purchase Price vs LTV table
+    document.querySelectorAll('#sensitivity-table-2 .sens-cell').forEach(cell => {
+        const purchasePrice = parseFloat(cell.dataset.price);
+        const ltv = parseFloat(cell.dataset.ltv);
+        
+        // Simple calculation for demonstration
+        const loanAmount = purchasePrice * (ltv / 100);
+        const equity = purchasePrice - loanAmount;
+        const equityReturn = (equity * 0.12); // Assuming 12% return on equity
+        
+        cell.textContent = formatCurrency(equityReturn);
+        
+        // Apply conditional formatting
+        if (equityReturn > 150000) {
+            cell.className = 'sens-cell positive';
+        } else if (equityReturn < 80000) {
+            cell.className = 'sens-cell negative';
+        } else {
+            cell.className = 'sens-cell neutral';
+        }
+    });
+}
 
 // Property row interactions
 document.querySelectorAll('.property-row').forEach(row => {
@@ -450,11 +871,9 @@ function navigateToSection(section) {
     const sectionUrls = {
         'dashboard': '/financial_modelling/',
         'general-assumptions': '/financial_modelling/general-assumptions/',
-        'detailed-assumptions': '/financial_modelling/detailed-assumptions/',
         'tenancy-schedule': '/financial_modelling/tenancy-schedule/',
         'projected-returns': '/financial_modelling/projected-returns/',
-        'pro-forma': '/financial_modelling/pro-forma/',
-        'lp-gp-split': '/financial_modelling/lp-gp-split/'
+        'pro-forma': '/financial_modelling/pro-forma/'
     };
     
     console.log('Would navigate to:', sectionUrls[section]);

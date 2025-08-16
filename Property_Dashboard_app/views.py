@@ -66,9 +66,10 @@ def dashboard_view(request):
     total_capex = Property.objects.aggregate(total_capex=Sum('capital_expenditure'))['total_capex'] or 0
     total_occupancy_by_erv = Property.objects.filter(occupancy__gt=0).aggregate(avg_occupancy=Avg('occupancy'))['avg_occupancy'] or 0
 
-    total_yield = (total_income_value / total_valuation_value) * 100 if total_valuation_value > 0 else 0
-    total_debt_ltv = Property.objects.aggregate(debt_ltv=Sum('total_debt') / Sum('valuation') * 100)['debt_ltv'] or 0
-    total_interest = Property.objects.annotate(
+    # Keep raw numeric values for portfolio analysis
+    total_yield_raw = (total_income_value / total_valuation_value) * 100 if total_valuation_value > 0 else 0
+    total_debt_ltv_raw = Property.objects.aggregate(debt_ltv=Sum('total_debt') / Sum('valuation') * 100)['debt_ltv'] or 0
+    total_interest_raw = Property.objects.annotate(
         weighted_interest_part=ExpressionWrapper(
             F('interest_percentage') * F('total_debt'), 
             output_field=DecimalField()
@@ -77,13 +78,14 @@ def dashboard_view(request):
         weighted_interest=Sum('weighted_interest_part', output_field=DecimalField()) / Sum('total_debt', output_field=DecimalField())
     )['weighted_interest'] or 0
 
+    # Format for display
     total_properties = format_number(total_properties_value)
     total_tenants = format_number(total_tenants_value)
     total_sq_ft = format_number(total_sq_ft_value)
-    total_yield = "{:.2f}".format(total_yield)
+    total_yield = "{:.2f}".format(total_yield_raw)
     total_occupancy_by_erv = "{:.1f}".format(total_occupancy_by_erv)
-    total_debt_ltv = "{:.1f}".format(total_debt_ltv)
-    total_interest = "{:.2f}".format(total_interest)
+    total_debt_ltv = "{:.1f}".format(total_debt_ltv_raw)
+    total_interest = "{:.2f}".format(total_interest_raw)
 
     total_valuation = format_currency(total_valuation_value)
     total_income = format_currency(total_income_value)
@@ -148,39 +150,45 @@ def dashboard_view(request):
         'backgroundColor': sector_colors[:len(sector_labels)],
     }
 
-    # Generate monthly lease expiry data starting from current month using real data
+    # Generate yearly lease expiry data with rent amounts and percentages
     from datetime import datetime, timedelta
-    import calendar
-    from django.db.models import Q
     
-    current_date = datetime.now()
-    monthly_labels = []
-    monthly_data = []
+    current_year = datetime.now().year
     
-    # Generate 12 months starting from current month
-    for i in range(12):
-        month_date = current_date + timedelta(days=30 * i)
-        month_name = calendar.month_abbr[month_date.month]
-        year = month_date.year
-        monthly_labels.append(f"{month_name} {year}")
-        
-        # Query actual lease expiries for this month
-        month_start = month_date.replace(day=1)
-        if month_date.month == 12:
-            month_end = month_date.replace(year=month_date.year + 1, month=1, day=1) - timedelta(days=1)
+    # Calculate total rent for percentage calculations
+    total_rent = Tenant.objects.aggregate(total_rent=Sum('contracted_rent'))['total_rent'] or 0
+    
+    # Define year ranges for lease expiry analysis
+    year_labels = ['2025', '2026', '2027', '2028', '2029', '2030+']
+    year_data = []
+    year_rent_data = []
+    year_percentages = []
+    
+    for i, year_label in enumerate(year_labels):
+        if year_label == '2030+':
+            # For 2030+, get all leases expiring from 2030 onwards
+            year_rent = Tenant.objects.filter(
+                lease_end__year__gte=2030
+            ).aggregate(rent_sum=Sum('contracted_rent'))['rent_sum'] or 0
         else:
-            month_end = month_date.replace(month=month_date.month + 1, day=1) - timedelta(days=1)
+            # For specific years
+            target_year = int(year_label)
+            year_rent = Tenant.objects.filter(
+                lease_end__year=target_year
+            ).aggregate(rent_sum=Sum('contracted_rent'))['rent_sum'] or 0
         
-        lease_expiries = Tenant.objects.filter(
-            lease_end__gte=month_start.date(),
-            lease_end__lte=month_end.date()
-        ).count()
+        # Calculate percentage of total rent
+        percentage = (year_rent / total_rent * 100) if total_rent > 0 else 0
         
-        monthly_data.append(lease_expiries)
+        year_data.append(float(year_rent))
+        year_rent_data.append(float(year_rent))
+        year_percentages.append(round(percentage, 1))
     
     lease_expiry_data = {
-        'labels': monthly_labels,
-        'data': monthly_data,
+        'labels': year_labels,
+        'data': year_percentages,  # Percentage data for chart display
+        'rent_data': year_rent_data,  # Actual rent amounts for tooltips
+        'total_rent': float(total_rent)
     }
 
     # Generate debt maturity data starting from current year
@@ -208,6 +216,137 @@ def dashboard_view(request):
     lease_expiry_data_json = json.dumps(lease_expiry_data, cls=DjangoJSONEncoder)
     debt_wall_data_json = json.dumps(debt_wall_data, cls=DjangoJSONEncoder)
 
+    # Portfolio Analysis Rules Engine
+    def analyze_portfolio():
+        analysis_findings = []
+        current_date = datetime.now().date()
+        
+        # Use raw numeric values for comparisons (before string formatting)
+        yield_raw = total_yield_raw  # Raw numeric value from line 70
+        ltv_raw = total_debt_ltv_raw  # Raw numeric value from line 71
+        
+        # 1. Lease Risk Analysis - Check if >20% of rent expires in any single year
+        for i, year_label in enumerate(year_labels):
+            percentage = year_percentages[i]
+            if percentage > 20:
+                rent_amount = year_rent_data[i] / 1000000  # Convert to millions for display
+                analysis_findings.append({
+                    'category': 'Lease Risk',
+                    'finding': f'{percentage:.1f}% of total rent (£{rent_amount:.1f}M) expires in {year_label}',
+                    'impact': 'High' if percentage > 50 else 'Medium',
+                    'recommendation': 'Prioritize lease renewal negotiations - major portfolio exposure',
+                    'action': f'Schedule renewal meetings for £{rent_amount:.1f}M expiring rent',
+                    'chart_reference': 'lease-expiry'
+                })
+        
+        # 1b. Multi-year lease risk analysis
+        # Check for combined 2-year periods with high exposure
+        for i in range(len(year_labels) - 1):
+            combined_percentage = year_percentages[i] + year_percentages[i + 1]
+            if combined_percentage > 40:
+                year1, year2 = year_labels[i], year_labels[i + 1]
+                pct1, pct2 = year_percentages[i], year_percentages[i + 1]
+                analysis_findings.append({
+                    'category': 'Lease Risk',
+                    'finding': f'Combined {pct1:.1f}% + {pct2:.1f}% = {combined_percentage:.1f}% expires in {year1}-{year2}',
+                    'impact': 'High',
+                    'recommendation': 'Stagger renewal negotiations across both years to spread risk',
+                    'action': 'Develop 2-year renewal strategy',
+                    'chart_reference': 'lease-expiry'
+                })
+        
+        # 2. Concentration Risk Analysis - Check sector allocation
+        total_valuation_check = sum(sector_values) * 1000000  # Convert back from millions
+        for i, sector_label in enumerate(sector_labels):
+            sector_percentage = (sector_values[i] * 1000000 / total_valuation_check) * 100 if total_valuation_check > 0 else 0
+            if sector_percentage > 40:
+                analysis_findings.append({
+                    'category': 'Concentration',
+                    'finding': f'{sector_label} represents {sector_percentage:.1f}% of portfolio value',
+                    'impact': 'High',
+                    'recommendation': 'Diversify sector allocation to reduce concentration risk',
+                    'action': 'Review acquisition strategy',
+                    'chart_reference': 'sector-allocation'
+                })
+        
+        # 3. Tenant Quality Analysis - Check credit ratings
+        poor_credit_tenants = Tenant.objects.filter(
+            experian_score__in=['Very Poor', 'Poor', 'Below Average']
+        ).count()
+        total_tenants_count = Tenant.objects.count()
+        
+        if total_tenants_count > 0:
+            poor_credit_percentage = (poor_credit_tenants / total_tenants_count) * 100
+            if poor_credit_percentage > 15:
+                analysis_findings.append({
+                    'category': 'Tenant Quality',
+                    'finding': f'{poor_credit_percentage:.1f}% of tenants have poor credit ratings',
+                    'impact': 'Medium',
+                    'recommendation': 'Review tenant covenant strength and consider rent guarantees',
+                    'action': 'Credit assessment review',
+                    'chart_reference': 'tenant-analysis'
+                })
+        
+        # 4. Portfolio Diversification Analysis - Check property count by sector
+        sector_property_counts = Property.objects.values('sector').annotate(count=Count('id'))
+        total_properties_count = Property.objects.count()
+        
+        for sector_data in sector_property_counts:
+            if total_properties_count > 0:
+                property_percentage = (sector_data['count'] / total_properties_count) * 100
+                if property_percentage > 50:
+                    analysis_findings.append({
+                        'category': 'Diversification',
+                        'finding': f'{sector_data["sector"]} sector has {property_percentage:.1f}% of properties',
+                        'impact': 'Medium',
+                        'recommendation': 'Consider geographic and sector diversification',
+                        'action': 'Strategic review meeting',
+                        'chart_reference': 'sector-allocation'
+                    })
+        
+        # 5. Income Trends Analysis - Check occupancy levels
+        low_occupancy_properties = Property.objects.filter(occupancy__lt=85).count()
+        if total_properties_count > 0:
+            low_occupancy_percentage = (low_occupancy_properties / total_properties_count) * 100
+            if low_occupancy_percentage > 20:
+                analysis_findings.append({
+                    'category': 'Income Trends',
+                    'finding': f'{low_occupancy_percentage:.1f}% of properties have occupancy below 85%',
+                    'impact': 'Medium',
+                    'recommendation': 'Focus on letting vacant spaces and tenant retention',
+                    'action': 'Marketing campaign',
+                    'chart_reference': 'occupancy-metrics'
+                })
+        
+        # 6. Positive findings - Portfolio strengths (use raw numeric value)
+        if yield_raw > 6:
+            analysis_findings.append({
+                'category': 'Income Trends',
+                'finding': f'Strong portfolio yield of {yield_raw:.1f}%',
+                'impact': 'Positive',
+                'recommendation': 'Maintain current asset management strategy',
+                'action': 'Continue monitoring',
+                'chart_reference': 'yield-metrics'
+            })
+        
+        # 7. Debt analysis if applicable (use raw numeric value)
+        if ltv_raw and float(ltv_raw) > 0:
+            if float(ltv_raw) > 70:
+                analysis_findings.append({
+                    'category': 'Financial',
+                    'finding': f'High LTV ratio of {ltv_raw:.1f}%',
+                    'impact': 'High',
+                    'recommendation': 'Consider debt reduction or refinancing options',
+                    'action': 'Meet with lenders',
+                    'chart_reference': 'debt-wall'
+                })
+        
+        return analysis_findings
+    
+    # Generate portfolio analysis
+    portfolio_analysis = analyze_portfolio()
+    portfolio_analysis_json = json.dumps(portfolio_analysis, cls=DjangoJSONEncoder)
+
     context = {
         'total_properties': total_properties,
         'total_tenants': total_tenants,
@@ -227,15 +366,18 @@ def dashboard_view(request):
         'sector_allocation_data_json': sector_allocation_data_json,
         'lease_expiry_data_json': lease_expiry_data_json,
         'debt_wall_data_json': debt_wall_data_json,
+        'portfolio_analysis': portfolio_analysis,
+        'portfolio_analysis_json': portfolio_analysis_json,
     }
 
     return render(request, 'dashboard.html', context)
 
 
-def financial_modelling_view(request):
-    # Add any logic to gather data for the dashboard here
-    context = {}  # For now, we'll use an empty context
-    return render(request, 'financial_modelling.html', context)
+# Temporarily commented out - focusing on portfolio dashboard
+# def financial_modelling_view(request):
+#     # Add any logic to gather data for the dashboard here
+#     context = {}  # For now, we'll use an empty context
+#     return render(request, 'financial_modelling.html', context)
 
 def property_deepdive_view(request):
     # Add any logic to gather data for the dashboard here
@@ -262,10 +404,11 @@ def tenancy_schedule_view(request):
     }
     return render(request, 'tenancy_schedule.html', context)
 
-def deals_view(request):
-    # Add any logic to gather data for the deals dashboard here
-    context = {}  # For now, we'll use an empty context
-    return render(request, 'deals.html', context)
+# Temporarily commented out - focusing on portfolio dashboard
+# def deals_view(request):
+#     # Add any logic to gather data for the deals dashboard here
+#     context = {}  # For now, we'll use an empty context
+#     return render(request, 'deals.html', context)
 
 def asset_management_view(request):
     # Add any logic to gather data for the asset management dashboard here

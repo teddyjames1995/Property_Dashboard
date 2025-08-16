@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tree Diagram Test</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <style>
+        #vacancyTreeChart {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Vacancy Tree Diagram Test</h1>
+    <div id="vacancyTreeChart"></div>
+
+    <script>
+        // Vacancy Tree Diagram using D3.js
+        function createVacancyTreeDiagram() {
+            const container = d3.select("#vacancyTreeChart");
+            const width = 600;
+            const height = 400;
+            
+            // Clear any existing content
+            container.selectAll("*").remove();
+            
+            const svg = container
+                .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .style("background", "white");
+            
+            // Tree data structure
+            const treeData = {
+                name: "Total Vacancy\n12.5%",
+                value: 12.5,
+                children: [
+                    {
+                        name: "Office\n45%",
+                        value: 45,
+                        children: [
+                            { name: "Grade A\n8%", value: 8 },
+                            { name: "Grade B\n15%", value: 15 }
+                        ]
+                    },
+                    {
+                        name: "Retail\n25%",
+                        value: 25,
+                        children: [
+                            { name: "High Street\n22%", value: 22 }
+                        ]
+                    },
+                    {
+                        name: "Industrial\n20%",
+                        value: 20,
+                        children: [
+                            { name: "Warehouse\n5%", value: 5 },
+                            { name: "Light Ind.\n12%", value: 12 }
+                        ]
+                    },
+                    {
+                        name: "Mixed Use\n10%",
+                        value: 10
+                    }
+                ]
+            };
+            
+            // Create tree layout
+            const tree = d3.tree().size([height - 100, width - 200]);
+            const root = d3.hierarchy(treeData);
+            tree(root);
+            
+            const g = svg.append("g")
+                .attr("transform", "translate(100, 50)");
+            
+            // Links
+            g.selectAll(".link")
+                .data(root.links())
+                .enter().append("path")
+                .attr("class", "link")
+                .attr("d", d3.linkHorizontal()
+                    .x(d => d.y)
+                    .y(d => d.x))
+                .style("fill", "none")
+                .style("stroke", "#94a3b8")
+                .style("stroke-width", "2px");
+            
+            // Nodes
+            const node = g.selectAll(".node")
+                .data(root.descendants())
+                .enter().append("g")
+                .attr("class", "node")
+                .attr("transform", d => `translate(${d.y}, ${d.x})`);
+            
+            // Node circles
+            node.append("circle")
+                .attr("r", d => d.depth === 0 ? 8 : 6)
+                .style("fill", d => {
+                    if (d.depth === 0) return "#2563eb";
+                    if (d.data.value > 15) return "#ef4444";
+                    if (d.data.value > 10) return "#f59e0b";
+                    return "#10b981";
+                })
+                .style("stroke", "#ffffff")
+                .style("stroke-width", "2px");
+            
+            // Node labels
+            node.each(function(d) {
+                const text = d3.select(this).append("text")
+                    .attr("x", d.children ? -12 : 12)
+                    .style("text-anchor", d.children ? "end" : "start")
+                    .style("font-size", d.depth === 0 ? "12px" : "10px")
+                    .style("font-weight", d.depth === 0 ? "bold" : "normal")
+                    .style("fill", "#475569");
+                
+                const lines = d.data.name.split("\n");
+                lines.forEach((line, i) => {
+                    text.append("tspan")
+                        .attr("x", d.children ? -12 : 12)
+                        .attr("dy", i === 0 ? "0.35em" : "1.1em")
+                        .text(line);
+                });
+            });
+        }
+
+        // Initialize tree diagram when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(createVacancyTreeDiagram, 100);
+        });
+    </script>
+</body>
+</html>
