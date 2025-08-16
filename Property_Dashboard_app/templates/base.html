@@ -135,38 +135,53 @@
     </main>
 
     {% block javascript %}
-    <!-- Direct Chart.js include with fallback -->
-    <script src="{% static 'js/chart.min.js' %}?v=2025813" async
-            onload="console.log('✅ Chart.js loaded directly'); window.dispatchEvent(new CustomEvent('chartjsReady'));"
-            onerror="console.log('❌ Direct load failed, trying fallback'); window.loadChartJSFallback();">
+    <!-- Chart.js CDN with multiple fallbacks -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.min.js" 
+            onload="console.log('✅ Chart.js loaded from CDN'); window.dispatchEvent(new CustomEvent('chartjsReady'));"
+            onerror="console.log('❌ CDN failed, trying local file'); window.loadChartJSFallback();">
     </script>
     
     <script>
-        // Fallback function for when direct loading fails
+        // Fallback function with multiple CDN sources
         window.loadChartJSFallback = function() {
-            console.log('🔄 Loading Chart.js via dynamic script...');
+            console.log('🔄 Trying local Chart.js file...');
             
-            // Try to load dynamically
-            const script = document.createElement('script');
-            script.src = '{% static "js/chart.min.js" %}?v=2025813-fallback';
-            script.async = true;
+            // Try local file first
+            const script1 = document.createElement('script');
+            script1.src = '{% static "js/chart.min.js" %}?v=2025813-fallback';
+            script1.async = true;
             
-            script.onload = function() {
-                console.log('✅ Chart.js loaded via fallback');
+            script1.onload = function() {
+                console.log('✅ Chart.js loaded from local file');
                 window.dispatchEvent(new CustomEvent('chartjsReady'));
             };
             
-            script.onerror = function() {
-                console.error('💥 All Chart.js loading methods failed');
-                // Set up fallback chart functionality
-                window.Chart = window.Chart || {
-                    version: 'fallback',
-                    defaults: { color: '#475569', borderColor: '#e2e8f0' }
+            script1.onerror = function() {
+                console.log('❌ Local file failed, trying unpkg CDN...');
+                
+                // Try unpkg CDN
+                const script2 = document.createElement('script');
+                script2.src = 'https://unpkg.com/chart.js@4.4.1/dist/chart.min.js';
+                script2.async = true;
+                
+                script2.onload = function() {
+                    console.log('✅ Chart.js loaded from unpkg CDN');
+                    window.dispatchEvent(new CustomEvent('chartjsReady'));
                 };
-                window.dispatchEvent(new CustomEvent('chartjsReady'));
+                
+                script2.onerror = function() {
+                    console.error('💥 All Chart.js loading methods failed');
+                    // Set up fallback chart functionality
+                    window.Chart = window.Chart || {
+                        version: 'fallback',
+                        defaults: { color: '#475569', borderColor: '#e2e8f0' }
+                    };
+                };
+                
+                document.head.appendChild(script2);
             };
             
-            document.head.appendChild(script);
+            document.head.appendChild(script1);
         };
     </script>
     

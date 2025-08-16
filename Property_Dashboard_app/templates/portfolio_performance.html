@@ -82,6 +82,64 @@
         transparent 0%, transparent 49%, 
         #e2e8f0 50%, #e2e8f0 50%, 
         transparent 51%, transparent 100%);
+    height: 200px;
+}
+
+/* Zero baseline - 50% from bottom (representing 0%) */
+.zero-baseline {
+    position: absolute;
+    bottom: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #374151;
+    z-index: 1;
+}
+
+/* Dashed line connecting gilt yields */
+.gilt-line {
+    position: absolute;
+    height: 2px;
+    background: none;
+    border-top: 2px dashed #374151;
+    left: 8.5%;
+    right: 8.5%;
+    bottom: 53.6%;
+    z-index: 2;
+    
+    /* SVG path for connecting line through all points */
+    background-image: 
+        linear-gradient(
+            to right,
+            transparent 0%,
+            transparent 12.5%,
+            #374151 12.5%,
+            #374151 14.5%,
+            transparent 14.5%,
+            transparent 26.5%,
+            #374151 26.5%,
+            #374151 28.5%,
+            transparent 28.5%,
+            transparent 40.5%,
+            #374151 40.5%,
+            #374151 42.5%,
+            transparent 42.5%,
+            transparent 54.5%,
+            #374151 54.5%,
+            #374151 56.5%,
+            transparent 56.5%,
+            transparent 68.5%,
+            #374151 68.5%,
+            #374151 70.5%,
+            transparent 70.5%,
+            transparent 82.5%,
+            #374151 82.5%,
+            #374151 84.5%,
+            transparent 84.5%,
+            transparent 100%
+        );
+    background-size: 100% 2px;
+    border: none;
 }
 
 .bar-group {
@@ -91,28 +149,43 @@
     width: 60px;
     position: relative;
     height: 100%;
+    justify-content: flex-end;
 }
 
 .bar {
     width: 40px;
-    border-radius: 2px 2px 0 0;
     position: relative;
-    transition: opacity 0.3s ease;
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .bar.positive {
     background: #10B981;
+    border-radius: 2px 2px 0 0;
+    /* Positive bars extend upward from 50% baseline */
+    margin-bottom: 50%;
 }
 
 .bar.negative {
     background: #EF4444;
-    align-self: flex-start;
-    margin-top: auto;
     border-radius: 0 0 2px 2px;
+    /* Negative bars extend downward from 50% baseline */
+    margin-top: calc(50% - 8%); /* 50% baseline minus bar height */
 }
 
 .bar:hover {
     opacity: 0.8;
+    transform: scaleY(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.bar-group {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.bar-group:hover {
+    transform: translateY(-2px);
 }
 
 .gilt-point {
@@ -125,6 +198,13 @@
     transform: translateX(-50%);
     border: 2px solid white;
     box-shadow: 0 0 0 1px #374151;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.gilt-point:hover {
+    transform: translateX(-50%) scale(1.3);
+    box-shadow: 0 0 8px rgba(55, 65, 81, 0.5);
 }
 
 .bar-label {
@@ -155,6 +235,161 @@
     pointer-events: none;
 }
 
+/* Redesigned Bottom Row Layout */
+.performance-bottom-row-redesigned {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+    align-items: flex-start;
+}
+
+.contribution-chart-redesigned,
+.sector-returns-redesigned {
+    flex: 1;
+    background: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-height: 350px;
+}
+
+.contribution-chart-redesigned h4,
+.sector-returns-redesigned h4 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    color: #374151;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+/* Contribution Pie Chart Styles */
+.css-contribution-pie {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    position: relative;
+    background: conic-gradient(
+        #3B82F6 0% 45%,
+        #8B5CF6 45% 70%,
+        #10B981 70% 90%,
+        #F59E0B 90% 100%
+    );
+    margin: 0 auto 1.5rem auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.css-contribution-pie:hover {
+    transform: scale(1.02);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+}
+
+/* Individual pie slice overlays for click detection */
+.contribution-slice {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    overflow: hidden;
+}
+
+.contribution-slice::before {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(255,255,255,0);
+    transition: background 0.2s ease;
+    border-radius: 50%;
+}
+
+.contribution-slice:hover::before {
+    background: rgba(255,255,255,0.1);
+}
+
+/* Slice positioning for click areas */
+.contribution-slice-1 {
+    clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 40%, 72% 72%);
+}
+
+.contribution-slice-2 {
+    clip-path: polygon(50% 50%, 72% 72%, 50% 100%, 30% 92%);
+}
+
+.contribution-slice-3 {
+    clip-path: polygon(50% 50%, 30% 92%, 0% 80%, 15% 15%);
+}
+
+.contribution-slice-4 {
+    clip-path: polygon(50% 50%, 15% 15%, 0% 0%, 50% 0%);
+}
+
+.contribution-legend {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.contribution-legend .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4b5563;
+}
+
+.contribution-legend .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+/* Sector Returns Redesigned */
+.sector-returns-redesigned .sector-bars {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sector-returns-redesigned .sector-bar {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.sector-returns-redesigned .sector-label {
+    min-width: 80px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #374151;
+}
+
+.sector-returns-redesigned .bar-container {
+    flex: 1;
+    height: 24px;
+    background: #f3f4f6;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.sector-returns-redesigned .bar {
+    height: 100%;
+    border-radius: 12px;
+    transition: width 0.3s ease;
+}
+
+.sector-returns-redesigned .sector-value {
+    min-width: 40px;
+    text-align: right;
+    font-weight: 600;
+    color: #374151;
+    font-size: 13px;
+}
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .css-chart-container {
@@ -171,6 +406,21 @@
     
     .bar-label {
         font-size: 9px;
+    }
+    
+    .performance-bottom-row-redesigned {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .css-contribution-pie {
+        width: 150px;
+        height: 150px;
+    }
+    
+    .contribution-chart-redesigned,
+    .sector-returns-redesigned {
+        min-height: auto;
     }
 }
 </style>
@@ -253,45 +503,51 @@
                             
                             <!-- Chart Bars and Data -->
                             <div class="chart-bars">
+                                <!-- Zero baseline indicator -->
+                                <div class="zero-baseline"></div>
+                                
+                                <!-- Dashed line connecting gilt yields -->
+                                <div class="gilt-line"></div>
+                                
                                 <div class="bar-group">
-                                    <div class="bar positive" style="height: 31%; background: #10B981;" title="2020: 14%"></div>
-                                    <div class="gilt-point" style="bottom: 18%;" title="0.8%"></div>
+                                    <div class="bar positive" style="height: 28%; background: #10B981;" title="2020: 14%"></div>
+                                    <div class="gilt-point" style="bottom: 53.6%;" title="0.8%"></div>
                                     <div class="bar-label">2020</div>
                                     <div class="bar-value">14%</div>
                                 </div>
                                 <div class="bar-group">
-                                    <div class="bar positive" style="height: 49%; background: #10B981;" title="2021: 22%"></div>
-                                    <div class="gilt-point" style="bottom: 20%;" title="1.2%"></div>
+                                    <div class="bar positive" style="height: 44%; background: #10B981;" title="2021: 22%"></div>
+                                    <div class="gilt-point" style="bottom: 54.8%;" title="1.2%"></div>
                                     <div class="bar-label">2021</div>
                                     <div class="bar-value">22%</div>
                                 </div>
                                 <div class="bar-group">
-                                    <div class="bar negative" style="height: 9%; background: #EF4444;" title="2022: -4%"></div>
-                                    <div class="gilt-point" style="bottom: 52%;" title="3.1%"></div>
+                                    <div class="bar negative" style="height: 8%; background: #EF4444;" title="2022: -4%"></div>
+                                    <div class="gilt-point" style="bottom: 61.2%;" title="3.1%"></div>
                                     <div class="bar-label">2022</div>
                                     <div class="bar-value">-4%</div>
                                 </div>
                                 <div class="bar-group">
-                                    <div class="bar positive" style="height: 40%; background: #10B981;" title="2023: 18%"></div>
-                                    <div class="gilt-point" style="bottom: 70%;" title="4.2%"></div>
+                                    <div class="bar positive" style="height: 36%; background: #10B981;" title="2023: 18%"></div>
+                                    <div class="gilt-point" style="bottom: 66.8%;" title="4.2%"></div>
                                     <div class="bar-label">2023</div>
                                     <div class="bar-value">18%</div>
                                 </div>
                                 <div class="bar-group">
-                                    <div class="bar positive" style="height: 44%; background: #10B981;" title="2024: 20%"></div>
-                                    <div class="gilt-point" style="bottom: 63%;" title="3.8%"></div>
+                                    <div class="bar positive" style="height: 40%; background: #10B981;" title="2024: 20%"></div>
+                                    <div class="gilt-point" style="bottom: 65.2%;" title="3.8%"></div>
                                     <div class="bar-label">2024</div>
                                     <div class="bar-value">20%</div>
                                 </div>
                                 <div class="bar-group">
-                                    <div class="bar positive" style="height: 27%; background: #10B981;" title="3 Yr Ann.: 12.1%"></div>
-                                    <div class="gilt-point" style="bottom: 62%;" title="3.7%"></div>
+                                    <div class="bar positive" style="height: 24.2%; background: #10B981;" title="3 Yr Ann.: 12.1%"></div>
+                                    <div class="gilt-point" style="bottom: 64.8%;" title="3.7%"></div>
                                     <div class="bar-label">3 Yr Ann.</div>
                                     <div class="bar-value">12.1%</div>
                                 </div>
                                 <div class="bar-group">
-                                    <div class="bar positive" style="height: 36%; background: #10B981;" title="5 Yr Ann.: 16.3%"></div>
-                                    <div class="gilt-point" style="bottom: 40%;" title="2.4%"></div>
+                                    <div class="bar positive" style="height: 32.6%; background: #10B981;" title="5 Yr Ann.: 16.3%"></div>
+                                    <div class="gilt-point" style="bottom: 59.6%;" title="2.4%"></div>
                                     <div class="bar-label">5 Yr Ann.</div>
                                     <div class="bar-value">16.3%</div>
                                 </div>
@@ -311,73 +567,72 @@
                     </div>
                 </div>
                 
-                <!-- Canvas for JavaScript version (hidden by default) -->
-                <canvas id="performance-history-chart" style="display: none;"></canvas>
+                <!-- Canvas for JavaScript version -->
+                <canvas id="performance-history-chart" width="800" height="300" style="width: 100%; height: 300px; background: white; border-radius: 8px;"></canvas>
             </div>
         </div>
     </div>
     
-    <!-- Bottom Row: Secondary Charts and Info -->
-    <div class="performance-bottom-row">
-        <!-- Contribution to Returns -->
-        <div class="contribution-chart">
-            <h4>Contribution to returns</h4>
-            <div class="contribution-bars">
-                <div class="contrib-bar" style="height: 60px; background: #3b82f6;">
-                    <span>A</span>
+    <!-- Bottom Row: Two Equal Width Charts -->
+    <div class="performance-bottom-row-redesigned">
+        <!-- Contribution to Returns (Left) - Chart.js Pie Chart -->
+        <div class="contribution-chart-redesigned">
+            <h4>Contribution to Returns</h4>
+            <div class="contribution-pie-chart">
+                <!-- Chart.js Canvas -->
+                <div style="position: relative; height: 300px; width: 100%;">
+                    <canvas id="contribution-returns-chart"></canvas>
                 </div>
-                <div class="contrib-bar" style="height: 40px; background: #8b5cf6;">
-                    <span>B C D</span>
-                </div>
-            </div>
-            <div class="properties-label">Properties</div>
-        </div>
-        
-        <!-- Valuation Pie Chart -->
-        <div class="valuation-section">
-            <h4>Valuation</h4>
-            <div class="valuation-chart">
-                <canvas id="valuation-pie-chart"></canvas>
-                <div class="pie-legend">
-                    <div class="legend-item">
-                        <span class="legend-dot" style="background: #3b82f6;"></span>
-                        <span>10m (60%) Prop. A</span>
+                
+                <!-- Fallback CSS Pie Chart (hidden by default) -->
+                <div class="css-contribution-pie" id="css-fallback-pie" style="display: none; margin: 20px auto;" title="Click slices for details">
+                    <div class="contribution-slice contribution-slice-1" style="--percentage: 45; --color: #3B82F6;" title="Warehouse Manchester: 45%">
                     </div>
-                    <div class="legend-item">
-                        <span class="legend-dot" style="background: #8b5cf6;"></span>
-                        <span>Prop. B</span>
+                    <div class="contribution-slice contribution-slice-2" style="--percentage: 25; --color: #8B5CF6;" title="Office London: 25%">
+                    </div>
+                    <div class="contribution-slice contribution-slice-3" style="--percentage: 20; --color: #10B981;" title="Retail Birmingham: 20%">
+                    </div>
+                    <div class="contribution-slice contribution-slice-4" style="--percentage: 10; --color: #F59E0B;" title="Industrial Leeds: 10%">
                     </div>
                 </div>
+                
+                <!-- Legend -->
+                <div class="contribution-legend">
+                    <div class="legend-item"><span class="legend-dot" style="background: #3B82F6;"></span> Warehouse Manchester (45%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #8B5CF6;"></span> Office London (25%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #10B981;"></span> Retail Birmingham (20%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #F59E0B;"></span> Industrial Leeds (10%)</div>
+                </div>
             </div>
         </div>
         
-        <!-- Sector Returns -->
-        <div class="sector-returns">
+        <!-- Sector Returns (Right) -->
+        <div class="sector-returns-redesigned">
             <h4>Sector Returns</h4>
             <div class="sector-bars">
                 <div class="sector-bar">
-                    <span class="sector-label">Ind.</span>
+                    <span class="sector-label">Industrial</span>
                     <div class="bar-container">
                         <div class="bar" style="width: 80%; background: #3b82f6;"></div>
                     </div>
                     <span class="sector-value">16%</span>
                 </div>
                 <div class="sector-bar">
-                    <span class="sector-label">Off.</span>
+                    <span class="sector-label">Office</span>
                     <div class="bar-container">
                         <div class="bar" style="width: 60%; background: #8b5cf6;"></div>
                     </div>
                     <span class="sector-value">12%</span>
                 </div>
                 <div class="sector-bar">
-                    <span class="sector-label">Ret.</span>
+                    <span class="sector-label">Retail</span>
                     <div class="bar-container">
                         <div class="bar" style="width: 40%; background: #10b981;"></div>
                     </div>
                     <span class="sector-value">8%</span>
                 </div>
                 <div class="sector-bar">
-                    <span class="sector-label">Alt.</span>
+                    <span class="sector-label">Alternative</span>
                     <div class="bar-container">
                         <div class="bar" style="width: 20%; background: #f59e0b;"></div>
                     </div>
@@ -694,6 +949,82 @@ function initializeCharts() {
 
 console.log('Performance chart created successfully!');
 
+// Contribution to Returns Pie Chart with precise hover highlighting
+const contributionCanvas = document.getElementById('contribution-returns-chart');
+if (contributionCanvas) {
+    const contributionCtx = contributionCanvas.getContext('2d');
+    console.log('Creating contribution to returns pie chart...');
+
+    const contributionChart = new Chart(contributionCtx, {
+        type: 'pie',
+        data: {
+            labels: ['Warehouse Manchester', 'Office London', 'Retail Birmingham', 'Industrial Leeds'],
+            datasets: [{
+                data: [45, 25, 20, 10],
+                backgroundColor: ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B'],
+                borderColor: ['#2563EB', '#7C3AED', '#059669', '#D97706'],
+                borderWidth: 2,
+                hoverBackgroundColor: ['#2563EB', '#7C3AED', '#059669', '#D97706'],
+                hoverBorderColor: ['#1D4ED8', '#6D28D9', '#047857', '#B45309'],
+                hoverBorderWidth: 3
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            interaction: {
+                intersect: true,
+                mode: 'point'
+            },
+            plugins: {
+                legend: {
+                    display: false  // Hide Chart.js legend since we have custom legend
+                },
+                tooltip: {
+                    position: 'average',
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: 'white',
+                    bodyColor: 'white',
+                    cornerRadius: 4,
+                    displayColors: false,
+                    callbacks: {
+                        label: function(context) {
+                            const label = context.label;
+                            const value = context.parsed;
+                            return `${label}: ${value}%`;
+                        }
+                    }
+                }
+            },
+            onHover: (event, elements, chart) => {
+                event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+            },
+            onClick: (event, elements) => {
+                if (elements.length > 0) {
+                    const clickedIndex = elements[0].index;
+                    const propertyName = contributionChart.data.labels[clickedIndex];
+                    const propertyValue = contributionChart.data.datasets[0].data[clickedIndex];
+                    
+                    console.log('Property clicked:', propertyName);
+                    console.log('Property contribution:', propertyValue + '%');
+                    
+                    // Handle property click - you can add drill-down functionality here
+                    handleContributionPropertyClick(propertyName, propertyValue, clickedIndex);
+                }
+            }
+        }
+    });
+
+    console.log('Contribution pie chart created successfully!');
+} else {
+    console.warn('Contribution chart canvas not found, showing CSS fallback');
+    // Show CSS fallback if Chart.js fails
+    const cssFallback = document.getElementById('css-fallback-pie');
+    if (cssFallback) {
+        cssFallback.style.display = 'block';
+    }
+}
+
 // Dashboard-wide portfolio synchronization system
 window.portfolioManager = {
     portfolios: portfolios,
@@ -803,30 +1134,6 @@ if (portfolioSelector) {
     console.error('Portfolio selector not found');
 }
 
-// Valuation Pie Chart
-const valuationCtx = document.getElementById('valuation-pie-chart').getContext('2d');
-
-new Chart(valuationCtx, {
-    type: 'doughnut',
-    data: {
-        labels: ['Property A', 'Property B'],
-        datasets: [{
-            data: [60, 40],
-            backgroundColor: ['#2563eb', '#7c3aed', '#059669', '#d97706', '#dc2626'],
-            borderWidth: 0,
-            hoverOffset: 4
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            }
-        }
-    }
-});
 
 
 // Export to Excel functionality
@@ -851,6 +1158,285 @@ document.querySelectorAll('.grade-item').forEach(item => {
 
 } // End initializeCharts function
 
+// Interactive Chart Functionality - Foundation for Drill-Down Features
+function initializeChartInteractivity() {
+    console.log('🎯 Initializing chart interactivity...');
+    
+    // Property data for drill-down functionality
+    const propertyData = {
+        'warehouse-manchester': {
+            name: 'Warehouse Manchester',
+            type: 'Industrial',
+            value: '£54M',
+            contribution: '45%',
+            yield: '8.2%',
+            tenants: 3,
+            location: 'Manchester, UK'
+        },
+        'office-london': {
+            name: 'Office London',
+            type: 'Office',
+            value: '£30M', 
+            contribution: '25%',
+            yield: '5.8%',
+            tenants: 12,
+            location: 'London, UK'
+        },
+        'retail-birmingham': {
+            name: 'Retail Birmingham',
+            type: 'Retail',
+            value: '£24M',
+            contribution: '20%',
+            yield: '6.5%',
+            tenants: 8,
+            location: 'Birmingham, UK'
+        },
+        'industrial-leeds': {
+            name: 'Industrial Leeds',
+            type: 'Industrial',
+            value: '£12M',
+            contribution: '10%',
+            yield: '7.1%',
+            tenants: 2,
+            location: 'Leeds, UK'
+        }
+    };
+    
+    // Performance data for drill-down functionality
+    const performanceData = {
+        '2020': { return: 14, gilt: 0.8, details: 'Strong industrial performance' },
+        '2021': { return: 22, gilt: 1.2, details: 'Pandemic recovery boost' },
+        '2022': { return: -4, gilt: 3.1, details: 'Interest rate impact' },
+        '2023': { return: 18, gilt: 4.2, details: 'Market stabilization' },
+        '2024': { return: 20, gilt: 3.8, details: 'Continued growth' },
+        '3-yr-ann': { return: 12.1, gilt: 3.7, details: '3-year annualized performance' },
+        '5-yr-ann': { return: 16.3, gilt: 2.4, details: '5-year annualized performance' }
+    };
+    
+    // Pie Chart Click Handlers
+    const pieSlices = document.querySelectorAll('.contribution-slice');
+    pieSlices.forEach((slice, index) => {
+        slice.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const propertyKeys = ['warehouse-manchester', 'office-london', 'retail-birmingham', 'industrial-leeds'];
+            const propertyKey = propertyKeys[index];
+            const property = propertyData[propertyKey];
+            
+            handlePropertyClick(property, index);
+        });
+        
+        // Add visual feedback
+        slice.addEventListener('mouseenter', function() {
+            console.log('🏢 Hovering over:', propertyData[Object.keys(propertyData)[index]].name);
+        });
+    });
+    
+    // Bar Chart Click Handlers
+    const barGroups = document.querySelectorAll('.bar-group');
+    barGroups.forEach((barGroup, index) => {
+        barGroup.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const periods = ['2020', '2021', '2022', '2023', '2024', '3-yr-ann', '5-yr-ann'];
+            const period = periods[index];
+            const data = performanceData[period];
+            
+            handlePerformanceClick(period, data);
+        });
+        
+        // Add visual feedback
+        barGroup.addEventListener('mouseenter', function() {
+            const periods = ['2020', '2021', '2022', '2023', '2024', '3 Yr Ann', '5 Yr Ann'];
+            console.log('📊 Hovering over period:', periods[index]);
+        });
+    });
+    
+    // Gilt Point Click Handlers
+    const giltPoints = document.querySelectorAll('.gilt-point');
+    giltPoints.forEach((point, index) => {
+        point.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const periods = ['2020', '2021', '2022', '2023', '2024', '3-yr-ann', '5-yr-ann'];
+            const period = periods[index];
+            const data = performanceData[period];
+            
+            handleGiltClick(period, data);
+        });
+    });
+    
+    console.log('✅ Chart interactivity initialized');
+}
+
+// Foundation Functions for Drill-Down Features
+function handlePropertyClick(property, index) {
+    console.log('🏢 Property clicked:', property.name);
+    
+    // Visual feedback
+    showPropertyDetails(property);
+    
+    // Analytics tracking
+    trackPropertyInteraction(property.name, 'click');
+    
+    // Future: Navigate to property detail page
+    // window.location.href = `/property_deepdive/${property.name.toLowerCase().replace(/\s+/g, '-')}/`;
+}
+
+function handlePerformanceClick(period, data) {
+    console.log('📊 Performance period clicked:', period, data);
+    
+    // Visual feedback
+    showPerformanceDetails(period, data);
+    
+    // Analytics tracking
+    trackPerformanceInteraction(period, 'click');
+    
+    // Future: Show detailed performance breakdown
+    // openPerformanceModal(period, data);
+}
+
+function handleGiltClick(period, data) {
+    console.log('📈 Gilt yield clicked:', period, data);
+    
+    // Visual feedback
+    showGiltDetails(period, data);
+    
+    // Analytics tracking
+    trackGiltInteraction(period, 'click');
+    
+    // Future: Show market comparison details
+    // openMarketComparisonModal(period, data);
+}
+
+// Visual Feedback Functions
+function showPropertyDetails(property) {
+    // Create temporary tooltip/popup
+    const tooltip = document.createElement('div');
+    tooltip.className = 'property-tooltip';
+    tooltip.innerHTML = `
+        <div style="
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            z-index: 1000;
+            max-width: 300px;
+        ">
+            <h3 style="margin-top: 0; color: #374151;">${property.name}</h3>
+            <p><strong>Type:</strong> ${property.type}</p>
+            <p><strong>Value:</strong> ${property.value}</p>
+            <p><strong>Contribution:</strong> ${property.contribution}</p>
+            <p><strong>Yield:</strong> ${property.yield}</p>
+            <p><strong>Tenants:</strong> ${property.tenants}</p>
+            <p><strong>Location:</strong> ${property.location}</p>
+            <button onclick="this.parentElement.parentElement.remove()" style="
+                background: #3B82F6;
+                color: white;
+                border: none;
+                padding: 8px 16px;
+                border-radius: 6px;
+                cursor: pointer;
+            ">Close</button>
+        </div>
+    `;
+    document.body.appendChild(tooltip);
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => {
+        if (tooltip.parentElement) {
+            tooltip.remove();
+        }
+    }, 5000);
+}
+
+function showPerformanceDetails(period, data) {
+    console.log(`📊 Showing details for ${period}: Return ${data.return}%, Gilt ${data.gilt}%`);
+    // Placeholder for performance detail modal
+    alert(`${period}\nPortfolio Return: ${data.return}%\nUK Gilt Yield: ${data.gilt}%\n\n${data.details}`);
+}
+
+function showGiltDetails(period, data) {
+    console.log(`📈 Showing gilt details for ${period}: ${data.gilt}%`);
+    // Placeholder for gilt detail modal
+    alert(`UK 10-Year Gilt Yield - ${period}\nYield: ${data.gilt}%\nPortfolio Return: ${data.return}%`);
+}
+
+// Analytics Tracking Functions (Foundation for Future Implementation)
+function trackPropertyInteraction(propertyName, action) {
+    console.log(`📈 Analytics: ${action} on property ${propertyName}`);
+    // Future: Send to analytics service
+    // analytics.track('property_interaction', { property: propertyName, action: action });
+}
+
+function trackPerformanceInteraction(period, action) {
+    console.log(`📈 Analytics: ${action} on performance period ${period}`);
+    // Future: Send to analytics service
+    // analytics.track('performance_interaction', { period: period, action: action });
+}
+
+function trackGiltInteraction(period, action) {
+    console.log(`📈 Analytics: ${action} on gilt period ${period}`);
+    // Future: Send to analytics service
+    // analytics.track('gilt_interaction', { period: period, action: action });
+}
+
+// Click handler for Contribution to Returns pie chart
+function handleContributionPropertyClick(propertyName, propertyValue, index) {
+    console.log('🏢 Contribution property clicked:', propertyName, propertyValue + '%');
+    
+    // Property details mapping
+    const propertyDetails = {
+        'Warehouse Manchester': {
+            name: 'Warehouse Manchester',
+            type: 'Industrial',
+            value: '£54M',
+            contribution: '45%',
+            yield: '8.2%',
+            tenants: 3,
+            location: 'Manchester, UK',
+            sector: 'Industrial'
+        },
+        'Office London': {
+            name: 'Office London',
+            type: 'Office',
+            value: '£30M', 
+            contribution: '25%',
+            yield: '5.8%',
+            tenants: 12,
+            location: 'London, UK',
+            sector: 'Office'
+        },
+        'Retail Birmingham': {
+            name: 'Retail Birmingham',
+            type: 'Retail',
+            value: '£24M',
+            contribution: '20%',
+            yield: '6.5%',
+            tenants: 8,
+            location: 'Birmingham, UK',
+            sector: 'Retail'
+        },
+        'Industrial Leeds': {
+            name: 'Industrial Leeds',
+            type: 'Industrial',
+            value: '£12M',
+            contribution: '10%',
+            yield: '7.1%',
+            tenants: 2,
+            location: 'Leeds, UK',
+            sector: 'Industrial'
+        }
+    };
+    
+    const property = propertyDetails[propertyName];
+    if (property) {
+        showPropertyDetails(property);
+        trackPropertyInteraction(propertyName, 'click');
+    }
+}
+
 // Fallback chart rendering when Chart.js fails
 function createFallbackChart() {
     console.log('🎨 Creating fallback chart using Canvas API...');
@@ -861,12 +1447,35 @@ function createFallbackChart() {
         return;
     }
     
+    // Hide the CSS chart container
+    const cssChartContainer = document.querySelector('.css-chart-container');
+    if (cssChartContainer) {
+        cssChartContainer.style.display = 'none';
+    }
+    
+    // Make sure canvas is visible and properly sized
+    canvas.style.display = 'block';
+    canvas.style.width = '100%';
+    canvas.style.height = '300px';
+    
     const ctx = canvas.getContext('2d');
-    const width = canvas.width = canvas.offsetWidth;
-    const height = canvas.height = canvas.offsetHeight;
+    // Get actual display size
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    
+    // Set canvas internal size (for drawing)
+    const width = canvas.width = rect.width * dpr;
+    const height = canvas.height = rect.height * dpr;
+    
+    // Scale the context to match device pixel ratio
+    ctx.scale(dpr, dpr);
+    
+    // Use CSS size for calculations
+    const cssWidth = rect.width;
+    const cssHeight = rect.height;
     
     // Clear canvas
-    ctx.clearRect(0, 0, width, height);
+    ctx.clearRect(0, 0, cssWidth, cssHeight);
     
     // Set up basic styling
     ctx.fillStyle = '#475569';
@@ -881,13 +1490,13 @@ function createFallbackChart() {
     
     // Draw title
     ctx.textAlign = 'center';
-    ctx.fillText('Performance History (Fallback Mode)', width / 2, 30);
+    ctx.fillText('Performance History (Fallback Mode)', cssWidth / 2, 30);
     
     // Calculate chart area
     const chartLeft = 60;
-    const chartRight = width - 60;
+    const chartRight = cssWidth - 60;
     const chartTop = 50;
-    const chartBottom = height - 80;
+    const chartBottom = cssHeight - 80;
     const chartWidth = chartRight - chartLeft;
     const chartHeight = chartBottom - chartTop;
     
@@ -936,19 +1545,54 @@ function createFallbackChart() {
     
     // Draw legend
     ctx.fillStyle = '#6CB5A3';
-    ctx.fillRect(chartLeft, height - 40, 15, 10);
+    ctx.fillRect(chartLeft, cssHeight - 40, 15, 10);
     ctx.fillStyle = '#475569';
     ctx.font = '12px Inter';
     ctx.textAlign = 'left';
-    ctx.fillText('Total Returns', chartLeft + 20, height - 32);
+    ctx.fillText('Total Returns', chartLeft + 20, cssHeight - 32);
     
     ctx.fillStyle = '#374151';
     ctx.beginPath();
-    ctx.arc(chartLeft + 150, height - 35, 3, 0, 2 * Math.PI);
+    ctx.arc(chartLeft + 150, cssHeight - 35, 3, 0, 2 * Math.PI);
     ctx.fill();
-    ctx.fillText('UK 10-year Gilt', chartLeft + 160, height - 32);
+    ctx.fillText('UK 10-year Gilt', chartLeft + 160, cssHeight - 32);
     
     console.log('✅ Fallback chart created successfully');
+}
+
+// Show CSS fallback for contribution chart when Chart.js fails
+function showContributionChartFallback() {
+    console.log('🎨 Showing CSS fallback for contribution chart...');
+    
+    // Hide Chart.js canvas and show CSS fallback
+    const contributionCanvas = document.getElementById('contribution-returns-chart');
+    const cssFallback = document.getElementById('css-fallback-pie');
+    
+    if (contributionCanvas && cssFallback) {
+        contributionCanvas.style.display = 'none';
+        cssFallback.style.display = 'block';
+        
+        // Add click handlers to CSS fallback slices
+        const cssSlices = cssFallback.querySelectorAll('.contribution-slice');
+        cssSlices.forEach((slice, index) => {
+            slice.addEventListener('click', function(event) {
+                event.stopPropagation();
+                const propertyNames = ['Warehouse Manchester', 'Office London', 'Retail Birmingham', 'Industrial Leeds'];
+                const propertyValues = [45, 25, 20, 10];
+                
+                handleContributionPropertyClick(propertyNames[index], propertyValues[index], index);
+            });
+            
+            // Add hover feedback
+            slice.addEventListener('mouseenter', function() {
+                console.log('🏢 Hovering over:', ['Warehouse Manchester', 'Office London', 'Retail Birmingham', 'Industrial Leeds'][index]);
+            });
+        });
+        
+        console.log('✅ CSS fallback for contribution chart activated');
+    } else {
+        console.error('Could not find contribution chart elements for fallback');
+    }
 }
 
 // Wait for both DOM and Chart.js to be ready
@@ -958,11 +1602,16 @@ document.addEventListener('DOMContentLoaded', function() {
     if (typeof Chart !== 'undefined') {
         // Chart.js already loaded
         initializeCharts();
+        initializeChartInteractivity();
     } else {
+        // Chart.js not available - start fallback timer immediately
+        console.warn('⚠️ Chart.js not immediately available, starting fallback timer...');
+        
         // Wait for Chart.js to load
         window.addEventListener('chartjsReady', function() {
             console.log('📊 Chart.js ready event received, initializing charts...');
             initializeCharts();
+            initializeChartInteractivity();
         });
         
         // Fallback: check periodically if Chart.js is loaded
@@ -973,9 +1622,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.log('📊 Chart.js detected via polling, initializing charts...');
                 clearInterval(checkInterval);
                 initializeCharts();
+                initializeChartInteractivity();
             } else if (checkCount > 20) { // Stop after 10 seconds
                 console.error('💥 Chart.js failed to load after 10 seconds');
                 clearInterval(checkInterval);
+                // Show CSS fallback for contribution chart and performance history
+                showContributionChartFallback();
+                createFallbackChart();
             }
         }, 500);
     }

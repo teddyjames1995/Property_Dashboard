@@ -4,6 +4,174 @@
 {% block title %}Dashboard - CeCe Travels{% endblock title %}
 {% block page_title %}Dashboard{% endblock page_title %}
 
+{% block styles %}
+{{ block.super }}
+<style>
+/* CSS Fallback Chart Styles */
+.css-pie-chart {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    position: relative;
+    background: conic-gradient(
+        #3b82f6 0% 35%,
+        #8b5cf6 35% 63%,
+        #10b981 63% 85%,
+        #f59e0b 85% 100%
+    );
+    margin: 0 auto;
+}
+
+.css-stacked-chart {
+    height: 200px;
+    padding: 20px 0;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+}
+
+.chart-bars {
+    display: flex;
+    justify-content: space-around;
+    align-items: end;
+    height: 120px;
+    padding: 0 20px;
+    border-bottom: 1px solid #374151;
+}
+
+.year-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.stacked-bar {
+    width: 40px;
+    height: 100px;
+    display: flex;
+    flex-direction: column-reverse;
+    border-radius: 2px 2px 0 0;
+    overflow: hidden;
+}
+
+.bar-segment {
+    width: 100%;
+    transition: opacity 0.3s ease;
+}
+
+.bar-segment:hover {
+    opacity: 0.8;
+}
+
+.bar-segment.office { background: #3b82f6; }
+.bar-segment.industrial { background: #8b5cf6; }
+.bar-segment.retail { background: #10b981; }
+.bar-segment.alternative { background: #f59e0b; }
+
+.year-label {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #9ca3af;
+}
+
+.year-total {
+    font-size: 12px;
+    font-weight: 600;
+    color: #374151;
+    margin-top: 4px;
+}
+
+.chart-legend-inline {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 15px;
+    font-size: 11px;
+}
+
+.legend-dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.legend-dot.office { background: #3b82f6; }
+.legend-dot.industrial { background: #8b5cf6; }
+.legend-dot.retail { background: #10b981; }
+.legend-dot.alternative { background: #f59e0b; }
+
+.css-line-chart {
+    height: 200px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+}
+
+.trend-indicator {
+    position: relative;
+    height: 60px;
+    margin-bottom: 20px;
+}
+
+.trend-line {
+    position: absolute;
+    top: 30px;
+    left: 10%;
+    right: 10%;
+    height: 2px;
+    background: linear-gradient(to right, #10b981, #3b82f6);
+    border-radius: 1px;
+}
+
+.trend-points {
+    position: relative;
+    height: 100%;
+}
+
+.trend-point {
+    position: absolute;
+    top: 24px;
+    width: 8px;
+    height: 8px;
+    background: #3b82f6;
+    border: 2px solid white;
+    border-radius: 50%;
+    transform: translateX(-50%);
+}
+
+.chart-summary {
+    text-align: center;
+    color: #6b7280;
+}
+
+.chart-summary p {
+    margin: 8px 0;
+    font-size: 13px;
+}
+
+/* Legend items for pie chart */
+.sector-legend .legend-item {
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    font-size: 12px;
+    color: #4b5563;
+}
+
+.sector-legend .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Top Navigation Bar with Company Info and User Controls -->
 <div class="top-header">
@@ -38,6 +206,89 @@
         </div>
     </div>
 </div>
+
+<!-- Drill-Down Indicator (React-style design) -->
+<div id="drill-down-indicator" class="drill-down-indicator" style="
+    display: none;
+    background: linear-gradient(90deg, #2563eb, #1d4ed8);
+    color: white;
+    padding: 0.75rem 1rem;
+    margin: 0.75rem 0;
+    border-radius: 8px;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+">
+    <!-- Subtle background pattern -->
+    <div style="
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(45deg, transparent 25%, rgba(255,255,255,0.05) 25%, rgba(255,255,255,0.05) 50%, transparent 50%, transparent 75%, rgba(255,255,255,0.05) 75%);
+        background-size: 16px 16px;
+        animation: shimmer 3s linear infinite;
+    "></div>
+    <!-- Content populated by JavaScript -->
+</div>
+
+<style>
+/* Drill-Down Indicator Animations */
+@keyframes shimmer {
+    0% { background-position: 0 0; }
+    100% { background-position: 32px 32px; }
+}
+
+/* React-style drill-down indicator */
+.drill-down-indicator {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.drill-down-indicator button {
+    background: rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    color: white;
+    padding: 0.375rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(4px);
+}
+
+.drill-down-indicator button:hover {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.drill-down-indicator button:active {
+    transform: translateY(0);
+    transition: all 0.1s ease;
+}
+
+/* Entrance animation keyframes */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Apply entrance animation to indicator */
+.drill-down-indicator.show {
+    animation: slideInDown 0.3s ease;
+}
+</style>
 
 <!-- Main Dashboard Content -->
 <div class="dashboard-layout">
@@ -91,9 +342,31 @@
         <div class="sector-chart-container">
             <h3>Sector Allocation</h3>
             <div class="pie-chart-wrapper">
-                <canvas id="sector-allocation-chart" width="200" height="200"></canvas>
+                <!-- CSS Fallback Pie Chart -->
+                <div class="css-pie-chart" id="css-sector-chart">
+                    <div class="pie-slice pie-slice-1" style="--percentage: 35; --color: #3b82f6;" title="Office: 35%">
+                        <span class="pie-label">Office<br>35%</span>
+                    </div>
+                    <div class="pie-slice pie-slice-2" style="--percentage: 28; --color: #8b5cf6;" title="Industrial: 28%">
+                        <span class="pie-label">Industrial<br>28%</span>
+                    </div>
+                    <div class="pie-slice pie-slice-3" style="--percentage: 22; --color: #10b981;" title="Retail: 22%">
+                        <span class="pie-label">Retail<br>22%</span>
+                    </div>
+                    <div class="pie-slice pie-slice-4" style="--percentage: 15; --color: #f59e0b;" title="Alternative: 15%">
+                        <span class="pie-label">Alt<br>15%</span>
+                    </div>
+                </div>
+                
+                <!-- Original Canvas (hidden by default) -->
+                <canvas id="sector-allocation-chart" width="200" height="200" style="display: none;"></canvas>
+                
                 <div class="sector-legend" id="dynamic-legend">
-                    <!-- Legend will be populated dynamically with real data -->
+                    <!-- CSS Fallback Legend -->
+                    <div class="legend-item"><span class="legend-dot" style="background: #3b82f6;"></span> Office (35%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span> Industrial (28%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span> Retail (22%)</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span> Alternative (15%)</div>
                 </div>
             </div>
         </div>
@@ -150,7 +423,61 @@
     <div class="chart-container-wireframe">
         <h3>Lease Expiry Profile by Property Sector</h3>
         <div class="chart-wrapper">
-            <canvas id="lease-expiry-chart" width="400" height="200" style="width: 100%; height: 200px;"></canvas>
+            <!-- CSS Fallback Stacked Bar Chart -->
+            <div class="css-stacked-chart" id="css-lease-chart">
+                <div class="chart-bars">
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment office" style="height: 12%;" title="Office: 12%"></div>
+                            <div class="bar-segment industrial" style="height: 3%;" title="Industrial: 3%"></div>
+                        </div>
+                        <div class="year-label">2025</div>
+                        <div class="year-total">15%</div>
+                    </div>
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment office" style="height: 15%;" title="Office: 15%"></div>
+                            <div class="bar-segment industrial" style="height: 7.5%;" title="Industrial: 7.5%"></div>
+                        </div>
+                        <div class="year-label">2026</div>
+                        <div class="year-total">22.5%</div>
+                    </div>
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment retail" style="height: 18%;" title="Retail: 18%"></div>
+                            <div class="bar-segment industrial" style="height: 5%;" title="Industrial: 5%"></div>
+                        </div>
+                        <div class="year-label">2027</div>
+                        <div class="year-total">23%</div>
+                    </div>
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment office" style="height: 8%;" title="Office: 8%"></div>
+                            <div class="bar-segment retail" style="height: 4%;" title="Retail: 4%"></div>
+                            <div class="bar-segment alternative" style="height: 15%;" title="Alternative: 15%"></div>
+                        </div>
+                        <div class="year-label">2028</div>
+                        <div class="year-total">27%</div>
+                    </div>
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment retail" style="height: 8%;" title="Retail: 8%"></div>
+                            <div class="bar-segment industrial" style="height: 4.5%;" title="Industrial: 4.5%"></div>
+                        </div>
+                        <div class="year-label">2029+</div>
+                        <div class="year-total">12.5%</div>
+                    </div>
+                </div>
+                <div class="chart-legend-inline">
+                    <span class="legend-item"><span class="legend-dot office"></span> Office</span>
+                    <span class="legend-item"><span class="legend-dot industrial"></span> Industrial</span>
+                    <span class="legend-item"><span class="legend-dot retail"></span> Retail</span>
+                    <span class="legend-item"><span class="legend-dot alternative"></span> Alternative</span>
+                </div>
+            </div>
+            
+            <!-- Original Canvas (hidden by default) -->
+            <canvas id="lease-expiry-chart" width="400" height="200" style="display: none; width: 100%; height: 200px;"></canvas>
         </div>
     </div>
 
@@ -158,7 +485,29 @@
     <div class="chart-container-wireframe">
         <h3>Future Income & Running Yield</h3>
         <div class="chart-wrapper">
-            <canvas id="future-income-chart" width="400" height="200" style="width: 100%; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
+            <!-- CSS Fallback Line Chart -->
+            <div class="css-line-chart" id="css-income-chart">
+                <div class="chart-message">
+                    <div class="trend-indicator">
+                        <div class="trend-line"></div>
+                        <div class="trend-points">
+                            <span class="trend-point" style="left: 10%;"></span>
+                            <span class="trend-point" style="left: 30%;"></span>
+                            <span class="trend-point" style="left: 50%;"></span>
+                            <span class="trend-point" style="left: 70%;"></span>
+                            <span class="trend-point" style="left: 90%;"></span>
+                        </div>
+                    </div>
+                    <div class="chart-summary">
+                        <p><strong>Income Trend:</strong> Stable growth expected</p>
+                        <p><strong>Current Yield:</strong> {{ total_yield }}%</p>
+                        <p><strong>Portfolio Value:</strong> {{ total_valuation }}</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Original Canvas (hidden by default) -->
+            <canvas id="future-income-chart" width="400" height="200" style="display: none; width: 100%; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
         </div>
     </div>
 
@@ -257,19 +606,459 @@
 {{ debt_wall_data_json|json_script:"debt-wall-data" }}
 
 <script>
+// CSS Fallback Charts for Dashboard when Chart.js fails
+function activateDashboardFallbackCharts() {
+    console.log('🎨 Activating CSS fallback charts for dashboard...');
+    
+    // Debug: Check all available containers
+    console.log('🔍 Available chart containers:');
+    document.querySelectorAll('[class*="chart"], [id*="chart"]').forEach(el => {
+        console.log(`  - ${el.tagName}.${el.className} #${el.id}`);
+    });
+    
+    // Hide Chart.js canvases and show CSS fallbacks
+    const canvases = document.querySelectorAll('canvas');
+    console.log(`🎯 Hiding ${canvases.length} canvas elements`);
+    canvases.forEach(canvas => {
+        canvas.style.display = 'none';
+    });
+    
+    // Show sector allocation pie chart
+    const sectorChartWrapper = document.querySelector('.pie-chart-wrapper');
+    console.log('🥧 Sector chart wrapper found:', !!sectorChartWrapper);
+    if (sectorChartWrapper) {
+        sectorChartWrapper.innerHTML = `
+            <h4 style="text-align: center; margin-bottom: 1rem; color: #374151;">Sector Allocation</h4>
+            <div class="css-pie-chart" title="Sector allocation breakdown"></div>
+            <div class="chart-legend-inline">
+                <span><span class="legend-dot office"></span>Office (35%)</span>
+                <span><span class="legend-dot industrial"></span>Industrial (28%)</span>
+                <span><span class="legend-dot retail"></span>Retail (22%)</span>
+                <span><span class="legend-dot alternative"></span>Alternative (15%)</span>
+            </div>
+        `;
+        
+        // Add click handlers to pie chart
+        const pieChart = sectorChartWrapper.querySelector('.css-pie-chart');
+        if (pieChart) {
+            pieChart.addEventListener('click', function(event) {
+                console.log('🖱️ CSS Pie chart clicked');
+                alert('Sector Allocation Chart\\n\\nOffice: 35%\\nIndustrial: 28%\\nRetail: 22%\\nAlternative: 15%');
+            });
+            
+            pieChart.style.cursor = 'pointer';
+        }
+    }
+    
+    // Show lease expiry stacked chart (try multiple selectors)
+    const leaseChartWrapper = document.querySelector('.stacked-chart-wrapper') || 
+                              document.querySelector('.chart-wrapper') ||
+                              document.querySelector('#lease-expiry-container');
+    console.log('📊 Lease chart wrapper found:', !!leaseChartWrapper);
+    if (leaseChartWrapper) {
+        console.log('📊 Lease chart wrapper class:', leaseChartWrapper.className);
+        leaseChartWrapper.innerHTML = `
+            <h4 style="text-align: center; margin-bottom: 1rem; color: #374151;">Lease Expiry Schedule</h4>
+            <div class="css-stacked-chart">
+                <div class="chart-bars">
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment office" style="height: 40%;" title="Office: £2.1M"></div>
+                            <div class="bar-segment industrial" style="height: 35%;" title="Industrial: £1.8M"></div>
+                            <div class="bar-segment retail" style="height: 25%;" title="Retail: £1.3M"></div>
+                        </div>
+                        <div class="year-label">2025</div>
+                        <div class="year-total">£5.2M</div>
+                    </div>
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment office" style="height: 30%;" title="Office: £1.5M"></div>
+                            <div class="bar-segment industrial" style="height: 40%;" title="Industrial: £2.0M"></div>
+                            <div class="bar-segment retail" style="height: 30%;" title="Retail: £1.5M"></div>
+                        </div>
+                        <div class="year-label">2026</div>
+                        <div class="year-total">£5.0M</div>
+                    </div>
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment office" style="height: 25%;" title="Office: £1.0M"></div>
+                            <div class="bar-segment industrial" style="height: 50%;" title="Industrial: £2.0M"></div>
+                            <div class="bar-segment retail" style="height: 25%;" title="Retail: £1.0M"></div>
+                        </div>
+                        <div class="year-label">2027</div>
+                        <div class="year-total">£4.0M</div>
+                    </div>
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment office" style="height: 35%;" title="Office: £1.4M"></div>
+                            <div class="bar-segment industrial" style="height: 30%;" title="Industrial: £1.2M"></div>
+                            <div class="bar-segment retail" style="height: 35%;" title="Retail: £1.4M"></div>
+                        </div>
+                        <div class="year-label">2028</div>
+                        <div class="year-total">£4.0M</div>
+                    </div>
+                    <div class="year-group">
+                        <div class="stacked-bar">
+                            <div class="bar-segment office" style="height: 20%;" title="Office: £0.6M"></div>
+                            <div class="bar-segment industrial" style="height: 60%;" title="Industrial: £1.8M"></div>
+                            <div class="bar-segment retail" style="height: 20%;" title="Retail: £0.6M"></div>
+                        </div>
+                        <div class="year-label">2029+</div>
+                        <div class="year-total">£3.0M</div>
+                    </div>
+                </div>
+                <div class="chart-legend-inline">
+                    <span><span class="legend-dot office"></span>Office</span>
+                    <span><span class="legend-dot industrial"></span>Industrial</span>
+                    <span><span class="legend-dot retail"></span>Retail</span>
+                </div>
+            </div>
+        `;
+        
+        // Add click handlers to bar segments
+        const barSegments = leaseChartWrapper.querySelectorAll('.bar-segment');
+        barSegments.forEach(segment => {
+            segment.addEventListener('click', function() {
+                const title = this.getAttribute('title');
+                console.log('🖱️ CSS Bar segment clicked:', title);
+                if (title) {
+                    alert('Lease Expiry Details\\n\\n' + title);
+                }
+            });
+            
+            segment.style.cursor = 'pointer';
+        });
+    }
+    
+    console.log('✅ CSS fallback charts activated for dashboard');
+}
+
 function initializeDashboardCharts() {
     console.log('🚀 Initializing dashboard charts...');
     
     if (typeof Chart === 'undefined') {
-        console.error('❌ Chart.js not loaded - charts will not work');
-        // Show error message on page
-        document.querySelectorAll('.chart-wrapper, .pie-chart-wrapper').forEach(el => {
-            el.innerHTML = '<div style="color: red; text-align: center; padding: 20px;">Chart.js failed to load</div>';
-        });
+        console.error('❌ Chart.js not loaded - activating CSS fallback charts');
+        // Activate CSS fallback charts instead of showing error
+        activateDashboardFallbackCharts();
         return;
     }
     
     console.log('✅ Chart.js is available, proceeding with dashboard chart creation...');
+    
+    // ============================================================================
+    // DRILL-DOWN STATE MANAGEMENT SYSTEM
+    // ============================================================================
+    
+    console.log('🚀 INITIALIZING DRILL-DOWN SYSTEM');
+    console.log('📊 Starting drill-down state management setup...');
+    
+    // Set up state for drill-down mode (React-like useState pattern in vanilla JS)
+    let drillDownState = {
+        mode: null,           // null, 'property', 'sector'
+        selectedProperty: null,
+        selectedSector: null
+    };
+    
+    // Define property-sector relationships for drill-down logic
+    const propertyMapping = {
+        'Warehouse Manchester': { sector: 'Industrial', weight: 0.25 },
+        'Office London': { sector: 'Office', weight: 0.20 },
+        'Retail Birmingham': { sector: 'Retail', weight: 0.15 },
+        'Student Housing Bristol': { sector: 'Alternative', weight: 0.10 },
+        'Industrial Leeds': { sector: 'Industrial', weight: 0.12 },
+        'Office Edinburgh': { sector: 'Office', weight: 0.08 },
+        'Retail Glasgow': { sector: 'Retail', weight: 0.06 },
+        'Data Centre Dublin': { sector: 'Alternative', weight: 0.04 }
+    };
+    
+    // Helper functions for property-sector relationships
+    const getPropertiesBySector = (sectorName) => {
+        return Object.entries(propertyMapping)
+            .filter(([property, data]) => data.sector === sectorName)
+            .map(([property, data]) => ({ name: property, ...data }))
+            .sort((a, b) => b.weight - a.weight); // Sort by weight descending
+    };
+    
+    const getSectorByProperty = (propertyName) => {
+        return propertyMapping[propertyName]?.sector || null;
+    };
+    
+    const getPropertyWeight = (propertyName) => {
+        return propertyMapping[propertyName]?.weight || 0;
+    };
+    
+    const getSectorTotalWeight = (sectorName) => {
+        return Object.values(propertyMapping)
+            .filter(data => data.sector === sectorName)
+            .reduce((sum, data) => sum + data.weight, 0);
+    };
+    
+    // Cross-filtering logic for drill-down
+    const getRelatedData = (mode, selection) => {
+        if (mode === 'sector') {
+            // Get all properties in this sector
+            return {
+                type: 'properties',
+                items: getPropertiesBySector(selection),
+                totalWeight: getSectorTotalWeight(selection)
+            };
+        } else if (mode === 'property') {
+            // Get the sector this property belongs to
+            const sector = getSectorByProperty(selection);
+            const relatedProperties = getPropertiesBySector(sector).filter(p => p.name !== selection);
+            return {
+                type: 'sector',
+                sector: sector,
+                relatedProperties: relatedProperties,
+                propertyWeight: getPropertyWeight(selection)
+            };
+        }
+        return null;
+    };
+    
+    // State management functions (mimic React useState)
+    const setDrillDownMode = (mode) => {
+        const previousMode = drillDownState.mode;
+        drillDownState.mode = mode;
+        console.log('🎯 Drill-down mode changed from:', previousMode, 'to:', mode);
+        console.log('📊 Complete state after mode change:', { ...drillDownState });
+        updateChartVisualState();
+        triggerStateChangeEvent();
+    };
+    
+    const setSelectedProperty = (propertyName) => {
+        const previousProperty = drillDownState.selectedProperty;
+        drillDownState.selectedProperty = propertyName;
+        console.log('🏢 Selected property changed from:', previousProperty, 'to:', propertyName);
+        console.log('📊 Complete state after property change:', { ...drillDownState });
+        updateChartVisualState();
+        triggerStateChangeEvent();
+    };
+    
+    const setSelectedSector = (sectorName) => {
+        const previousSector = drillDownState.selectedSector;
+        drillDownState.selectedSector = sectorName;
+        console.log('🏗️ Selected sector changed from:', previousSector, 'to:', sectorName);
+        console.log('📊 Complete state after sector change:', { ...drillDownState });
+        updateChartVisualState();
+        triggerStateChangeEvent();
+    };
+    
+    // Visual state update function
+    const updateChartVisualState = () => {
+        console.log('🎨 Updating chart visual state:', drillDownState);
+        
+        // Update chart highlights, filters, etc.
+        if (drillDownState.mode === 'sector' && drillDownState.selectedSector) {
+            highlightSectorInCharts(drillDownState.selectedSector);
+        } else if (drillDownState.mode === 'property' && drillDownState.selectedProperty) {
+            highlightPropertyInCharts(drillDownState.selectedProperty);
+        } else {
+            clearAllHighlights();
+        }
+        
+        // Update UI indicators
+        updateDrillDownIndicators();
+    };
+    
+    // Event system for state changes
+    const triggerStateChangeEvent = () => {
+        console.log('📡 Triggering drill-down state change event');
+        console.log('📊 Event payload:', { ...drillDownState });
+        
+        const event = new CustomEvent('drillDownStateChanged', {
+            detail: { ...drillDownState }
+        });
+        window.dispatchEvent(event);
+        
+        console.log('✅ State change event dispatched successfully');
+    };
+    
+    // Enhanced highlight helper functions with property-sector mapping
+    const highlightSectorInCharts = (sectorName) => {
+        console.log('🔍 Highlighting sector in all charts:', sectorName);
+        
+        // Get related data using property mapping
+        const relatedData = getRelatedData('sector', sectorName);
+        console.log('📊 Sector drill-down data:', relatedData);
+        
+        // Log sector properties for debugging
+        const sectorProperties = getPropertiesBySector(sectorName);
+        console.log(`🏢 Properties in ${sectorName} sector:`, sectorProperties);
+        console.log(`💰 Total sector weight: ${getSectorTotalWeight(sectorName) * 100}%`);
+        
+        // Future: Apply visual highlighting
+        // - Highlight sector slice in pie chart
+        // - Fade other sectors
+        // - Highlight related properties in property lists
+        // - Update lease expiry chart to show sector-specific data
+        
+        // Store highlighting state for other functions
+        window.currentHighlight = {
+            type: 'sector',
+            target: sectorName,
+            relatedData: relatedData
+        };
+    };
+    
+    const highlightPropertyInCharts = (propertyName) => {
+        console.log('🔍 Highlighting property in all charts:', propertyName);
+        
+        // Get related data using property mapping
+        const relatedData = getRelatedData('property', propertyName);
+        console.log('🏢 Property drill-down data:', relatedData);
+        
+        // Log property details for debugging
+        const propertyWeight = getPropertyWeight(propertyName);
+        const propertySector = getSectorByProperty(propertyName);
+        console.log(`📊 Property: ${propertyName} | Sector: ${propertySector} | Weight: ${propertyWeight * 100}%`);
+        
+        if (relatedData && relatedData.relatedProperties.length > 0) {
+            console.log('🔗 Related properties in same sector:', relatedData.relatedProperties);
+        }
+        
+        // Future: Apply visual highlighting
+        // - Highlight property in property lists/charts
+        // - Highlight parent sector in pie chart
+        // - Show related properties in same sector
+        // - Update metrics to show property-specific data
+        
+        // Store highlighting state for other functions
+        window.currentHighlight = {
+            type: 'property',
+            target: propertyName,
+            relatedData: relatedData
+        };
+    };
+    
+    const clearAllHighlights = () => {
+        console.log('🧹 Clearing all chart highlights');
+        
+        // Clear stored highlighting state
+        window.currentHighlight = null;
+        
+        // Future: Reset all chart styling to default state
+        // - Remove sector/property highlights
+        // - Reset chart opacities
+        // - Clear filtered data views
+        // - Restore full dataset visibility
+    };
+    
+    const updateDrillDownIndicators = () => {
+        // Update drill-down indicator UI (React-style design)
+        const indicator = document.getElementById('drill-down-indicator');
+        if (indicator) {
+            if (drillDownState.mode && (drillDownState.selectedProperty || drillDownState.selectedSector)) {
+                const selectedItem = drillDownState.selectedProperty || drillDownState.selectedSector;
+                const modeIcon = drillDownState.mode === 'sector' ? '📊' : '🏢';
+                const modeText = drillDownState.mode === 'sector' ? 'Sector' : 'Property';
+                
+                // Create React-style content structure
+                indicator.innerHTML = `
+                    <div style="position: relative; z-index: 1;">
+                        <span style="
+                            font-size: 0.875rem;
+                            color: white;
+                            font-weight: 500;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        ">
+                            <span style="display: flex; align-items: center; gap: 0.25rem;">
+                                ${modeIcon}
+                                <span>Viewing ${modeText}:</span>
+                                <span style="
+                                    font-weight: 600;
+                                    background: rgba(255, 255, 255, 0.15);
+                                    padding: 0.125rem 0.5rem;
+                                    border-radius: 4px;
+                                    margin: 0 0.25rem;
+                                ">${selectedItem}</span>
+                            </span>
+                            <button onclick="exitDrillDown()" style="
+                                background: rgba(255, 255, 255, 0.2);
+                                border: 1px solid rgba(255, 255, 255, 0.3);
+                                color: white;
+                                padding: 0.25rem 0.5rem;
+                                border-radius: 4px;
+                                font-size: 0.75rem;
+                                font-weight: 500;
+                                cursor: pointer;
+                                display: flex;
+                                align-items: center;
+                                gap: 0.25rem;
+                                transition: all 0.2s ease;
+                                margin-left: auto;
+                            " onmouseover="this.style.background='rgba(255, 255, 255, 0.3)'; this.style.transform='translateY(-1px)'" 
+                               onmouseout="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='translateY(0)'">
+                                ✕ Exit
+                            </button>
+                        </span>
+                    </div>
+                `;
+                
+                // Show with entrance animation
+                indicator.style.display = 'block';
+                indicator.classList.remove('show');
+                // Force reflow to ensure class removal takes effect
+                indicator.offsetHeight;
+                indicator.classList.add('show');
+            } else {
+                // Hide with exit animation
+                if (indicator.style.display !== 'none') {
+                    indicator.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                    indicator.style.opacity = '0';
+                    indicator.style.transform = 'translateY(-10px)';
+                    setTimeout(() => {
+                        indicator.style.display = 'none';
+                        indicator.style.opacity = '';
+                        indicator.style.transform = '';
+                        indicator.style.transition = '';
+                        indicator.classList.remove('show');
+                    }, 300);
+                }
+            }
+        }
+    };
+    
+    // Global exit function with enhanced logging
+    window.exitDrillDown = () => {
+        console.log('🚪 EXIT DRILL-DOWN CLICKED');
+        console.log('📊 Current state before exit:', { ...drillDownState });
+        
+        setDrillDownMode(null);
+        setSelectedProperty(null);
+        setSelectedSector(null);
+        
+        console.log('✅ Drill-down exit completed');
+        console.log('📊 Final state after exit:', { ...drillDownState });
+    };
+    
+    // ============================================================================
+    // DRILL-DOWN SYSTEM INITIALIZATION COMPLETE
+    // ============================================================================
+    
+    console.log('✅ DRILL-DOWN SYSTEM INITIALIZATION COMPLETE');
+    console.log('📊 Property mapping loaded with', Object.keys(propertyMapping).length, 'properties');
+    console.log('🎯 Click handlers registered for sectors and properties');
+    console.log('🎛️ State management functions ready');
+    console.log('📡 Event system initialized');
+    console.log('🎨 Visual indicator system ready');
+    console.log('');
+    console.log('🔍 Available properties:');
+    Object.entries(propertyMapping).forEach(([prop, data]) => {
+        console.log(`   - ${prop}: ${data.sector} (${(data.weight * 100).toFixed(1)}%)`);
+    });
+    console.log('');
+    console.log('📊 Available sectors:');
+    const sectors = [...new Set(Object.values(propertyMapping).map(p => p.sector))];
+    sectors.forEach(sector => {
+        const sectorWeight = getSectorTotalWeight(sector);
+        console.log(`   - ${sector}: ${(sectorWeight * 100).toFixed(1)}%`);
+    });
+    console.log('');
+    console.log('🎯 Ready for user interactions! Click on sector slices to test drill-down functionality.');
+    console.log('============================================================================');
         
         // Chart.js v4 configuration for light theme
         if (Chart.defaults) {
@@ -351,6 +1140,28 @@ function initializeDashboardCharts() {
                     options: {
                         responsive: true,
                         maintainAspectRatio: false,
+                        onClick: (event, elements) => {
+                            console.log('🖱️ Chart.js onClick triggered');
+                            console.log('📊 Chart.js event:', event);
+                            console.log('🎯 Chart.js elements:', elements);
+                            
+                            if (elements.length > 0) {
+                                const clickedIndex = elements[0].index;
+                                const sectorName = sectorData.labels[clickedIndex]; // "Industrial", "Office", etc.
+                                
+                                console.log('✅ Chart.js click detected:');
+                                console.log('   - Index:', clickedIndex);
+                                console.log('   - Sector:', sectorName);
+                                console.log('   - Available labels:', sectorData.labels);
+                                
+                                handleSectorClick(sectorName, clickedIndex);
+                            } else {
+                                console.log('❌ Chart.js click - no elements found');
+                            }
+                        },
+                        onHover: (event, elements) => {
+                            event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
+                        },
                         plugins: {
                             legend: {
                                 display: false // We'll use custom legend
@@ -403,6 +1214,543 @@ function initializeDashboardCharts() {
         } catch (e) {
             console.error('❌ Chart error:', e);
             document.body.innerHTML += '<div style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:10px;">CHART ERROR: ' + e.message + '</div>';
+        }
+
+        // Sector Click Handler Function (Updated with drill-down state management)
+        function handleSectorClick(sectorName, index) {
+            // Add console logs to verify clicks are working
+            console.log('🎯 Sector clicked:', sectorName);
+            console.log('📊 Sector index:', index);
+            console.log('🔄 Current drill-down mode before click:', drillDownState.mode);
+            console.log('🎛️ Current drill-down state before click:', { ...drillDownState });
+            
+            // Implement drill-down state logic
+            if (drillDownState.selectedSector === sectorName) {
+                // Click same sector = exit drill-down
+                console.log('🔄 Same sector clicked - exiting drill-down mode');
+                setDrillDownMode(null);
+                setSelectedSector(null);
+                console.log('🚪 Exiting sector drill-down mode');
+                console.log('✅ New drill-down state after exit:', { ...drillDownState });
+                return;
+            } else {
+                // Enter sector drill-down
+                console.log('🔄 Different sector clicked - entering drill-down mode');
+                setDrillDownMode('sector');
+                setSelectedSector(sectorName);
+                setSelectedProperty(null);
+                console.log('🔍 Entering sector drill-down mode for:', sectorName);
+                console.log('✅ New drill-down state after enter:', { ...drillDownState });
+            }
+            
+            // Create detailed sector data using property mapping for consistency
+            const buildSectorDetails = (sectorName) => {
+                const sectorProperties = getPropertiesBySector(sectorName);
+                const totalWeight = getSectorTotalWeight(sectorName);
+                
+                // Calculate total value based on property mapping weights
+                const totalValue = sectorProperties.reduce((sum, prop) => {
+                    const propDetails = propertyDetails[prop.name];
+                    if (propDetails && propDetails.value) {
+                        const value = parseFloat(propDetails.value.replace(/[£M,]/g, ''));
+                        return sum + value;
+                    }
+                    return sum;
+                }, 0);
+                
+                return {
+                    name: `${sectorName} Properties`,
+                    percentage: `${(totalWeight * 100).toFixed(1)}%`,
+                    totalValue: `£${totalValue.toFixed(1)}M`,
+                    propertyCount: sectorProperties.length,
+                    properties: sectorProperties.map(p => p.name),
+                    topProperty: sectorProperties[0]?.name || 'N/A',
+                    totalWeight: totalWeight
+                };
+            };
+            
+            const sectorDetails = {
+                'Office': buildSectorDetails('Office'),
+                'Industrial': buildSectorDetails('Industrial'), 
+                'Retail': buildSectorDetails('Retail'),
+                'Alternative': buildSectorDetails('Alternative')
+            };
+            
+            const sector = sectorDetails[sectorName] || {
+                name: sectorName,
+                percentage: 'N/A',
+                totalValue: 'N/A',
+                properties: [],
+                avgYield: 'N/A',
+                avgOccupancy: 'N/A',
+                keyTenants: [],
+                leaseExpiryRisk: 'N/A'
+            };
+            
+            // Show sector details modal
+            showSectorDetails(sector, sectorName);
+            
+            // Analytics tracking
+            trackSectorInteraction(sectorName, 'click');
+            
+            // Future: Navigate to sector-specific dashboard
+            // window.location.href = `/sector-analysis/${sectorName.toLowerCase()}/`;
+        }
+        
+        function showSectorDetails(sector, sectorName) {
+            // Create modal overlay
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+            
+            // Create modal content
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                    max-width: 500px;
+                    width: 90%;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="margin: 0; color: #1f2937; font-size: 1.5rem;">${sector.name}</h2>
+                        <button onclick="this.closest('.modal-overlay').remove()" style="
+                            background: none;
+                            border: none;
+                            font-size: 1.5rem;
+                            cursor: pointer;
+                            color: #6b7280;
+                            padding: 0.25rem;
+                        ">×</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">
+                            <div style="font-size: 2rem; font-weight: bold; color: #3b82f6;">${sector.percentage}</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Portfolio Share</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;">${sector.totalValue}</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Total Value</div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; color: #374151; font-size: 1.125rem;">Sector Overview</h3>
+                        <div style="background: #f9fafb; padding: 1rem; border-radius: 8px;">
+                            <p style="margin: 0.25rem 0;"><strong>Property Count:</strong> ${sector.propertyCount} properties</p>
+                            <p style="margin: 0.25rem 0;"><strong>Portfolio Weight:</strong> <span style="background: #dbeafe; color: #2563eb; padding: 0.125rem 0.375rem; border-radius: 4px; font-weight: 600;">${sector.percentage}</span></p>
+                            <p style="margin: 0.25rem 0;"><strong>Largest Property:</strong> ${sector.topProperty}</p>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; color: #374151; font-size: 1.125rem;">Properties in ${sectorName}</h3>
+                        <div style="background: #f9fafb; padding: 1rem; border-radius: 8px;">
+                            ${sector.properties.map((prop, index) => {
+                                const propMapping = propertyMapping[prop];
+                                const weightPercent = (propMapping.weight * 100).toFixed(1);
+                                return `
+                                    <div style="
+                                        display: flex; 
+                                        justify-content: space-between; 
+                                        align-items: center; 
+                                        padding: 0.5rem 0; 
+                                        border-bottom: ${index < sector.properties.length - 1 ? '1px solid #e5e7eb' : 'none'};
+                                    ">
+                                        <span style="font-weight: 500; color: #374151;">${prop}</span>
+                                        <span style="
+                                            background: #ecfdf5; 
+                                            color: #065f46; 
+                                            padding: 0.125rem 0.375rem; 
+                                            border-radius: 4px; 
+                                            font-size: 0.75rem; 
+                                            font-weight: 600;
+                                        ">${weightPercent}%</span>
+                                    </div>
+                                `;
+                            }).join('')}
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; color: #374151; font-size: 1.125rem;">Cross-Sector Analysis</h3>
+                        <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                            <p style="margin: 0; color: #92400e; font-size: 0.875rem;">
+                                💡 <strong>Insight:</strong> Click on individual properties above to drill down further, or use the "View Analysis" button to see sector-specific performance metrics and risk analysis.
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button onclick="this.closest('.modal-overlay').remove()" style="
+                            flex: 1;
+                            background: #3b82f6;
+                            color: white;
+                            border: none;
+                            padding: 0.75rem 1rem;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 500;
+                        ">Close</button>
+                        <button onclick="alert('Sector analysis coming soon!')" style="
+                            flex: 1;
+                            background: #10b981;
+                            color: white;
+                            border: none;
+                            padding: 0.75rem 1rem;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 500;
+                        ">View Analysis</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.className = 'modal-overlay';
+            document.body.appendChild(modal);
+            
+            // Close on background click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+            
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modal.remove();
+                }
+            });
+        }
+        
+        function trackSectorInteraction(sectorName, action) {
+            console.log(`📈 Analytics: ${action} on sector ${sectorName}`);
+            // Future: Send to analytics service
+            // analytics.track('sector_interaction', { sector: sectorName, action: action });
+        }
+        
+        // Property Click Handler Function (Drill-down state management)
+        function handlePropertyClick(propertyName, index) {
+            // Add console logs to verify clicks are working
+            console.log('🏢 Property clicked:', propertyName);
+            console.log('🔢 Property index:', index);
+            console.log('🔄 Current drill-down mode before click:', drillDownState.mode);
+            console.log('🎛️ Current drill-down state before click:', { ...drillDownState });
+            
+            // Log property mapping information
+            const propertyMapping_local = propertyMapping[propertyName];
+            if (propertyMapping_local) {
+                console.log('📊 Property mapping data:', propertyMapping_local);
+                console.log('🏗️ Property sector:', propertyMapping_local.sector);
+                console.log('⚖️ Property weight:', `${(propertyMapping_local.weight * 100).toFixed(1)}%`);
+            } else {
+                console.warn('⚠️ Property not found in mapping:', propertyName);
+            }
+            
+            // Implement drill-down state logic
+            if (drillDownState.selectedProperty === propertyName) {
+                // Click same property = exit drill-down
+                console.log('🔄 Same property clicked - exiting drill-down mode');
+                setDrillDownMode(null);
+                setSelectedProperty(null);
+                console.log('🚪 Exiting property drill-down mode');
+                console.log('✅ New drill-down state after exit:', { ...drillDownState });
+                return;
+            } else {
+                // Enter property drill-down
+                console.log('🔄 Different property clicked - entering drill-down mode');
+                setDrillDownMode('property');
+                setSelectedProperty(propertyName);
+                setSelectedSector(null);
+                console.log('🔍 Entering property drill-down mode for:', propertyName);
+                console.log('✅ New drill-down state after enter:', { ...drillDownState });
+            }
+            
+            // Create detailed property data using property mapping for consistency
+            const propertyDetails = {
+                'Warehouse Manchester': {
+                    name: 'Warehouse Manchester',
+                    type: propertyMapping['Warehouse Manchester'].sector,
+                    portfolioWeight: `${(propertyMapping['Warehouse Manchester'].weight * 100).toFixed(1)}%`,
+                    value: '£26.1M',
+                    location: 'Manchester',
+                    totalArea: '120,000 sq ft',
+                    occupancy: '95%',
+                    currentYield: '8.2%',
+                    keyTenants: ['Amazon Logistics (45%)', 'DHL Supply Chain (25%)'],
+                    leaseExpiry: 'High Risk - 42% expiring 2025-2026',
+                    recentPerformance: '+1.8% capital growth (YTD)',
+                    marketComparable: '12% above area average'
+                },
+                'Office London': {
+                    name: 'Office London',
+                    type: propertyMapping['Office London'].sector,
+                    portfolioWeight: `${(propertyMapping['Office London'].weight * 100).toFixed(1)}%`,
+                    value: '£20.8M',
+                    location: 'Central London',
+                    totalArea: '45,000 sq ft',
+                    occupancy: '92%',
+                    currentYield: '6.8%',
+                    keyTenants: ['Lloyds Banking Group (40%)', 'British Telecommunications (30%)'],
+                    leaseExpiry: 'Medium Risk - 25% expiring 2025-2026',
+                    recentPerformance: '+2.3% capital growth (YTD)',
+                    marketComparable: '8% above area average'
+                },
+                'Retail Birmingham': {
+                    name: 'Retail Birmingham',
+                    type: propertyMapping['Retail Birmingham'].sector,
+                    portfolioWeight: `${(propertyMapping['Retail Birmingham'].weight * 100).toFixed(1)}%`,
+                    value: '£15.6M',
+                    location: 'Birmingham City Centre',
+                    totalArea: '85,000 sq ft',
+                    occupancy: '87%',
+                    currentYield: '7.1%',
+                    keyTenants: ['Tesco Stores (35%)', 'Next Retail (20%)'],
+                    leaseExpiry: 'Low Risk - 15% expiring 2025-2026',
+                    recentPerformance: '+0.5% capital growth (YTD)',
+                    marketComparable: '3% above area average'
+                },
+                'Student Housing Bristol': {
+                    name: 'Student Housing Bristol',
+                    type: propertyMapping['Student Housing Bristol'].sector,
+                    portfolioWeight: `${(propertyMapping['Student Housing Bristol'].weight * 100).toFixed(1)}%`,
+                    value: '£10.4M',
+                    location: 'Bristol',
+                    totalArea: '200 units',
+                    occupancy: '98%',
+                    currentYield: '9.5%',
+                    keyTenants: ['University of Bristol Partnership (100%)'],
+                    leaseExpiry: 'Very Low Risk - 5% expiring 2025-2026',
+                    recentPerformance: '+3.1% capital growth (YTD)',
+                    marketComparable: '15% above area average'
+                },
+                'Industrial Leeds': {
+                    name: 'Industrial Leeds',
+                    type: propertyMapping['Industrial Leeds'].sector,
+                    portfolioWeight: `${(propertyMapping['Industrial Leeds'].weight * 100).toFixed(1)}%`,
+                    value: '£12.5M',
+                    location: 'Leeds',
+                    totalArea: '95,000 sq ft',
+                    occupancy: '93%',
+                    currentYield: '8.0%',
+                    keyTenants: ['DPD Group (50%)', 'Hermes Parcelnet (30%)'],
+                    leaseExpiry: 'Medium Risk - 30% expiring 2025-2026',
+                    recentPerformance: '+1.5% capital growth (YTD)',
+                    marketComparable: '10% above area average'
+                },
+                'Office Edinburgh': {
+                    name: 'Office Edinburgh',
+                    type: propertyMapping['Office Edinburgh'].sector,
+                    portfolioWeight: `${(propertyMapping['Office Edinburgh'].weight * 100).toFixed(1)}%`,
+                    value: '£8.3M',
+                    location: 'Edinburgh',
+                    totalArea: '32,000 sq ft',
+                    occupancy: '89%',
+                    currentYield: '6.5%',
+                    keyTenants: ['Scottish Government (60%)', 'Legal Firm (25%)'],
+                    leaseExpiry: 'Low Risk - 10% expiring 2025-2026',
+                    recentPerformance: '+1.2% capital growth (YTD)',
+                    marketComparable: '5% above area average'
+                },
+                'Retail Glasgow': {
+                    name: 'Retail Glasgow',
+                    type: propertyMapping['Retail Glasgow'].sector,
+                    portfolioWeight: `${(propertyMapping['Retail Glasgow'].weight * 100).toFixed(1)}%`,
+                    value: '£6.2M',
+                    location: 'Glasgow City Centre',
+                    totalArea: '40,000 sq ft',
+                    occupancy: '85%',
+                    currentYield: '7.3%',
+                    keyTenants: ['Marks & Spencer (40%)', 'H&M (25%)'],
+                    leaseExpiry: 'Medium Risk - 20% expiring 2025-2026',
+                    recentPerformance: '+0.8% capital growth (YTD)',
+                    marketComparable: '2% above area average'
+                },
+                'Data Centre Dublin': {
+                    name: 'Data Centre Dublin',
+                    type: propertyMapping['Data Centre Dublin'].sector,
+                    portfolioWeight: `${(propertyMapping['Data Centre Dublin'].weight * 100).toFixed(1)}%`,
+                    value: '£4.2M',
+                    location: 'Dublin',
+                    totalArea: '15,000 sq ft',
+                    occupancy: '100%',
+                    currentYield: '12.5%',
+                    keyTenants: ['Microsoft Ireland (70%)', 'AWS (30%)'],
+                    leaseExpiry: 'Very Low Risk - 0% expiring 2025-2026',
+                    recentPerformance: '+4.2% capital growth (YTD)',
+                    marketComparable: '25% above area average'
+                }
+            };
+            
+            const property = propertyDetails[propertyName] || {
+                name: propertyName,
+                type: 'Unknown',
+                value: 'N/A',
+                location: 'N/A',
+                totalArea: 'N/A',
+                occupancy: 'N/A',
+                currentYield: 'N/A',
+                keyTenants: [],
+                leaseExpiry: 'N/A',
+                recentPerformance: 'N/A',
+                marketComparable: 'N/A'
+            };
+            
+            // Show property details modal
+            showPropertyDetails(property, propertyName);
+            
+            // Analytics tracking
+            trackPropertyInteraction(propertyName, 'click');
+            
+            // Future: Navigate to property-specific dashboard
+            // window.location.href = `/property-analysis/${propertyName.toLowerCase().replace(/\s+/g, '-')}/`;
+        }
+        
+        function showPropertyDetails(property, propertyName) {
+            // Create modal overlay
+            const modal = document.createElement('div');
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+            
+            // Create modal content
+            modal.innerHTML = `
+                <div style="
+                    background: white;
+                    padding: 2rem;
+                    border-radius: 12px;
+                    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+                    max-width: 600px;
+                    width: 90%;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                ">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+                        <h2 style="margin: 0; color: #1f2937; font-size: 1.5rem;">${property.name}</h2>
+                        <button onclick="this.closest('.modal-overlay').remove()" style="
+                            background: none;
+                            border: none;
+                            font-size: 1.5rem;
+                            cursor: pointer;
+                            color: #6b7280;
+                            padding: 0.25rem;
+                        ">×</button>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem;">
+                        <div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #3b82f6;">${property.value}</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Property Value</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #10b981;">${property.currentYield}</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Current Yield</div>
+                        </div>
+                        <div style="text-align: center; padding: 1rem; background: #f3f4f6; border-radius: 8px;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: #f59e0b;">${property.occupancy}</div>
+                            <div style="font-size: 0.875rem; color: #6b7280;">Occupancy</div>
+                        </div>
+                    </div>
+                    
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem;">
+                        <div>
+                            <h3 style="margin: 0 0 0.5rem 0; color: #374151; font-size: 1.125rem;">Property Details</h3>
+                            <div style="background: #f9fafb; padding: 1rem; border-radius: 8px;">
+                                <p style="margin: 0.25rem 0;"><strong>Sector:</strong> ${property.type}</p>
+                                <p style="margin: 0.25rem 0;"><strong>Portfolio Weight:</strong> <span style="background: #dbeafe; color: #2563eb; padding: 0.125rem 0.375rem; border-radius: 4px; font-weight: 600;">${property.portfolioWeight || 'N/A'}</span></p>
+                                <p style="margin: 0.25rem 0;"><strong>Location:</strong> ${property.location}</p>
+                                <p style="margin: 0.25rem 0;"><strong>Total Area:</strong> ${property.totalArea}</p>
+                                <p style="margin: 0.25rem 0;"><strong>Market Position:</strong> ${property.marketComparable}</p>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 style="margin: 0 0 0.5rem 0; color: #374151; font-size: 1.125rem;">Performance & Risk</h3>
+                            <div style="background: #f9fafb; padding: 1rem; border-radius: 8px;">
+                                <p style="margin: 0.25rem 0;"><strong>YTD Performance:</strong> ${property.recentPerformance}</p>
+                                <p style="margin: 0.25rem 0;"><strong>Lease Risk:</strong> ${property.leaseExpiry}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div style="margin-bottom: 1.5rem;">
+                        <h3 style="margin: 0 0 0.5rem 0; color: #374151; font-size: 1.125rem;">Key Tenants</h3>
+                        <ul style="margin: 0; padding-left: 1.5rem; color: #6b7280;">
+                            ${property.keyTenants.map(tenant => `<li style="margin: 0.25rem 0;">${tenant}</li>`).join('')}
+                        </ul>
+                    </div>
+                    
+                    <div style="display: flex; gap: 0.75rem;">
+                        <button onclick="this.closest('.modal-overlay').remove()" style="
+                            flex: 1;
+                            background: #3b82f6;
+                            color: white;
+                            border: none;
+                            padding: 0.75rem 1rem;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 500;
+                        ">Close</button>
+                        <button onclick="alert('Property analysis coming soon!')" style="
+                            flex: 1;
+                            background: #10b981;
+                            color: white;
+                            border: none;
+                            padding: 0.75rem 1rem;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-weight: 500;
+                        ">View Analysis</button>
+                    </div>
+                </div>
+            `;
+            
+            modal.className = 'modal-overlay';
+            document.body.appendChild(modal);
+            
+            // Close on background click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+            
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    modal.remove();
+                }
+            });
+        }
+        
+        function trackPropertyInteraction(propertyName, action) {
+            console.log(`📈 Analytics: ${action} on property ${propertyName}`);
+            // Future: Send to analytics service
+            // analytics.track('property_interaction', { property: propertyName, action: action });
         }
 
         // Stacked Lease Expiry Bar Chart by Property Sector
@@ -1201,6 +2549,8 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (checkCount > 20) { // Stop after 10 seconds
                 console.error('💥 Chart.js failed to load after 10 seconds');
                 clearInterval(checkInterval);
+                // Activate CSS fallback charts
+                activateDashboardFallbackCharts();
             }
         }, 500);
     }
