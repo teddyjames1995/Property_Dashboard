@@ -17,6 +17,8 @@ urlpatterns = [
     path('portfolio_report/', views.portfolio_report_view, name='portfolio_report'),
     path('debt/', views.debt_view, name='debt'),  # Added missing trailing slash
     path('income_and_expenses/', views.income_and_expenses_view, name='income_and_expenses'),  # Added missing trailing slash
-    path('artificial_intelligence/', views.artificial_intelligence_view, name='artificial_intelligence'),
-    path('forecasting/', views.forecasting_view, name='forecasting'),
+    # Removed for v2 stripped back version
+    # path('artificial_intelligence/', views.artificial_intelligence_view, name='artificial_intelligence'),
+    # Removed for v2 stripped back version
+    # path('forecasting/', views.forecasting_view, name='forecasting'),
 ]

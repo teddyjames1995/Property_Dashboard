@@ -438,15 +438,17 @@ def income_and_expenses_view(request):
     context = {}  # For now, we'll use an empty context
     return render(request, 'income_expenses.html', context)
 
-def artificial_intelligence_view(request):
-    # Add any logic to gather data for the dashboard here
-    context = {}  # For now, we'll use an empty context
-    return render(request, 'artificial_intelligence.html', context)
+# Removed for v2 stripped back version
+# def artificial_intelligence_view(request):
+#     # Add any logic to gather data for the dashboard here
+#     context = {}  # For now, we'll use an empty context
+#     return render(request, 'artificial_intelligence.html', context)
 
-def forecasting_view(request):
-    # Add any logic to gather data for the dashboard here
-    context = {}  # For now, we'll use an empty context
-    return render(request, 'forecasting.html', context)
+# Removed for v2 stripped back version
+# def forecasting_view(request):
+#     # Add any logic to gather data for the dashboard here
+#     context = {}  # For now, we'll use an empty context
+#     return render(request, 'forecasting.html', context)
 
 def login_view(request):
     # Basic login view function
