@@ -52,3 +52,5 @@ Not Found: /forecasting/
 [17/Aug/2025 16:42:24] "GET /portfolio_performance/ HTTP/1.1" 200 60948
 [17/Aug/2025 16:44:50] "GET /portfolio_performance/ HTTP/1.1" 200 50335
 [17/Aug/2025 16:47:38] "GET /portfolio_performance/ HTTP/1.1" 200 50335
+[17/Aug/2025 17:02:08] "GET /portfolio_performance/ HTTP/1.1" 200 30749
+[17/Aug/2025 17:03:52] "GET /portfolio_performance/ HTTP/1.1" 200 30749

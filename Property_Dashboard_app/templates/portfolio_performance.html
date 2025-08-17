@@ -179,6 +179,40 @@ portfolios['all'] = calculateAggregatedData();
 // Current portfolio selection (with localStorage persistence)
 let currentPortfolio = localStorage.getItem('selectedPortfolio') || 'all';
 
+// Global variables for chart management
+let performanceChart = null;
+
+// Performance history data structure  
+const getPerformanceHistoryData = (portfolioId) => {
+    const baseHistoryData = {
+        'all': {
+            portfolioReturns: [14, 22, -4, 18, 20, 12.1, 16.3],
+            giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+        },
+        'main': {
+            portfolioReturns: [12, 28, -8, 15, 22, 9.2, 13.8],
+            giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+        },
+        'sipp': {
+            portfolioReturns: [8, 18, -12, 10, 16, 6.8, 10.1],
+            giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+        },
+        'hands-on': {
+            portfolioReturns: [15, 32, -5, 20, 25, 14.2, 18.3],
+            giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+        },
+        'airbnbs': {
+            portfolioReturns: [18, 38, 2, 25, 30, 18.8, 22.4],
+            giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
+        }
+    };
+    
+    return {
+        labels: ['2020', '2021', '2022', '2023', '2024', '3 Yr Ann.', '5 Yr Ann.'],
+        ...baseHistoryData[portfolioId] || baseHistoryData['all']
+    };
+};
+
 // Initialize Charts - Simple approach
 function initializeCharts() {
     console.log('🚀 Initializing portfolio performance charts...');
@@ -208,41 +242,10 @@ function initializeCharts() {
     const performanceCtx = performanceCanvas.getContext('2d');
     console.log('Creating performance history chart...');
 
-    // Performance history data structure  
-    const getPerformanceHistoryData = (portfolioId) => {
-        const baseHistoryData = {
-            'all': {
-                portfolioReturns: [14, 22, -4, 18, 20, 12.1, 16.3],
-                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
-            },
-            'main': {
-                portfolioReturns: [12, 28, -8, 15, 22, 9.2, 13.8],
-                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
-            },
-            'sipp': {
-                portfolioReturns: [8, 18, -12, 10, 16, 6.8, 10.1],
-                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
-            },
-            'hands-on': {
-                portfolioReturns: [15, 32, -5, 20, 25, 14.2, 18.3],
-                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
-            },
-            'airbnbs': {
-                portfolioReturns: [18, 38, 2, 25, 30, 18.8, 22.4],
-                giltYields: [0.8, 1.2, 3.1, 4.2, 3.8, 3.7, 2.4]
-            }
-        };
-        
-        return {
-            labels: ['2020', '2021', '2022', '2023', '2024', '3 Yr Ann.', '5 Yr Ann.'],
-            ...baseHistoryData[portfolioId] || baseHistoryData['all']
-        };
-    };
-    
     const performanceHistoryData = getPerformanceHistoryData(currentPortfolio);
 
     // Create combination chart with bar and line
-    let performanceChart = new Chart(performanceCtx, {
+    performanceChart = new Chart(performanceCtx, {
         type: 'bar',
         data: {
             labels: performanceHistoryData.labels,
@@ -443,13 +446,15 @@ function updatePortfolioData(portfolioId) {
         incomeReturnElement.textContent = portfolio.data.incomeReturn + '%';
         
         // Update chart data based on selected portfolio
-        const historyData = getPerformanceHistoryData(portfolioId);
-        
-        performanceChart.data.datasets[0].data = historyData.portfolioReturns;
-        performanceChart.data.datasets[1].data = historyData.giltYields;
-        
-        // Animate chart update
-        performanceChart.update('active');
+        if (performanceChart) {
+            const historyData = getPerformanceHistoryData(portfolioId);
+            
+            performanceChart.data.datasets[0].data = historyData.portfolioReturns;
+            performanceChart.data.datasets[1].data = historyData.giltYields;
+            
+            // Animate chart update
+            performanceChart.update('active');
+        }
         
         // Restore opacity
         [totalReturnElement, capitalReturnElement, incomeReturnElement].forEach(el => {
