@@ -54,3 +54,40 @@ Not Found: /forecasting/
 [17/Aug/2025 16:47:38] "GET /portfolio_performance/ HTTP/1.1" 200 50335
 [17/Aug/2025 17:02:08] "GET /portfolio_performance/ HTTP/1.1" 200 30749
 [17/Aug/2025 17:03:52] "GET /portfolio_performance/ HTTP/1.1" 200 30749
+[17/Aug/2025 17:09:38] "GET /portfolio_performance/ HTTP/1.1" 200 30762
+[17/Aug/2025 17:10:10] "GET /portfolio_performance/ HTTP/1.1" 200 30762
+[17/Aug/2025 17:10:11] "GET /portfolio_performance/ HTTP/1.1" 200 30762
+[17/Aug/2025 17:10:19] "GET /dashboard/ HTTP/1.1" 200 133602
+[17/Aug/2025 17:10:36] "GET /asset_management/ HTTP/1.1" 200 22431
+[17/Aug/2025 17:10:45] "GET /dashboard/ HTTP/1.1" 200 133602
+[17/Aug/2025 17:14:21] "GET /portfolio_performance/ HTTP/1.1" 200 30762
+[17/Aug/2025 17:14:33] "GET /property_deepdive/ HTTP/1.1" 200 29897
+[17/Aug/2025 17:14:59] "GET /tenancy_schedule/ HTTP/1.1" 200 20233
+[17/Aug/2025 17:15:08] "GET /asset_management/ HTTP/1.1" 200 22431
+[17/Aug/2025 17:15:37] "GET /debt/ HTTP/1.1" 200 16572
+[17/Aug/2025 17:15:58] "GET /income_and_expenses/ HTTP/1.1" 200 15270
+[17/Aug/2025 17:31:44] "GET /dashboard/ HTTP/1.1" 200 133657
+[17/Aug/2025 17:31:51] "GET /portfolio_performance/ HTTP/1.1" 200 30762
+[17/Aug/2025 17:31:51] "GET /property_deepdive/ HTTP/1.1" 200 29897
+[17/Aug/2025 17:31:51] "GET /tenancy_schedule/ HTTP/1.1" 200 20233
+/Users/teddyjames/Desktop/Property_Dashboard/Property_Dashboard_app/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 17, 2025 - 16:36:58
+Django version 4.2.15, using settings 'Property_Dashboard.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+/Users/teddyjames/Desktop/Property_Dashboard/Property_Dashboard_app/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 17, 2025 - 17:32:45
+Django version 4.2.15, using settings 'Property_Dashboard.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+[17/Aug/2025 17:32:57] "GET /dashboard/ HTTP/1.1" 200 132810
