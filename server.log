@@ -91,3 +91,13 @@ Quit the server with CONTROL-C.
 
 Watching for file changes with StatReloader
 [17/Aug/2025 17:32:57] "GET /dashboard/ HTTP/1.1" 200 132810
+[17/Aug/2025 17:36:13] "GET /dashboard/ HTTP/1.1" 200 115974
+[17/Aug/2025 17:36:13] "GET /portfolio_performance/ HTTP/1.1" 200 30762
+[17/Aug/2025 17:36:13] "GET /property_deepdive/ HTTP/1.1" 200 29897
+[17/Aug/2025 17:37:39] "GET /dashboard/ HTTP/1.1" 200 115974
+[17/Aug/2025 17:37:43] "GET /portfolio_performance/ HTTP/1.1" 200 30762
+[17/Aug/2025 17:37:44] "GET /property_deepdive/ HTTP/1.1" 200 29897
+[17/Aug/2025 17:37:45] "GET /tenancy_schedule/ HTTP/1.1" 200 20233
+[17/Aug/2025 17:37:47] "GET /dashboard/ HTTP/1.1" 200 115974
+[17/Aug/2025 17:37:47] "GET /dashboard/ HTTP/1.1" 200 115974
+[17/Aug/2025 17:44:04] "GET /debt/ HTTP/1.1" 200 9795
