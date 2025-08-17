@@ -47,12 +47,6 @@
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'tenancy_schedule' %}" class="nav-item">
-                        <span class="material-symbols-outlined">event</span>
-                        <span>Tenancy Schedule</span>
-                    </a>
-                </li>
-                <li>
                     <a href="{% url 'asset_management' %}" class="nav-item">
                         <span class="material-symbols-outlined">home_work</span>
                         <span>Asset Management</span>
@@ -135,54 +129,17 @@
     </main>
 
     {% block javascript %}
-    <!-- Chart.js CDN with multiple fallbacks -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.min.js" 
-            onload="console.log('✅ Chart.js loaded from CDN'); window.dispatchEvent(new CustomEvent('chartjsReady'));"
-            onerror="console.log('❌ CDN failed, trying local file'); window.loadChartJSFallback();">
-    </script>
-    
+    <!-- Chart.js CDN - Simplified loading -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Fallback function with multiple CDN sources
-        window.loadChartJSFallback = function() {
-            console.log('🔄 Trying local Chart.js file...');
-            
-            // Try local file first
-            const script1 = document.createElement('script');
-            script1.src = '{% static "js/chart.min.js" %}?v=2025813-fallback';
-            script1.async = true;
-            
-            script1.onload = function() {
-                console.log('✅ Chart.js loaded from local file');
-                window.dispatchEvent(new CustomEvent('chartjsReady'));
-            };
-            
-            script1.onerror = function() {
-                console.log('❌ Local file failed, trying unpkg CDN...');
-                
-                // Try unpkg CDN
-                const script2 = document.createElement('script');
-                script2.src = 'https://unpkg.com/chart.js@4.4.1/dist/chart.min.js';
-                script2.async = true;
-                
-                script2.onload = function() {
-                    console.log('✅ Chart.js loaded from unpkg CDN');
-                    window.dispatchEvent(new CustomEvent('chartjsReady'));
-                };
-                
-                script2.onerror = function() {
-                    console.error('💥 All Chart.js loading methods failed');
-                    // Set up fallback chart functionality
-                    window.Chart = window.Chart || {
-                        version: 'fallback',
-                        defaults: { color: '#475569', borderColor: '#e2e8f0' }
-                    };
-                };
-                
-                document.head.appendChild(script2);
-            };
-            
-            document.head.appendChild(script1);
-        };
+        // Simple Chart.js availability check
+        if (typeof Chart !== 'undefined') {
+            console.log('✅ Chart.js loaded successfully');
+            window.chartjsReady = true;
+        } else {
+            console.error('❌ Chart.js failed to load');
+            window.chartjsReady = false;
+        }
     </script>
     
     <!-- Global Portfolio Manager -->

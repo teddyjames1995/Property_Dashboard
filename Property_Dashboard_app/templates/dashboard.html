@@ -288,6 +288,106 @@
 .drill-down-indicator.show {
     animation: slideInDown 0.3s ease;
 }
+
+/* Tenancy Alerts Section */
+.tenancy-alerts-section {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.tenancy-alerts-section h3 {
+    margin: 0 0 1rem 0;
+    color: var(--text-primary);
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.alerts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.alert-card {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 8px;
+    border-left: 4px solid;
+    background: rgba(255, 255, 255, 0.05);
+    transition: all 0.2s ease;
+}
+
+.alert-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.alert-card.urgent {
+    border-left-color: #ef4444;
+    background: rgba(239, 68, 68, 0.05);
+}
+
+.alert-card.attention {
+    border-left-color: #f59e0b;
+    background: rgba(245, 158, 11, 0.05);
+}
+
+.alert-card.warning {
+    border-left-color: #8b5cf6;
+    background: rgba(139, 92, 246, 0.05);
+}
+
+.alert-card.info {
+    border-left-color: #3b82f6;
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+    margin-right: 0.75rem;
+    flex-shrink: 0;
+}
+
+.alert-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.alert-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+    margin-bottom: 0.25rem;
+}
+
+.alert-detail {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+}
+
+.alert-action {
+    margin-left: 0.75rem;
+}
+
+.alert-link {
+    font-size: 0.8rem;
+    color: var(--accent-color);
+    text-decoration: none;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid var(--accent-color);
+    transition: all 0.2s ease;
+}
+
+.alert-link:hover {
+    background: var(--accent-color);
+    color: white;
+}
 </style>
 
 <!-- Main Dashboard Content -->
@@ -396,8 +496,8 @@
         <div class="tenant-list-container">
             <h3>Top 5 Tenants</h3>
             <div class="tenant-headers">
-                <span>Income £</span>
-                <span>Credit Star</span>
+                <span>Tenant Name</span>
+                <span>Annual Income</span>
             </div>
             <div class="tenant-list">
                 {% if top_tenants_by_income %}
@@ -406,12 +506,61 @@
                         <span>{{ forloop.counter }})</span>
                         <span>{{ tenant.tenant_name }}</span>
                         <span>{{ tenant.total_rent }}</span>
-                        <span>★★★★☆</span>
                     </div>
                     {% endfor %}
                 {% else %}
                     <div class="tenant-item">No tenants available</div>
                 {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tenancy Alerts Section -->
+<div class="tenancy-alerts-section">
+    <h3>Lease Management Alerts</h3>
+    <div class="alerts-container">
+        <div class="alert-card urgent">
+            <div class="alert-icon">⚠️</div>
+            <div class="alert-content">
+                <span class="alert-title">Lease Renewals</span>
+                <span class="alert-detail">3 renewals needed in next 6 months</span>
+            </div>
+            <div class="alert-action">
+                <a href="{% url 'property_deepdive' %}" class="alert-link">View Details</a>
+            </div>
+        </div>
+        
+        <div class="alert-card attention">
+            <div class="alert-icon">📋</div>
+            <div class="alert-content">
+                <span class="alert-title">Rent Reviews</span>
+                <span class="alert-detail">2 rent reviews due in Q4 2024</span>
+            </div>
+            <div class="alert-action">
+                <a href="{% url 'property_deepdive' %}" class="alert-link">View Details</a>
+            </div>
+        </div>
+        
+        <div class="alert-card warning">
+            <div class="alert-icon">🚨</div>
+            <div class="alert-content">
+                <span class="alert-title">Break Clauses</span>
+                <span class="alert-detail">1 break notice period expiring</span>
+            </div>
+            <div class="alert-action">
+                <a href="{% url 'property_deepdive' %}" class="alert-link">View Details</a>
+            </div>
+        </div>
+        
+        <div class="alert-card info">
+            <div class="alert-icon">🏢</div>
+            <div class="alert-content">
+                <span class="alert-title">Vacant Units</span>
+                <span class="alert-detail">2 units actively marketing</span>
+            </div>
+            <div class="alert-action">
+                <a href="{% url 'asset_management' %}" class="alert-link">View Details</a>
             </div>
         </div>
     </div>
@@ -476,8 +625,8 @@
                 </div>
             </div>
             
-            <!-- Original Canvas (hidden by default) -->
-            <canvas id="lease-expiry-chart" width="400" height="200" style="display: none; width: 100%; height: 200px;"></canvas>
+            <!-- Chart.js Canvas (primary display) -->
+            <canvas id="lease-expiry-chart" width="400" height="200" style="width: 100%; height: 200px; background: white; border-radius: 8px;"></canvas>
         </div>
     </div>
 
@@ -485,8 +634,8 @@
     <div class="chart-container-wireframe">
         <h3>Future Income & Running Yield</h3>
         <div class="chart-wrapper">
-            <!-- CSS Fallback Line Chart -->
-            <div class="css-line-chart" id="css-income-chart">
+            <!-- CSS Fallback Line Chart (hidden when Chart.js loads) -->
+            <div class="css-line-chart" id="css-income-chart" style="display: none;">
                 <div class="chart-message">
                     <div class="trend-indicator">
                         <div class="trend-line"></div>
@@ -506,96 +655,13 @@
                 </div>
             </div>
             
-            <!-- Original Canvas (hidden by default) -->
-            <canvas id="future-income-chart" width="400" height="200" style="display: none; width: 100%; height: 200px; background: rgba(255,255,255,0.1);"></canvas>
+            <!-- Chart.js Canvas (primary display) -->
+            <canvas id="future-income-chart" width="800" height="300" style="width: 100%; height: 300px; background: white; border-radius: 8px;"></canvas>
         </div>
     </div>
 
 </div>
 
-<!-- COMMENTED OUT FOR TESTING - Portfolio Analysis Section 
-<div class="portfolio-analysis-section" style="margin-top: 2rem; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-lg); padding: var(--spacing-lg);">
-    <div class="analysis-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <h3 style="font-size: 1.125rem; font-weight: 600; color: var(--text-primary);">Automated Portfolio Analysis</h3>
-        <button id="toggle-analysis" style="background: none; border: none; color: var(--text-secondary); cursor: pointer; font-size: 1.5rem;">
-            <span class="material-symbols-outlined">expand_less</span>
-        </button>
-    </div>
-    
-    <div id="analysis-content" class="analysis-content">
-        <!-- Analysis Controls -->
-        <div class="analysis-controls" style="display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap;">
-            <button id="refresh-analysis" style="background: var(--accent-primary); color: white; border: none; padding: 0.5rem 1rem; border-radius: var(--radius-md); cursor: pointer; font-size: 0.875rem;">
-                <span class="material-symbols-outlined" style="font-size: 1rem; margin-right: 0.25rem;">refresh</span>
-                Refresh Analysis
-            </button>
-            <select id="filter-category" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); color: var(--text-primary);">
-                <option value="all">All Categories</option>
-                <option value="lease">Lease Risk</option>
-                <option value="concentration">Concentration</option>
-                <option value="tenant">Tenant Quality</option>
-                <option value="diversification">Diversification</option>
-                <option value="trends">Income Trends</option>
-            </select>
-            <select id="filter-status" style="padding: 0.5rem; border: 1px solid var(--border-color); border-radius: var(--radius-md); background: var(--bg-card); color: var(--text-primary);">
-                <option value="all">All Status</option>
-                <option value="strength">Strengths Only</option>
-                <option value="risk">Risks Only</option>
-            </select>
-        </div>
-
-        <!-- Analysis Table -->
-        <div class="analysis-table-container" style="overflow-x: auto;">
-            <table id="analysis-table" style="width: 100%; border-collapse: collapse; background: var(--bg-card);">
-                <thead>
-                    <tr style="background: var(--bg-secondary); border-bottom: 2px solid var(--border-color);">
-                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer;" data-sort="status">
-                            Status <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_upward</span>
-                        </th>
-                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer;" data-sort="category">
-                            Category <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_upward</span>
-                        </th>
-                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer;" data-sort="finding">
-                            Finding <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_upward</span>
-                        </th>
-                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary); cursor: pointer;" data-sort="impact">
-                            Impact <span class="material-symbols-outlined" style="font-size: 1rem;">arrow_upward</span>
-                        </th>
-                        <th style="padding: 0.75rem; text-align: left; font-weight: 600; color: var(--text-primary);">
-                            Action Required
-                        </th>
-                    </tr>
-                </thead>
-                <tbody id="analysis-table-body">
-                    <!-- Analysis results will be populated here -->
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Analysis Summary -->
-        <div class="analysis-summary" style="margin-top: 1rem; padding: 1rem; background: var(--bg-secondary); border-radius: var(--radius-md);">
-            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-                <div class="summary-item">
-                    <span style="color: var(--text-muted); font-size: 0.875rem;">Total Findings:</span>
-                    <span id="total-findings" style="font-weight: 600; color: var(--text-primary); margin-left: 0.5rem;">0</span>
-                </div>
-                <div class="summary-item">
-                    <span style="color: var(--text-muted); font-size: 0.875rem;">Strengths:</span>
-                    <span id="total-strengths" style="font-weight: 600; color: #059669; margin-left: 0.5rem;">0</span>
-                </div>
-                <div class="summary-item">
-                    <span style="color: var(--text-muted); font-size: 0.875rem;">High Risks:</span>
-                    <span id="total-high-risks" style="font-weight: 600; color: #dc2626; margin-left: 0.5rem;">0</span>
-                </div>
-                <div class="summary-item">
-                    <span style="color: var(--text-muted); font-size: 0.875rem;">Last Updated:</span>
-                    <span id="last-updated" style="font-weight: 600; color: var(--text-primary); margin-left: 0.5rem;">Just now</span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-END COMMENTED OUT SECTION -->
 
 
 {% endblock %}
@@ -1387,14 +1453,6 @@ function initializeDashboardCharts() {
                         </div>
                     </div>
                     
-                    <div style="margin-bottom: 1.5rem;">
-                        <h3 style="margin: 0 0 0.5rem 0; color: #374151; font-size: 1.125rem;">Cross-Sector Analysis</h3>
-                        <div style="background: #fef3c7; padding: 1rem; border-radius: 8px; border-left: 4px solid #f59e0b;">
-                            <p style="margin: 0; color: #92400e; font-size: 0.875rem;">
-                                💡 <strong>Insight:</strong> Click on individual properties above to drill down further, or use the "View Analysis" button to see sector-specific performance metrics and risk analysis.
-                            </p>
-                        </div>
-                    </div>
                     
                     <div style="display: flex; gap: 0.75rem;">
                         <button onclick="this.closest('.modal-overlay').remove()" style="
@@ -1407,16 +1465,6 @@ function initializeDashboardCharts() {
                             cursor: pointer;
                             font-weight: 500;
                         ">Close</button>
-                        <button onclick="alert('Sector analysis coming soon!')" style="
-                            flex: 1;
-                            background: #10b981;
-                            color: white;
-                            border: none;
-                            padding: 0.75rem 1rem;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-weight: 500;
-                        ">View Analysis</button>
                     </div>
                 </div>
             `;
@@ -1693,7 +1741,6 @@ function initializeDashboardCharts() {
                             <h3 style="margin: 0 0 0.5rem 0; color: #374151; font-size: 1.125rem;">Performance & Risk</h3>
                             <div style="background: #f9fafb; padding: 1rem; border-radius: 8px;">
                                 <p style="margin: 0.25rem 0;"><strong>YTD Performance:</strong> ${property.recentPerformance}</p>
-                                <p style="margin: 0.25rem 0;"><strong>Lease Risk:</strong> ${property.leaseExpiry}</p>
                             </div>
                         </div>
                     </div>
@@ -1760,6 +1807,12 @@ function initializeDashboardCharts() {
             if (leaseCanvas) {
                 console.log('Creating stacked lease expiry chart...');
                 
+                // Hide CSS fallback chart when Chart.js loads successfully
+                const fallbackChart = document.getElementById('css-lease-chart');
+                if (fallbackChart) {
+                    fallbackChart.style.display = 'none';
+                }
+                
                 // Get real lease expiry data from Django
                 let leaseDataRaw = document.getElementById('lease-expiry-data').textContent;
                 let leaseExpiryData;
@@ -1808,17 +1861,17 @@ function initializeDashboardCharts() {
                     totals: leaseExpiryData.data, // Keep for verification
                     datasets: [
                         {
-                            label: 'Industrial',
-                            data: leaseExpiryData.labels.map(year => sectorBreakdown[year]['Industrial']),
-                            rentAmounts: leaseExpiryData.labels.map(year => sectorRentAmounts[year]['Industrial']),
+                            label: 'Office',
+                            data: leaseExpiryData.labels.map(year => sectorBreakdown[year]['Office']),
+                            rentAmounts: leaseExpiryData.labels.map(year => sectorRentAmounts[year]['Office']),
                             backgroundColor: '#3b82f6',
                             borderColor: '#2563eb',
                             borderWidth: 1
                         },
                         {
-                            label: 'Office',
-                            data: leaseExpiryData.labels.map(year => sectorBreakdown[year]['Office']),
-                            rentAmounts: leaseExpiryData.labels.map(year => sectorRentAmounts[year]['Office']),
+                            label: 'Industrial',
+                            data: leaseExpiryData.labels.map(year => sectorBreakdown[year]['Industrial']),
+                            rentAmounts: leaseExpiryData.labels.map(year => sectorRentAmounts[year]['Industrial']),
                             backgroundColor: '#8b5cf6',
                             borderColor: '#7c3aed',
                             borderWidth: 1
@@ -2017,6 +2070,18 @@ function initializeDashboardCharts() {
             }
         } catch (e) {
             console.error('❌ Stacked lease expiry chart error:', e);
+            
+            // Show CSS fallback chart if Chart.js fails
+            const fallbackChart = document.getElementById('css-lease-chart');
+            if (fallbackChart) {
+                fallbackChart.style.display = 'block';
+            }
+            
+            // Hide the canvas if Chart.js failed
+            const canvas = document.getElementById('lease-expiry-chart');
+            if (canvas) {
+                canvas.style.display = 'none';
+            }
         }
 
 
@@ -2025,25 +2090,37 @@ function initializeDashboardCharts() {
             const futureIncomeCanvas = document.getElementById('future-income-chart');
             if (futureIncomeCanvas) {
                 console.log('Creating future income chart...');
+                
+                // Hide fallback chart when Chart.js loads successfully
+                const fallbackChart = document.getElementById('css-income-chart');
+                if (fallbackChart) {
+                    fallbackChart.style.display = 'none';
+                }
+                
                 new Chart(futureIncomeCanvas, {
                     type: 'bar',
                     data: {
                         labels: ['Q1 2024', 'Q2 2024', 'Q3 2024', 'Q4 2024', 'Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025'],
                         datasets: [{
                             label: 'Future Income (£k)',
-                            data: [2850, 2950, 3100, 3200, 3300, 3400, 3500, 3600],
+                            data: [641, 665, 698, 725, 745, 768, 792, 815],
                             backgroundColor: '#3b82f6',
                             borderColor: '#2563eb',
                             borderWidth: 1,
                             yAxisID: 'y'
                         }, {
                             label: 'Running Yield (%)',
-                            data: [4.2, 4.3, 4.5, 4.6, 4.7, 4.8, 4.9, 5.0],
+                            data: [5.2, 5.4, 5.6, 5.8, 6.0, 6.1, 6.3, 6.5],
                             type: 'line',
                             borderColor: '#ef4444',
                             backgroundColor: 'rgba(239, 68, 68, 0.1)',
                             borderWidth: 3,
-                            tension: 0.4,
+                            fill: false,
+                            tension: 0.1,
+                            pointBackgroundColor: '#ef4444',
+                            pointBorderColor: '#ef4444',
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
                             yAxisID: 'y1'
                         }]
                     },
@@ -2055,7 +2132,27 @@ function initializeDashboardCharts() {
                                 position: 'top',
                                 labels: {
                                     color: '#475569',
-                                    font: { size: 12 }
+                                    font: { size: 12, weight: 'bold' },
+                                    usePointStyle: true,
+                                    padding: 20
+                                }
+                            },
+                            tooltip: {
+                                backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                                titleColor: '#f8fafc',
+                                bodyColor: '#f8fafc',
+                                borderColor: '#475569',
+                                borderWidth: 1,
+                                callbacks: {
+                                    label: function(context) {
+                                        const datasetLabel = context.dataset.label;
+                                        const value = context.parsed.y;
+                                        if (datasetLabel === 'Future Income (£k)') {
+                                            return `${datasetLabel}: £${value}k`;
+                                        } else {
+                                            return `${datasetLabel}: ${value}%`;
+                                        }
+                                    }
                                 }
                             }
                         },
@@ -2068,21 +2165,40 @@ function initializeDashboardCharts() {
                                 type: 'linear',
                                 display: true,
                                 position: 'left',
-                                title: { display: true, text: 'Income (£k)', color: '#475569' },
-                                ticks: { color: '#475569', font: { size: 10 } },
-                                grid: { color: '#e2e8f0' }
+                                title: { 
+                                    display: true, 
+                                    text: 'Future Income (£k)', 
+                                    color: '#475569',
+                                    font: { size: 12, weight: 'bold' }
+                                },
+                                ticks: { 
+                                    color: '#475569', 
+                                    font: { size: 11 },
+                                    callback: function(value) {
+                                        return '£' + value + 'k';
+                                    }
+                                },
+                                grid: { color: '#e2e8f0' },
+                                beginAtZero: true
                             },
                             y1: {
                                 type: 'linear',
                                 display: true,
                                 position: 'right',
-                                title: { display: true, text: 'Yield (%)', color: '#475569' },
+                                title: { 
+                                    display: true, 
+                                    text: 'Running Yield (%)', 
+                                    color: '#475569',
+                                    font: { size: 12, weight: 'bold' }
+                                },
                                 ticks: { 
                                     color: '#475569', 
-                                    font: { size: 10 },
+                                    font: { size: 11 },
                                     callback: function(value) { return value + '%'; }
                                 },
-                                grid: { drawOnChartArea: false }
+                                grid: { drawOnChartArea: false },
+                                min: 4,
+                                max: 7
                             }
                         }
                     }
@@ -2091,6 +2207,18 @@ function initializeDashboardCharts() {
             }
         } catch (e) {
             console.error('❌ Future income chart error:', e);
+            
+            // Show fallback chart if Chart.js fails
+            const fallbackChart = document.getElementById('css-income-chart');
+            if (fallbackChart) {
+                fallbackChart.style.display = 'block';
+            }
+            
+            // Hide the canvas if it failed
+            const canvas = document.getElementById('future-income-chart');
+            if (canvas) {
+                canvas.style.display = 'none';
+            }
         }
 
     // Interactive functionality
@@ -2150,9 +2278,10 @@ function initializeDashboardCharts() {
         
         window.updateTopTenants = function(portfolioId) {
             console.log('👥 Updating top tenants for portfolio:', portfolioId);
-            // This function will filter the top tenants list
+            // This function will filter the top tenants list (without credit ratings)
             // Future implementation will show portfolio-specific tenants
         };
+        
     };
     
     // Initialize when global portfolio manager is ready
@@ -2178,35 +2307,17 @@ function initializeDashboardCharts() {
     });
 } // End initializeDashboardCharts function
 
-// Wait for both DOM and Chart.js to be ready
+// Initialize charts when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM loaded, waiting for Chart.js...');
+    console.log('📄 DOM loaded, initializing charts...');
     
+    // Simple check for Chart.js availability
     if (typeof Chart !== 'undefined') {
-        // Chart.js already loaded
+        console.log('✅ Chart.js is available, initializing dashboard charts...');
         initializeDashboardCharts();
     } else {
-        // Wait for Chart.js to load
-        window.addEventListener('chartjsReady', function() {
-            console.log('📊 Chart.js ready event received, initializing dashboard charts...');
-            initializeDashboardCharts();
-        });
-        
-        // Fallback: check periodically if Chart.js is loaded
-        let checkCount = 0;
-        const checkInterval = setInterval(() => {
-            checkCount++;
-            if (typeof Chart !== 'undefined') {
-                console.log('📊 Chart.js detected via polling, initializing dashboard charts...');
-                clearInterval(checkInterval);
-                initializeDashboardCharts();
-            } else if (checkCount > 20) { // Stop after 10 seconds
-                console.error('💥 Chart.js failed to load after 10 seconds');
-                clearInterval(checkInterval);
-                // Activate CSS fallback charts
-                activateDashboardFallbackCharts();
-            }
-        }, 500);
+        console.error('❌ Chart.js not available, using fallback charts...');
+        activateDashboardFallbackCharts();
     }
 }); // End DOMContentLoaded
 </script>

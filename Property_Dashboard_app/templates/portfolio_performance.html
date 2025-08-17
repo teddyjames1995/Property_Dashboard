@@ -739,15 +739,18 @@ function trackGiltInteraction(period, action) {
 
 
 
-// Simple DOM ready event
+// Initialize charts when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('📄 DOM loaded, initializing charts...');
+    console.log('📄 DOM loaded, initializing portfolio performance charts...');
     
-    // Simple timeout to allow Chart.js to load
-    setTimeout(() => {
+    // Check for Chart.js availability
+    if (typeof Chart !== 'undefined') {
+        console.log('✅ Chart.js is available, initializing charts...');
         initializeCharts();
         initializeChartInteractivity();
-    }, 100);
+    } else {
+        console.error('❌ Chart.js not available for portfolio performance');
+    }
 });
 </script>
 {% endblock javascript %}
