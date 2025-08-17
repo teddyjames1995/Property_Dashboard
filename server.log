@@ -44,3 +44,10 @@ Starting development server at http://127.0.0.1:8000/
 Quit the server with CONTROL-C.
 
 Watching for file changes with StatReloader
+Not Found: /forecasting/
+[17/Aug/2025 16:41:45] "GET /forecasting/ HTTP/1.1" 404 4117
+[17/Aug/2025 16:41:50] "GET / HTTP/1.1" 200 213
+[17/Aug/2025 16:42:10] "GET /income_and_expenses/ HTTP/1.1" 200 15270
+[17/Aug/2025 16:42:15] "GET /dashboard/ HTTP/1.1" 200 133602
+[17/Aug/2025 16:42:24] "GET /portfolio_performance/ HTTP/1.1" 200 60948
+[17/Aug/2025 16:44:50] "GET /portfolio_performance/ HTTP/1.1" 200 50335

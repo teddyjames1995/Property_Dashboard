@@ -243,9 +243,7 @@
     align-items: flex-start;
 }
 
-.contribution-chart-redesigned,
 .sector-returns-redesigned {
-    flex: 1;
     background: white;
     padding: 1.5rem;
     border-radius: 12px;
@@ -253,7 +251,6 @@
     min-height: 350px;
 }
 
-.contribution-chart-redesigned h4,
 .sector-returns-redesigned h4 {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -262,91 +259,6 @@
     font-size: 1.1rem;
 }
 
-/* Contribution Pie Chart Styles */
-.css-contribution-pie {
-    width: 200px;
-    height: 200px;
-    border-radius: 50%;
-    position: relative;
-    background: conic-gradient(
-        #3B82F6 0% 45%,
-        #8B5CF6 45% 70%,
-        #10B981 70% 90%,
-        #F59E0B 90% 100%
-    );
-    margin: 0 auto 1.5rem auto;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.css-contribution-pie:hover {
-    transform: scale(1.02);
-    box-shadow: 0 6px 16px rgba(0,0,0,0.2);
-}
-
-/* Individual pie slice overlays for click detection */
-.contribution-slice {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: opacity 0.2s ease;
-    overflow: hidden;
-}
-
-.contribution-slice::before {
-    content: '';
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background: rgba(255,255,255,0);
-    transition: background 0.2s ease;
-    border-radius: 50%;
-}
-
-.contribution-slice:hover::before {
-    background: rgba(255,255,255,0.1);
-}
-
-/* Slice positioning for click areas */
-.contribution-slice-1 {
-    clip-path: polygon(50% 50%, 50% 0%, 100% 0%, 100% 40%, 72% 72%);
-}
-
-.contribution-slice-2 {
-    clip-path: polygon(50% 50%, 72% 72%, 50% 100%, 30% 92%);
-}
-
-.contribution-slice-3 {
-    clip-path: polygon(50% 50%, 30% 92%, 0% 80%, 15% 15%);
-}
-
-.contribution-slice-4 {
-    clip-path: polygon(50% 50%, 15% 15%, 0% 0%, 50% 0%);
-}
-
-.contribution-legend {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    font-size: 12px;
-}
-
-.contribution-legend .legend-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: #4b5563;
-}
-
-.contribution-legend .legend-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    flex-shrink: 0;
-}
 
 /* Sector Returns Redesigned */
 .sector-returns-redesigned .sector-bars {
@@ -413,12 +325,6 @@
         gap: 1.5rem;
     }
     
-    .css-contribution-pie {
-        width: 150px;
-        height: 150px;
-    }
-    
-    .contribution-chart-redesigned,
     .sector-returns-redesigned {
         min-height: auto;
     }
@@ -573,41 +479,10 @@
         </div>
     </div>
     
-    <!-- Bottom Row: Two Equal Width Charts -->
+    <!-- Bottom Row: Single Chart -->
     <div class="performance-bottom-row-redesigned">
-        <!-- Contribution to Returns (Left) - Chart.js Pie Chart -->
-        <div class="contribution-chart-redesigned">
-            <h4>Contribution to Returns</h4>
-            <div class="contribution-pie-chart">
-                <!-- Chart.js Canvas -->
-                <div style="position: relative; height: 300px; width: 100%;">
-                    <canvas id="contribution-returns-chart"></canvas>
-                </div>
-                
-                <!-- Fallback CSS Pie Chart (hidden by default) -->
-                <div class="css-contribution-pie" id="css-fallback-pie" style="display: none; margin: 20px auto;" title="Click slices for details">
-                    <div class="contribution-slice contribution-slice-1" style="--percentage: 45; --color: #3B82F6;" title="Warehouse Manchester: 45%">
-                    </div>
-                    <div class="contribution-slice contribution-slice-2" style="--percentage: 25; --color: #8B5CF6;" title="Office London: 25%">
-                    </div>
-                    <div class="contribution-slice contribution-slice-3" style="--percentage: 20; --color: #10B981;" title="Retail Birmingham: 20%">
-                    </div>
-                    <div class="contribution-slice contribution-slice-4" style="--percentage: 10; --color: #F59E0B;" title="Industrial Leeds: 10%">
-                    </div>
-                </div>
-                
-                <!-- Legend -->
-                <div class="contribution-legend">
-                    <div class="legend-item"><span class="legend-dot" style="background: #3B82F6;"></span> Warehouse Manchester (45%)</div>
-                    <div class="legend-item"><span class="legend-dot" style="background: #8B5CF6;"></span> Office London (25%)</div>
-                    <div class="legend-item"><span class="legend-dot" style="background: #10B981;"></span> Retail Birmingham (20%)</div>
-                    <div class="legend-item"><span class="legend-dot" style="background: #F59E0B;"></span> Industrial Leeds (10%)</div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- Sector Returns (Right) -->
-        <div class="sector-returns-redesigned">
+        <!-- Sector Returns (Centered) -->
+        <div class="sector-returns-redesigned" style="max-width: 600px; margin: 0 auto;">
             <h4>Sector Returns</h4>
             <div class="sector-bars">
                 <div class="sector-bar">
@@ -948,82 +823,6 @@ function initializeCharts() {
 });
 
 console.log('Performance chart created successfully!');
-
-// Contribution to Returns Pie Chart with precise hover highlighting
-const contributionCanvas = document.getElementById('contribution-returns-chart');
-if (contributionCanvas) {
-    const contributionCtx = contributionCanvas.getContext('2d');
-    console.log('Creating contribution to returns pie chart...');
-
-    const contributionChart = new Chart(contributionCtx, {
-        type: 'pie',
-        data: {
-            labels: ['Warehouse Manchester', 'Office London', 'Retail Birmingham', 'Industrial Leeds'],
-            datasets: [{
-                data: [45, 25, 20, 10],
-                backgroundColor: ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B'],
-                borderColor: ['#2563EB', '#7C3AED', '#059669', '#D97706'],
-                borderWidth: 2,
-                hoverBackgroundColor: ['#2563EB', '#7C3AED', '#059669', '#D97706'],
-                hoverBorderColor: ['#1D4ED8', '#6D28D9', '#047857', '#B45309'],
-                hoverBorderWidth: 3
-            }]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: {
-                intersect: true,
-                mode: 'point'
-            },
-            plugins: {
-                legend: {
-                    display: false  // Hide Chart.js legend since we have custom legend
-                },
-                tooltip: {
-                    position: 'average',
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    titleColor: 'white',
-                    bodyColor: 'white',
-                    cornerRadius: 4,
-                    displayColors: false,
-                    callbacks: {
-                        label: function(context) {
-                            const label = context.label;
-                            const value = context.parsed;
-                            return `${label}: ${value}%`;
-                        }
-                    }
-                }
-            },
-            onHover: (event, elements, chart) => {
-                event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
-            },
-            onClick: (event, elements) => {
-                if (elements.length > 0) {
-                    const clickedIndex = elements[0].index;
-                    const propertyName = contributionChart.data.labels[clickedIndex];
-                    const propertyValue = contributionChart.data.datasets[0].data[clickedIndex];
-                    
-                    console.log('Property clicked:', propertyName);
-                    console.log('Property contribution:', propertyValue + '%');
-                    
-                    // Handle property click - you can add drill-down functionality here
-                    handleContributionPropertyClick(propertyName, propertyValue, clickedIndex);
-                }
-            }
-        }
-    });
-
-    console.log('Contribution pie chart created successfully!');
-} else {
-    console.warn('Contribution chart canvas not found, showing CSS fallback');
-    // Show CSS fallback if Chart.js fails
-    const cssFallback = document.getElementById('css-fallback-pie');
-    if (cssFallback) {
-        cssFallback.style.display = 'block';
-    }
-}
 
 // Dashboard-wide portfolio synchronization system
 window.portfolioManager = {
@@ -1382,60 +1181,6 @@ function trackGiltInteraction(period, action) {
     // analytics.track('gilt_interaction', { period: period, action: action });
 }
 
-// Click handler for Contribution to Returns pie chart
-function handleContributionPropertyClick(propertyName, propertyValue, index) {
-    console.log('🏢 Contribution property clicked:', propertyName, propertyValue + '%');
-    
-    // Property details mapping
-    const propertyDetails = {
-        'Warehouse Manchester': {
-            name: 'Warehouse Manchester',
-            type: 'Industrial',
-            value: '£54M',
-            contribution: '45%',
-            yield: '8.2%',
-            tenants: 3,
-            location: 'Manchester, UK',
-            sector: 'Industrial'
-        },
-        'Office London': {
-            name: 'Office London',
-            type: 'Office',
-            value: '£30M', 
-            contribution: '25%',
-            yield: '5.8%',
-            tenants: 12,
-            location: 'London, UK',
-            sector: 'Office'
-        },
-        'Retail Birmingham': {
-            name: 'Retail Birmingham',
-            type: 'Retail',
-            value: '£24M',
-            contribution: '20%',
-            yield: '6.5%',
-            tenants: 8,
-            location: 'Birmingham, UK',
-            sector: 'Retail'
-        },
-        'Industrial Leeds': {
-            name: 'Industrial Leeds',
-            type: 'Industrial',
-            value: '£12M',
-            contribution: '10%',
-            yield: '7.1%',
-            tenants: 2,
-            location: 'Leeds, UK',
-            sector: 'Industrial'
-        }
-    };
-    
-    const property = propertyDetails[propertyName];
-    if (property) {
-        showPropertyDetails(property);
-        trackPropertyInteraction(propertyName, 'click');
-    }
-}
 
 // Fallback chart rendering when Chart.js fails
 function createFallbackChart() {
@@ -1560,40 +1305,6 @@ function createFallbackChart() {
     console.log('✅ Fallback chart created successfully');
 }
 
-// Show CSS fallback for contribution chart when Chart.js fails
-function showContributionChartFallback() {
-    console.log('🎨 Showing CSS fallback for contribution chart...');
-    
-    // Hide Chart.js canvas and show CSS fallback
-    const contributionCanvas = document.getElementById('contribution-returns-chart');
-    const cssFallback = document.getElementById('css-fallback-pie');
-    
-    if (contributionCanvas && cssFallback) {
-        contributionCanvas.style.display = 'none';
-        cssFallback.style.display = 'block';
-        
-        // Add click handlers to CSS fallback slices
-        const cssSlices = cssFallback.querySelectorAll('.contribution-slice');
-        cssSlices.forEach((slice, index) => {
-            slice.addEventListener('click', function(event) {
-                event.stopPropagation();
-                const propertyNames = ['Warehouse Manchester', 'Office London', 'Retail Birmingham', 'Industrial Leeds'];
-                const propertyValues = [45, 25, 20, 10];
-                
-                handleContributionPropertyClick(propertyNames[index], propertyValues[index], index);
-            });
-            
-            // Add hover feedback
-            slice.addEventListener('mouseenter', function() {
-                console.log('🏢 Hovering over:', ['Warehouse Manchester', 'Office London', 'Retail Birmingham', 'Industrial Leeds'][index]);
-            });
-        });
-        
-        console.log('✅ CSS fallback for contribution chart activated');
-    } else {
-        console.error('Could not find contribution chart elements for fallback');
-    }
-}
 
 // Wait for both DOM and Chart.js to be ready
 document.addEventListener('DOMContentLoaded', function() {
@@ -1626,8 +1337,7 @@ document.addEventListener('DOMContentLoaded', function() {
             } else if (checkCount > 20) { // Stop after 10 seconds
                 console.error('💥 Chart.js failed to load after 10 seconds');
                 clearInterval(checkInterval);
-                // Show CSS fallback for contribution chart and performance history
-                showContributionChartFallback();
+                // Show CSS fallback for performance history
                 createFallbackChart();
             }
         }, 500);
