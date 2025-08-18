@@ -10,10 +10,12 @@
     <div class="company-info">
         <div class="header-controls">
             <span class="dash-label">Dash.</span>
-            <select class="header-select">
-                <option>Portfolio ▼</option>
-                <option>Core Portfolio</option>
-                <option>Value-Add Portfolio</option>
+            <select class="header-select" id="portfolio-selector">
+                <option value="all">All ▼</option>
+                <option value="main">Portfolio</option>
+                <option value="sipp">SIPP</option>
+                <option value="hands-on">Hands On Mansfield</option>
+                <option value="airbnbs">AirBnBs</option>
             </select>
             <select class="header-select">
                 <option>Property ▼</option>
@@ -132,13 +134,6 @@
                 </div>
             </div>
             
-            <!-- Sustainability EPC Chart -->
-            <div class="sustainability-section">
-                <h3>Sustainability - EPC Ratings</h3>
-                <div class="sustainability-chart">
-                    <canvas id="epcChart"></canvas>
-                </div>
-            </div>
         </div>
 
         <!-- Bottom Right: CapEx and Renewals -->
@@ -420,67 +415,6 @@ const capexChart = new Chart(capexCtx, {
     }
 });
 
-// EPC Ratings Sustainability Chart
-const epcCtx = document.getElementById('epcChart').getContext('2d');
-const epcChart = new Chart(epcCtx, {
-    type: 'bar',
-    data: {
-        labels: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'N/A'],
-        datasets: [{
-            label: '% of ERV',
-            data: [5, 15, 25, 20, 18, 10, 5, 2],
-            backgroundColor: [
-                '#059669', // A - Dark Green
-                '#10b981', // B - Green
-                '#34d399', // C - Light Green
-                '#fbbf24', // D - Yellow
-                '#f59e0b', // E - Orange
-                '#f97316', // F - Dark Orange
-                '#ef4444', // G - Red
-                '#6b7280'  // N/A - Gray
-            ],
-            borderWidth: 1,
-            borderColor: '#ffffff'
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-            legend: {
-                display: false
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return `EPC ${context.label}: ${context.parsed.y}% of ERV`;
-                    }
-                }
-            }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                max: 30,
-                ticks: {
-                    callback: function(value) {
-                        return value + '%';
-                    }
-                },
-                title: {
-                    display: true,
-                    text: '% of ERV'
-                }
-            },
-            x: {
-                title: {
-                    display: true,
-                    text: 'EPC Rating'
-                }
-            }
-        }
-    }
-});
 
 // Generate Report Button
 document.querySelector('.asset-report-btn').addEventListener('click', function() {
@@ -505,6 +439,101 @@ document.querySelectorAll('.asset-select').forEach(select => {
 function updateDashboardData(selection) {
     console.log('Updating asset management data for:', selection);
     // Update charts and tables based on selection
+}
+
+// Portfolio data structure (same as Portfolio Performance page)
+const portfolios = {
+    'main': {
+        name: 'Portfolio',
+        type: 'commercial',
+        value: 120000000, // £120M portfolio value
+        properties: 5,
+        tenants: 9
+    },
+    'sipp': {
+        name: 'SIPP',
+        type: 'pension',
+        value: 45000000, // £45M portfolio value
+        properties: 3,
+        tenants: 4
+    },
+    'hands-on': {
+        name: 'Hands On Mansfield',
+        type: 'commercial',
+        value: 85000000, // £85M portfolio value
+        properties: 4,
+        tenants: 6
+    },
+    'airbnbs': {
+        name: 'AirBnBs',
+        type: 'hospitality',
+        value: 25000000, // £25M portfolio value
+        properties: 8,
+        guests: 1250 // Annual guests instead of tenants
+    }
+};
+
+// Calculate aggregated "All" portfolio data
+function calculateAggregatedData() {
+    const individualPortfolios = ['main', 'sipp', 'hands-on', 'airbnbs'];
+    let totalValue = 0;
+    let totalProperties = 0;
+    let totalTenants = 0;
+    
+    individualPortfolios.forEach(portfolioId => {
+        const portfolio = portfolios[portfolioId];
+        totalValue += portfolio.value;
+        totalProperties += portfolio.properties;
+        totalTenants += (portfolio.tenants || 0);
+        if (portfolio.guests) totalTenants += portfolio.guests;
+    });
+    
+    return {
+        name: 'All Portfolios',
+        type: 'aggregate',
+        value: totalValue,
+        properties: totalProperties,
+        tenants: totalTenants
+    };
+}
+
+// Add aggregated data to portfolios
+portfolios['all'] = calculateAggregatedData();
+
+// Current portfolio selection (with localStorage persistence)
+let currentPortfolio = localStorage.getItem('selectedPortfolio') || 'all';
+
+// Portfolio selector event listener
+const portfolioSelector = document.getElementById('portfolio-selector');
+if (portfolioSelector) {
+    portfolioSelector.addEventListener('change', function() {
+        const selectedPortfolio = this.value;
+        console.log('🔄 Asset Management portfolio changed to:', selectedPortfolio);
+        
+        // Update current selection and save to storage
+        currentPortfolio = selectedPortfolio;
+        localStorage.setItem('selectedPortfolio', selectedPortfolio);
+        
+        // Update asset management display based on selected portfolio
+        updateAssetManagementDisplay(selectedPortfolio);
+    });
+    
+    // Set initial selection
+    portfolioSelector.value = currentPortfolio;
+    console.log('Asset Management portfolio selector initialized with:', currentPortfolio);
+}
+
+// Update asset management display based on selected portfolio
+function updateAssetManagementDisplay(portfolioId) {
+    const portfolio = portfolios[portfolioId];
+    if (!portfolio) {
+        console.error('Portfolio not found:', portfolioId);
+        return;
+    }
+    
+    console.log('Updating Asset Management display for:', portfolio.name);
+    // Future: Filter assets based on selected portfolio
+    // Future: Update charts and metrics
 }
 </script>
 {% endblock javascript %}

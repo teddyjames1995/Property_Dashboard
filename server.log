@@ -101,3 +101,130 @@ Watching for file changes with StatReloader
 [17/Aug/2025 17:37:47] "GET /dashboard/ HTTP/1.1" 200 115974
 [17/Aug/2025 17:37:47] "GET /dashboard/ HTTP/1.1" 200 115974
 [17/Aug/2025 17:44:04] "GET /debt/ HTTP/1.1" 200 9795
+[17/Aug/2025 18:09:55] "GET /tenancy_schedule/ HTTP/1.1" 200 20233
+[17/Aug/2025 18:09:56] "GET /debt/ HTTP/1.1" 200 9795
+[17/Aug/2025 18:47:42] "GET /asset_management/ HTTP/1.1" 200 20377
+[17/Aug/2025 18:51:27] "GET /debt/ HTTP/1.1" 200 9795
+[17/Aug/2025 18:51:28] "GET /asset_management/ HTTP/1.1" 200 20377
+[17/Aug/2025 19:02:16] "GET /income_and_expenses/ HTTP/1.1" 200 12317
+[17/Aug/2025 19:38:35] "GET /asset_management/ HTTP/1.1" 200 20377
+[17/Aug/2025 19:38:45] "GET /income_and_expenses/ HTTP/1.1" 200 12317
+[17/Aug/2025 19:41:52] "GET /dashboard/ HTTP/1.1" 200 119547
+[17/Aug/2025 19:41:57] "GET /tenancy_schedule/ HTTP/1.1" 200 19967
+[17/Aug/2025 19:43:04] "GET /income_and_expenses/ HTTP/1.1" 200 12051
+[17/Aug/2025 19:47:29] "GET /property_deepdive/ HTTP/1.1" 200 35062
+[17/Aug/2025 19:49:07] "GET /income_and_expenses/ HTTP/1.1" 200 12051
+[17/Aug/2025 19:49:09] "GET /dashboard/ HTTP/1.1" 200 119547
+[17/Aug/2025 19:49:11] "GET /portfolio_performance/ HTTP/1.1" 200 30496
+[17/Aug/2025 19:49:14] "GET /property_deepdive/ HTTP/1.1" 200 35062
+[17/Aug/2025 19:50:22] "GET /dashboard/ HTTP/1.1" 200 119547
+[17/Aug/2025 19:53:02] "GET /portfolio_performance/ HTTP/1.1" 200 30496
+[17/Aug/2025 19:53:02] "GET /property_deepdive/ HTTP/1.1" 200 35062
+[17/Aug/2025 19:53:02] "GET /asset_management/ HTTP/1.1" 200 20111
+[17/Aug/2025 19:53:02] "GET /debt/ HTTP/1.1" 200 9529
+[17/Aug/2025 19:53:02] "GET /income_and_expenses/ HTTP/1.1" 200 12051
+[17/Aug/2025 19:55:19] "GET /property_deepdive/ HTTP/1.1" 200 35062
+[17/Aug/2025 19:55:24] "GET /dashboard/ HTTP/1.1" 200 119547
+[17/Aug/2025 19:55:30] "GET /portfolio_performance/ HTTP/1.1" 200 30496
+[17/Aug/2025 19:55:32] "GET /property_deepdive/ HTTP/1.1" 200 35062
+[17/Aug/2025 19:55:44] "GET /asset_management/ HTTP/1.1" 200 20111
+[17/Aug/2025 19:56:02] "GET /debt/ HTTP/1.1" 200 9529
+[17/Aug/2025 19:56:04] "GET /income_and_expenses/ HTTP/1.1" 200 12051
+[17/Aug/2025 19:57:29] "GET /income_and_expenses/ HTTP/1.1" 200 12051
+[17/Aug/2025 19:57:30] "GET /dashboard/ HTTP/1.1" 200 119547
+[17/Aug/2025 21:04:27] "GET /property_deepdive/ HTTP/1.1" 200 35062
+[17/Aug/2025 21:04:31] "GET /dashboard/ HTTP/1.1" 200 119547
+/Users/teddyjames/Desktop/Property_Dashboard/Property_Dashboard_app/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 17, 2025 - 17:32:51
+Django version 4.2.15, using settings 'Property_Dashboard.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+[17/Aug/2025 21:07:04] "GET /dashboard/ HTTP/1.1" 200 117719
+[17/Aug/2025 21:07:10] "GET /dashboard/ HTTP/1.1" 200 117719
+[17/Aug/2025 21:08:03] "GET /dashboard/ HTTP/1.1" 200 117422
+[17/Aug/2025 21:08:09] "GET /portfolio_performance/ HTTP/1.1" 200 30391
+/Users/teddyjames/Desktop/Property_Dashboard/Property_Dashboard_app/views.py changed, reloading.
+Performing system checks...
+
+System check identified no issues (0 silenced).
+August 17, 2025 - 21:06:55
+Django version 4.2.15, using settings 'Property_Dashboard.settings'
+Starting development server at http://127.0.0.1:8000/
+Quit the server with CONTROL-C.
+
+Watching for file changes with StatReloader
+[17/Aug/2025 21:10:43] "GET /dashboard/ HTTP/1.1" 200 119320
+[17/Aug/2025 21:10:48] "GET /portfolio_performance/ HTTP/1.1" 200 30496
+[17/Aug/2025 21:12:21] "GET /dashboard/ HTTP/1.1" 200 119320
+[17/Aug/2025 21:14:45] "GET /dashboard/ HTTP/1.1" 200 113337
+[17/Aug/2025 21:15:27] "GET /dashboard/ HTTP/1.1" 200 112137
+[17/Aug/2025 21:17:04] "GET /dashboard/ HTTP/1.1" 200 112137
+[17/Aug/2025 21:21:09] "GET /dashboard/ HTTP/1.1" 200 112944
+[17/Aug/2025 21:27:14] "GET /dashboard/ HTTP/1.1" 200 115196
+[17/Aug/2025 21:27:17] "GET /dashboard/ HTTP/1.1" 200 115196
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[17/Aug/2025 21:27:35] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4225
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[17/Aug/2025 21:29:05] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4225
+[17/Aug/2025 21:49:21] "GET /dashboard/ HTTP/1.1" 200 112707
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[17/Aug/2025 21:49:21] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4225
+[17/Aug/2025 22:01:45] "GET /dashboard/ HTTP/1.1" 200 113491
+[18/Aug/2025 06:42:18] "GET /dashboard/ HTTP/1.1" 200 113491
+[18/Aug/2025 06:42:18] "GET /static/js/portfolio-manager.js?v=2025813b HTTP/1.1" 304 0
+[18/Aug/2025 06:53:40] "GET /dashboard/ HTTP/1.1" 200 114006
+[18/Aug/2025 06:53:48] "GET /portfolio_performance/ HTTP/1.1" 200 30698
+[18/Aug/2025 07:01:48] "GET /portfolio_performance/ HTTP/1.1" 200 30432
+[18/Aug/2025 07:01:51] "GET /portfolio_performance/ HTTP/1.1" 200 30432
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[18/Aug/2025 07:01:54] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4225
+[18/Aug/2025 10:08:51] "GET /portfolio_performance/ HTTP/1.1" 200 34189
+Not Found: /.well-known/appspecific/com.chrome.devtools.json
+[18/Aug/2025 10:08:51] "GET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1" 404 4225
+[18/Aug/2025 10:09:11] "GET /property_deepdive/ HTTP/1.1" 200 35062
+[18/Aug/2025 10:09:13] "GET /portfolio_performance/ HTTP/1.1" 200 34189
+[18/Aug/2025 10:09:14] "GET /dashboard/ HTTP/1.1" 200 114006
+[18/Aug/2025 10:09:17] "GET /portfolio_performance/ HTTP/1.1" 200 34189
+[18/Aug/2025 10:11:17] "GET /property_deepdive/ HTTP/1.1" 200 35062
+[18/Aug/2025 13:08:15] "GET /portfolio_performance/ HTTP/1.1" 200 34189
+[18/Aug/2025 13:08:16] "GET /property_deepdive/ HTTP/1.1" 200 38248
+[18/Aug/2025 13:08:26] "GET /property_deepdive/ HTTP/1.1" 200 38248
+[18/Aug/2025 13:08:31] "GET /asset_management/ HTTP/1.1" 200 20111
+[18/Aug/2025 13:08:39] "GET /debt/ HTTP/1.1" 200 9529
+[18/Aug/2025 13:08:45] "GET /income_and_expenses/ HTTP/1.1" 200 12051
+[18/Aug/2025 13:15:32] "GET /income_and_expenses/ HTTP/1.1" 200 15275
+[18/Aug/2025 13:15:37] "GET /debt/ HTTP/1.1" 200 12897
+[18/Aug/2025 13:15:51] "GET /dashboard/ HTTP/1.1" 200 114006
+[18/Aug/2025 13:15:52] "GET /portfolio_performance/ HTTP/1.1" 200 34189
+[18/Aug/2025 13:15:53] "GET /property_deepdive/ HTTP/1.1" 200 38248
+[18/Aug/2025 13:15:54] "GET /property_deepdive/ HTTP/1.1" 200 38248
+[18/Aug/2025 13:15:55] "GET /asset_management/ HTTP/1.1" 200 23318
+[18/Aug/2025 13:15:56] "GET /debt/ HTTP/1.1" 200 12897
+[18/Aug/2025 13:15:57] "GET /income_and_expenses/ HTTP/1.1" 200 15275
+[18/Aug/2025 13:16:23] "GET /dashboard/ HTTP/1.1" 200 114006
+[18/Aug/2025 13:32:30] "GET /dashboard/ HTTP/1.1" 200 114288
+[18/Aug/2025 13:32:31] "GET /portfolio_performance/ HTTP/1.1" 200 34471
+[18/Aug/2025 13:32:32] "GET /property_deepdive/ HTTP/1.1" 200 38530
+[18/Aug/2025 13:32:33] "GET /tenancy_schedule/ HTTP/1.1" 200 23464
+[18/Aug/2025 13:32:34] "GET /asset_management/ HTTP/1.1" 200 23600
+[18/Aug/2025 13:32:35] "GET /tenancy_schedule/ HTTP/1.1" 200 23464
+[18/Aug/2025 13:32:39] "GET /property_deepdive/ HTTP/1.1" 200 38530
+[18/Aug/2025 13:32:40] "GET /tenancy_schedule/ HTTP/1.1" 200 23464
+[18/Aug/2025 13:32:41] "GET /asset_management/ HTTP/1.1" 200 23600
+[18/Aug/2025 13:32:42] "GET /debt/ HTTP/1.1" 200 13179
+[18/Aug/2025 13:32:48] "GET /income_and_expenses/ HTTP/1.1" 200 15557
+[18/Aug/2025 13:32:51] "GET /property_deepdive/ HTTP/1.1" 200 38530
+[18/Aug/2025 13:39:45] "GET /property_deepdive/ HTTP/1.1" 200 38260
+[18/Aug/2025 13:39:47] "GET /asset_management/ HTTP/1.1" 200 23330
+[18/Aug/2025 13:40:17] "GET /dashboard/ HTTP/1.1" 200 114018
+[18/Aug/2025 13:40:22] "GET /portfolio_performance/ HTTP/1.1" 200 34201
+[18/Aug/2025 13:40:28] "GET /property_deepdive/ HTTP/1.1" 200 38260
+[18/Aug/2025 15:41:41] "GET /dashboard/ HTTP/1.1" 200 114018
+[18/Aug/2025 15:41:50] "GET /portfolio_performance/ HTTP/1.1" 200 34201
+[18/Aug/2025 15:42:32] "GET /dashboard/ HTTP/1.1" 200 114018
+[18/Aug/2025 15:44:07] "GET /property_deepdive/ HTTP/1.1" 200 38260

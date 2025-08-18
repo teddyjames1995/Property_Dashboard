@@ -4,16 +4,203 @@
 {% block title %}Property Deep Dive{% endblock %}
 {% block page_title %}Property Deep Dive{% endblock page_title %}
 
+{% block styles %}
+{{ block.super }}
+<style>
+/* Simplified Property Cards */
+.simple-property-card {
+    display: flex;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--card-bg);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.simple-property-card:hover {
+    border-color: var(--accent-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.simple-property-card.active {
+    border-color: var(--accent-color);
+    background: rgba(59, 130, 246, 0.05);
+}
+
+.simple-property-card .card-image {
+    width: 80px;
+    height: 60px;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.simple-property-card .photo-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.simple-property-card .card-info {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.property-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin-bottom: 0.25rem;
+}
+
+.property-location {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+}
+
+.property-basic-info {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.875rem;
+}
+
+.property-basic-info span {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+/* Simplified Map Pins */
+.simple-pin {
+    position: absolute;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.simple-pin:hover {
+    transform: scale(1.2);
+}
+
+.simple-pin.active {
+    transform: scale(1.3);
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.pin-marker {
+    font-size: 1.5rem;
+    color: var(--accent-color);
+    display: block;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Property Info Popup */
+.property-popup {
+    position: absolute;
+    z-index: 1000;
+    background: white;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    min-width: 250px;
+    max-width: 300px;
+}
+
+.popup-content {
+    padding: 0;
+}
+
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-primary);
+    border-radius: 8px 8px 0 0;
+}
+
+.popup-title {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.popup-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.popup-close:hover {
+    color: var(--text-primary);
+}
+
+.popup-body {
+    padding: 1rem;
+}
+
+.popup-info {
+    margin-bottom: 0.75rem;
+}
+
+.popup-info span {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.popup-metrics {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.popup-metrics span {
+    color: var(--text-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+/* Clean up map layout */
+.map-placeholder {
+    position: relative;
+    background: #f0f4f8;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+</style>
+{% endblock %}
+
 {% block content %}
 <!-- Top Controls -->
 <div class="deepdive-header">
     <div class="filter-controls-row">
         <div class="control-group">
-            <label>Dash.</label>
-            <select class="deepdive-select">
-                <option>Portfolio ▼</option>
-                <option>Core Portfolio</option>
-                <option>Value-Add Portfolio</option>
+            <label>Portfolio</label>
+            <select class="deepdive-select" id="portfolio-selector">
+                <option value="all">All ▼</option>
+                <option value="main">Portfolio</option>
+                <option value="sipp">SIPP</option>
+                <option value="hands-on">Hands On Mansfield</option>
+                <option value="airbnbs">AirBnBs</option>
             </select>
         </div>
         
@@ -296,100 +483,86 @@
                     </div>
                     
                     <div class="property-cards-list">
-                        <div class="airbnb-property-card" data-property="1">
+                        <div class="simple-property-card" data-property="1">
                             <div class="card-image">
                                 <div class="photo-placeholder">📷</div>
-                                <button class="heart-btn">♡</button>
-                                <div class="guest-favourite">Guest favourite</div>
                             </div>
                             <div class="card-info">
-                                <div class="property-title">Office in Central London</div>
-                                <div class="property-subtitle">★ 4.67 (183) · Professional</div>
-                                <div class="property-description">Amazing location, Individual Unit</div>
-                                <div class="property-dates">1 double bed</div>
-                                <div class="property-price">
-                                    <strong>£450</strong> per month
+                                <div class="property-name">Office Building Central London</div>
+                                <div class="property-location">Central London</div>
+                                <div class="property-basic-info">
+                                    <span>Value: £2.5M</span>
+                                    <span>Yield: 7.2%</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="airbnb-property-card" data-property="2">
+                        <div class="simple-property-card" data-property="2">
                             <div class="card-image">
                                 <div class="photo-placeholder">📷</div>
-                                <button class="heart-btn">♡</button>
-                                <div class="guest-favourite">Guest favourite</div>
                             </div>
                             <div class="card-info">
-                                <div class="property-title">Retail in Edinburgh</div>
-                                <div class="property-subtitle">★ 4.93 (156) · Professional</div>
-                                <div class="property-description">Stay with Claire</div>
-                                <div class="property-dates">Double room w/ private</div>
-                                <div class="property-price">
-                                    <strong>£340</strong> per month
+                                <div class="property-name">Retail Centre Edinburgh</div>
+                                <div class="property-location">Edinburgh</div>
+                                <div class="property-basic-info">
+                                    <span>Value: £1.8M</span>
+                                    <span>Yield: 8.0%</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="airbnb-property-card" data-property="3">
+                        <div class="simple-property-card" data-property="3">
                             <div class="card-image">
                                 <div class="photo-placeholder">📷</div>
-                                <button class="heart-btn">♡</button>
                             </div>
                             <div class="card-info">
-                                <div class="property-title">Industrial in Birmingham</div>
-                                <div class="property-subtitle">★ 4.94 (190) · Professional</div>
-                                <div class="property-description">Stay with Luke</div>
-                                <div class="property-dates">Individual Unit</div>
-                                <div class="property-price">
-                                    <strong>£525</strong> per month
+                                <div class="property-name">Industrial Complex Birmingham</div>
+                                <div class="property-location">Birmingham</div>
+                                <div class="property-basic-info">
+                                    <span>Value: £3.2M</span>
+                                    <span>Yield: 7.0%</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="airbnb-property-card" data-property="4">
+                        <div class="simple-property-card" data-property="4">
                             <div class="card-image">
                                 <div class="photo-placeholder">📷</div>
-                                <button class="heart-btn">♡</button>
                             </div>
                             <div class="card-info">
-                                <div class="property-title">Warehouse in Manchester</div>
-                                <div class="property-subtitle">★ 4.85 (142) · Professional</div>
-                                <div class="property-description">Amazing location</div>
-                                <div class="property-dates">Large Industrial Space</div>
-                                <div class="property-price">
-                                    <strong>£680</strong> per month
+                                <div class="property-name">Warehouse Manchester</div>
+                                <div class="property-location">Manchester</div>
+                                <div class="property-basic-info">
+                                    <span>Value: £1.5M</span>
+                                    <span>Yield: 6.8%</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="airbnb-property-card" data-property="5">
+                        <div class="simple-property-card" data-property="5">
                             <div class="card-image">
                                 <div class="photo-placeholder">📷</div>
-                                <button class="heart-btn">♡</button>
                             </div>
                             <div class="card-info">
-                                <div class="property-title">Mixed Use in Liverpool</div>
-                                <div class="property-subtitle">★ 4.78 (98) · Professional</div>
-                                <div class="property-description">Great connectivity</div>
-                                <div class="property-dates">Multi-purpose facility</div>
-                                <div class="property-price">
-                                    <strong>£390</strong> per month
+                                <div class="property-name">Mixed Use Liverpool</div>
+                                <div class="property-location">Liverpool</div>
+                                <div class="property-basic-info">
+                                    <span>Value: £2.1M</span>
+                                    <span>Yield: 7.5%</span>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="airbnb-property-card" data-property="6">
+                        <div class="simple-property-card" data-property="6">
                             <div class="card-image">
                                 <div class="photo-placeholder">📷</div>
-                                <button class="heart-btn">♡</button>
                             </div>
                             <div class="card-info">
-                                <div class="property-title">Office in Bristol</div>
-                                <div class="property-subtitle">★ 4.92 (201) · Professional</div>
-                                <div class="property-description">Modern workspace</div>
-                                <div class="property-dates">Open plan office</div>
-                                <div class="property-price">
-                                    <strong>£420</strong> per month
+                                <div class="property-name">Office Building Bristol</div>
+                                <div class="property-location">Bristol</div>
+                                <div class="property-basic-info">
+                                    <span>Value: £2.8M</span>
+                                    <span>Yield: 6.9%</span>
                                 </div>
                             </div>
                         </div>
@@ -402,23 +575,42 @@
                         <div class="map-placeholder">
                             🗺️ Interactive UK Property Map
                             <div class="map-pins">
-                                <div class="price-pin" style="top: 25%; left: 65%;" data-property="1">
-                                    <span class="price-tag">£450</span>
+                                <div class="simple-pin" style="top: 25%; left: 65%;" data-property="1" title="Office Building Central London">
+                                    <span class="pin-marker">📍</span>
                                 </div>
-                                <div class="price-pin" style="top: 15%; left: 55%;" data-property="2">
-                                    <span class="price-tag">£340</span>
+                                <div class="simple-pin" style="top: 15%; left: 55%;" data-property="2" title="Retail Centre Edinburgh">
+                                    <span class="pin-marker">📍</span>
                                 </div>
-                                <div class="price-pin" style="top: 45%; left: 52%;" data-property="3">
-                                    <span class="price-tag">£525</span>
+                                <div class="simple-pin" style="top: 45%; left: 52%;" data-property="3" title="Industrial Complex Birmingham">
+                                    <span class="pin-marker">📍</span>
                                 </div>
-                                <div class="price-pin" style="top: 35%; left: 45%;" data-property="4">
-                                    <span class="price-tag">£680</span>
+                                <div class="simple-pin" style="top: 35%; left: 45%;" data-property="4" title="Warehouse Manchester">
+                                    <span class="pin-marker">📍</span>
                                 </div>
-                                <div class="price-pin" style="top: 40%; left: 38%;" data-property="5">
-                                    <span class="price-tag">£390</span>
+                                <div class="simple-pin" style="top: 40%; left: 38%;" data-property="5" title="Mixed Use Liverpool">
+                                    <span class="pin-marker">📍</span>
                                 </div>
-                                <div class="price-pin" style="top: 50%; left: 42%;" data-property="6">
-                                    <span class="price-tag">£420</span>
+                                <div class="simple-pin" style="top: 50%; left: 42%;" data-property="6" title="Office Building Bristol">
+                                    <span class="pin-marker">📍</span>
+                                </div>
+                            </div>
+                            
+                            <!-- Property Info Popup -->
+                            <div class="property-popup" id="property-popup" style="display: none;">
+                                <div class="popup-content">
+                                    <div class="popup-header">
+                                        <span class="popup-title" id="popup-title">Property Name</span>
+                                        <button class="popup-close" onclick="hidePropertyPopup()">×</button>
+                                    </div>
+                                    <div class="popup-body">
+                                        <div class="popup-info">
+                                            <span id="popup-location">Location</span>
+                                        </div>
+                                        <div class="popup-metrics">
+                                            <span id="popup-value">Value</span>
+                                            <span id="popup-yield">Yield</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             
@@ -447,6 +639,101 @@
 
 {% block javascript %}
 <script>
+// Portfolio data structure (same as Portfolio Performance page)
+const portfolios = {
+    'main': {
+        name: 'Portfolio',
+        type: 'commercial',
+        value: 120000000, // £120M portfolio value
+        properties: 5,
+        tenants: 9
+    },
+    'sipp': {
+        name: 'SIPP',
+        type: 'pension',
+        value: 45000000, // £45M portfolio value
+        properties: 3,
+        tenants: 4
+    },
+    'hands-on': {
+        name: 'Hands On Mansfield',
+        type: 'commercial',
+        value: 85000000, // £85M portfolio value
+        properties: 4,
+        tenants: 6
+    },
+    'airbnbs': {
+        name: 'AirBnBs',
+        type: 'hospitality',
+        value: 25000000, // £25M portfolio value
+        properties: 8,
+        guests: 1250 // Annual guests instead of tenants
+    }
+};
+
+// Calculate aggregated "All" portfolio data
+function calculateAggregatedData() {
+    const individualPortfolios = ['main', 'sipp', 'hands-on', 'airbnbs'];
+    let totalValue = 0;
+    let totalProperties = 0;
+    let totalTenants = 0;
+    
+    individualPortfolios.forEach(portfolioId => {
+        const portfolio = portfolios[portfolioId];
+        totalValue += portfolio.value;
+        totalProperties += portfolio.properties;
+        totalTenants += (portfolio.tenants || 0);
+        if (portfolio.guests) totalTenants += portfolio.guests;
+    });
+    
+    return {
+        name: 'All Portfolios',
+        type: 'aggregate',
+        value: totalValue,
+        properties: totalProperties,
+        tenants: totalTenants
+    };
+}
+
+// Add aggregated data to portfolios
+portfolios['all'] = calculateAggregatedData();
+
+// Current portfolio selection (with localStorage persistence)
+let currentPortfolio = localStorage.getItem('selectedPortfolio') || 'all';
+
+// Portfolio selector event listener
+const portfolioSelector = document.getElementById('portfolio-selector');
+if (portfolioSelector) {
+    portfolioSelector.addEventListener('change', function() {
+        const selectedPortfolio = this.value;
+        console.log('🔄 Property Deep Dive portfolio changed to:', selectedPortfolio);
+        
+        // Update current selection and save to storage
+        currentPortfolio = selectedPortfolio;
+        localStorage.setItem('selectedPortfolio', selectedPortfolio);
+        
+        // Update property data display based on selected portfolio
+        updatePropertyDisplay(selectedPortfolio);
+    });
+    
+    // Set initial selection
+    portfolioSelector.value = currentPortfolio;
+    console.log('Portfolio selector initialized with:', currentPortfolio);
+}
+
+// Update property display based on selected portfolio
+function updatePropertyDisplay(portfolioId) {
+    const portfolio = portfolios[portfolioId];
+    if (!portfolio) {
+        console.error('Portfolio not found:', portfolioId);
+        return;
+    }
+    
+    console.log('Updating Property Deep Dive display for:', portfolio.name);
+    // Future: Filter properties based on selected portfolio
+    // Future: Update property counts and filters
+}
+
 // View Toggle Functionality
 document.querySelectorAll('.view-btn').forEach(btn => {
     btn.addEventListener('click', function() {
@@ -464,44 +751,84 @@ document.querySelectorAll('.view-btn').forEach(btn => {
     });
 });
 
-// Airbnb-style map interactions
-document.querySelectorAll('.airbnb-property-card, .price-pin').forEach(item => {
+// Simplified map interactions
+const propertyData = {
+    '1': { name: 'Office Building Central London', location: 'Central London', value: '£2.5M', yield: '7.2%' },
+    '2': { name: 'Retail Centre Edinburgh', location: 'Edinburgh', value: '£1.8M', yield: '8.0%' },
+    '3': { name: 'Industrial Complex Birmingham', location: 'Birmingham', value: '£3.2M', yield: '7.0%' },
+    '4': { name: 'Warehouse Manchester', location: 'Manchester', value: '£1.5M', yield: '6.8%' },
+    '5': { name: 'Mixed Use Liverpool', location: 'Liverpool', value: '£2.1M', yield: '7.5%' },
+    '6': { name: 'Office Building Bristol', location: 'Bristol', value: '£2.8M', yield: '6.9%' }
+};
+
+document.querySelectorAll('.simple-property-card, .simple-pin').forEach(item => {
     item.addEventListener('click', function() {
         const propertyId = this.dataset.property;
         
         // Highlight corresponding property card and map pin
-        document.querySelectorAll('.airbnb-property-card').forEach(card => card.classList.remove('active'));
-        document.querySelectorAll('.price-pin').forEach(pin => pin.classList.remove('active'));
+        document.querySelectorAll('.simple-property-card').forEach(card => card.classList.remove('active'));
+        document.querySelectorAll('.simple-pin').forEach(pin => pin.classList.remove('active'));
         
-        if (this.classList.contains('airbnb-property-card')) {
+        if (this.classList.contains('simple-property-card')) {
             this.classList.add('active');
-            document.querySelector(`.price-pin[data-property="${propertyId}"]`).classList.add('active');
+            document.querySelector(`.simple-pin[data-property="${propertyId}"]`).classList.add('active');
         } else {
             this.classList.add('active');
-            document.querySelector(`.airbnb-property-card[data-property="${propertyId}"]`).classList.add('active');
+            document.querySelector(`.simple-property-card[data-property="${propertyId}"]`).classList.add('active');
+            
+            // Show property popup
+            showPropertyPopup(propertyId, this);
             
             // Scroll property card into view
-            const propertyCard = document.querySelector(`.airbnb-property-card[data-property="${propertyId}"]`);
-            propertyCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            const propertyCard = document.querySelector(`.simple-property-card[data-property="${propertyId}"]`);
+            if (propertyCard) {
+                propertyCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
         }
         
         console.log('Selected property:', propertyId);
     });
 });
 
-// Heart button functionality
-document.querySelectorAll('.heart-btn').forEach(btn => {
-    btn.addEventListener('click', function(e) {
-        e.stopPropagation(); // Prevent card click
-        
-        if (this.textContent === '♡') {
-            this.textContent = '♥';
-            this.style.color = '#ff385c';
-        } else {
-            this.textContent = '♡';
-            this.style.color = '';
-        }
-    });
+// Property popup functionality
+function showPropertyPopup(propertyId, pinElement) {
+    const property = propertyData[propertyId];
+    if (!property) return;
+    
+    const popup = document.getElementById('property-popup');
+    const rect = pinElement.getBoundingClientRect();
+    const mapRect = pinElement.closest('.map-placeholder').getBoundingClientRect();
+    
+    // Update popup content
+    document.getElementById('popup-title').textContent = property.name;
+    document.getElementById('popup-location').textContent = property.location;
+    document.getElementById('popup-value').textContent = `Value: ${property.value}`;
+    document.getElementById('popup-yield').textContent = `Yield: ${property.yield}`;
+    
+    // Position popup near the pin
+    popup.style.position = 'absolute';
+    popup.style.left = (rect.left - mapRect.left + 30) + 'px';
+    popup.style.top = (rect.top - mapRect.top - 10) + 'px';
+    popup.style.display = 'block';
+}
+
+function hidePropertyPopup() {
+    document.getElementById('property-popup').style.display = 'none';
+    
+    // Remove active states
+    document.querySelectorAll('.simple-property-card').forEach(card => card.classList.remove('active'));
+    document.querySelectorAll('.simple-pin').forEach(pin => pin.classList.remove('active'));
+}
+
+// Close popup when clicking outside
+document.addEventListener('click', function(e) {
+    const popup = document.getElementById('property-popup');
+    const isClickInsidePopup = popup.contains(e.target);
+    const isClickOnPin = e.target.closest('.simple-pin');
+    
+    if (!isClickInsidePopup && !isClickOnPin && popup.style.display === 'block') {
+        hidePropertyPopup();
+    }
 });
 
 // Map controls

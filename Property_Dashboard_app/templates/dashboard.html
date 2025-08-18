@@ -442,31 +442,23 @@
         <div class="sector-chart-container">
             <h3>Sector Allocation</h3>
             <div class="pie-chart-wrapper">
-                <!-- CSS Fallback Pie Chart -->
+                <!-- CSS Fallback Pie Chart (clean, no text overlays) -->
                 <div class="css-pie-chart" id="css-sector-chart">
-                    <div class="pie-slice pie-slice-1" style="--percentage: 35; --color: #3b82f6;" title="Office: 35%">
-                        <span class="pie-label">Office<br>35%</span>
-                    </div>
-                    <div class="pie-slice pie-slice-2" style="--percentage: 28; --color: #8b5cf6;" title="Industrial: 28%">
-                        <span class="pie-label">Industrial<br>28%</span>
-                    </div>
-                    <div class="pie-slice pie-slice-3" style="--percentage: 22; --color: #10b981;" title="Retail: 22%">
-                        <span class="pie-label">Retail<br>22%</span>
-                    </div>
-                    <div class="pie-slice pie-slice-4" style="--percentage: 15; --color: #f59e0b;" title="Alternative: 15%">
-                        <span class="pie-label">Alt<br>15%</span>
-                    </div>
+                    <div class="pie-slice pie-slice-1" style="--percentage: 39.2; --color: #3b82f6;" title="Office: 39.2%"></div>
+                    <div class="pie-slice pie-slice-2" style="--percentage: 23.3; --color: #8b5cf6;" title="Industrial: 23.3%"></div>
+                    <div class="pie-slice pie-slice-3" style="--percentage: 20.8; --color: #10b981;" title="Retail: 20.8%"></div>
+                    <div class="pie-slice pie-slice-4" style="--percentage: 16.7; --color: #f59e0b;" title="Mixed Use: 16.7%"></div>
                 </div>
                 
-                <!-- Original Canvas (hidden by default) -->
-                <canvas id="sector-allocation-chart" width="200" height="200" style="display: none;"></canvas>
+                <!-- Chart.js Canvas (primary display) -->
+                <canvas id="sector-allocation-chart" width="200" height="200" style="width: 100%; height: 200px; max-width: 200px;"></canvas>
                 
                 <div class="sector-legend" id="dynamic-legend">
-                    <!-- CSS Fallback Legend -->
-                    <div class="legend-item"><span class="legend-dot" style="background: #3b82f6;"></span> Office (35%)</div>
-                    <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span> Industrial (28%)</div>
-                    <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span> Retail (22%)</div>
-                    <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span> Alternative (15%)</div>
+                    <!-- Clean CSS Fallback Legend -->
+                    <div class="legend-item"><span class="legend-dot" style="background: #3b82f6;"></span> Office 39.2%</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span> Industrial 23.3%</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span> Retail 20.8%</div>
+                    <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span> Mixed Use 16.7%</div>
                 </div>
             </div>
         </div>
@@ -1145,6 +1137,12 @@ function initializeDashboardCharts() {
             if (canvas) {
                 console.log('✅ Canvas found');
                 
+                // Hide CSS fallback chart when Chart.js loads successfully
+                const fallbackChart = document.getElementById('css-sector-chart');
+                if (fallbackChart) {
+                    fallbackChart.style.display = 'none';
+                }
+                
                 // Get real data from Django context - handle double encoding
                 let sectorDataRaw = document.getElementById('sector-allocation-data').textContent;
                 console.log('Raw sector data:', sectorDataRaw);
@@ -1199,14 +1197,16 @@ function initializeDashboardCharts() {
                         datasets: [{
                             data: percentageData,
                             backgroundColor: sectorData.backgroundColor,
-                            borderColor: '#1e293b',
-                            borderWidth: 2,
-                            hoverOffset: 8
+                            borderColor: '#ffffff',
+                            borderWidth: 3,
+                            hoverOffset: 6,
+                            hoverBorderWidth: 4,
+                            hoverBorderColor: '#ffffff'
                         }]
                     },
                     options: {
                         responsive: true,
-                        maintainAspectRatio: false,
+                        maintainAspectRatio: true,
                         onClick: (event, elements) => {
                             console.log('🖱️ Chart.js onClick triggered');
                             console.log('📊 Chart.js event:', event);
@@ -1231,14 +1231,15 @@ function initializeDashboardCharts() {
                         },
                         plugins: {
                             legend: {
-                                display: false // We'll use custom legend
+                                display: false // Using custom legend below
                             },
                             tooltip: {
-                                backgroundColor: 'rgba(30, 41, 59, 0.9)',
-                                titleColor: '#f8fafc',
-                                bodyColor: '#f8fafc',
-                                borderColor: '#475569',
-                                borderWidth: 1,
+                                backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                titleColor: '#ffffff',
+                                bodyColor: '#ffffff',
+                                cornerRadius: 8,
+                                padding: 12,
+                                displayColors: true,
                                 callbacks: {
                                     label: function(context) {
                                         return context.label + ': ' + context.parsed + '%';
@@ -1246,10 +1247,11 @@ function initializeDashboardCharts() {
                                 }
                             }
                         },
-                        cutout: '60%', // Creates donut effect
+                        cutout: '50%', // Clean donut effect
                         elements: {
                             arc: {
-                                borderWidth: 2
+                                borderWidth: 3,
+                                borderColor: '#ffffff'
                             }
                         }
                     }
@@ -1279,8 +1281,19 @@ function initializeDashboardCharts() {
                 console.log('❌ Canvas not found');
             }
         } catch (e) {
-            console.error('❌ Chart error:', e);
-            document.body.innerHTML += '<div style="position:fixed;top:0;left:0;background:red;color:white;z-index:9999;padding:10px;">CHART ERROR: ' + e.message + '</div>';
+            console.error('❌ Sector chart error:', e);
+            
+            // Show CSS fallback chart if Chart.js fails
+            const fallbackChart = document.getElementById('css-sector-chart');
+            if (fallbackChart) {
+                fallbackChart.style.display = 'block';
+            }
+            
+            // Hide the canvas if Chart.js failed
+            const canvas = document.getElementById('sector-allocation-chart');
+            if (canvas) {
+                canvas.style.display = 'none';
+            }
         }
 
         // Sector Click Handler Function (Updated with drill-down state management)

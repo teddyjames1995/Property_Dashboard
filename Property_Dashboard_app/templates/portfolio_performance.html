@@ -77,6 +77,22 @@
 {% endblock content %}
 
 {% block javascript %}
+<!-- Inherit Chart.js from base.html -->
+{{ block.super }}
+
+<!-- Test Chart.js availability and functionality -->
+<script>
+console.log('🔍 Testing Chart.js availability on portfolio performance page...');
+console.log('Chart available:', typeof Chart !== 'undefined');
+if (typeof Chart === 'undefined') {
+    console.error('❌ Chart.js not available for portfolio performance');
+} else {
+    console.log('✅ Chart.js is available for portfolio performance');
+    console.log('✅ Chart.js version:', Chart.version);
+    console.log('✅ Chart.js ready for performance charts');
+}
+</script>
+
 <script>
 // Comprehensive portfolio data structure
 const portfolios = {
@@ -244,135 +260,110 @@ function initializeCharts() {
 
     const performanceHistoryData = getPerformanceHistoryData(currentPortfolio);
 
-    // Create combination chart with bar and line
+    // Create clean Performance History chart with conditional coloring
+    const returns = performanceHistoryData.portfolioReturns;
+    
+    // Apply conditional coloring: green for positive, red for negative
+    const backgroundColors = returns.map(value => value >= 0 ? '#10B981' : '#EF4444');
+    const borderColors = returns.map(value => value >= 0 ? '#059669' : '#DC2626');
+    
     performanceChart = new Chart(performanceCtx, {
         type: 'bar',
         data: {
             labels: performanceHistoryData.labels,
-            datasets: [
-                {
-                    label: 'Total Returns',
-                    type: 'bar',
-                    data: performanceHistoryData.portfolioReturns,
-                    backgroundColor: '#6CB5A3',
-                    borderColor: '#5A9B8B',
-                    borderWidth: 1,
-                    yAxisID: 'y'
-                },
-                {
-                    label: 'UK 10-year Gilt',
-                    type: 'line',
-                    data: performanceHistoryData.giltYields,
-                    borderColor: '#374151',
-                    backgroundColor: 'transparent',
-                    borderWidth: 2,
-                    borderDash: [5, 5],
-                    pointBackgroundColor: '#374151',
-                    pointBorderColor: '#374151',
-                    pointRadius: 4,
-                    fill: false,
-                    yAxisID: 'y1'
-                }
-            ]
+            datasets: [{
+                label: 'Portfolio Returns',
+                data: returns,
+                backgroundColor: backgroundColors,
+                borderColor: borderColors,
+                borderWidth: 1
+            }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
-            interaction: {
-                mode: 'index',
-                intersect: false,
-            },
             plugins: {
                 legend: {
-                    position: 'top',
-                    labels: {
-                        color: '#475569',
-                        font: { size: 12 },
-                        usePointStyle: true,
-                        padding: 20
-                    }
+                    display: false // Hide legend for clean look
                 },
                 tooltip: {
-                    backgroundColor: 'rgba(30, 41, 59, 0.9)',
-                    titleColor: '#f8fafc',
-                    bodyColor: '#f8fafc',
-                    borderColor: '#475569',
-                    borderWidth: 1,
+                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
+                    cornerRadius: 6,
+                    padding: 10,
                     callbacks: {
                         label: function(context) {
-                            const datasetLabel = context.dataset.label;
                             const value = context.parsed.y;
-                            if (datasetLabel === 'Total Returns') {
-                                return `${datasetLabel}: ${value}%`;
-                            } else {
-                                return `${datasetLabel}: ${value}%`;
-                            }
+                            return `Portfolio Return: ${value}%`;
                         }
                     }
                 }
             },
             scales: {
                 x: {
-                    title: {
+                    ticks: {
+                        color: '#475569',
+                        font: { size: 12, weight: '500' }
+                    },
+                    grid: {
                         display: false
+                    }
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Portfolio Returns (%)',
+                        color: '#475569',
+                        font: { size: 12, weight: 'bold' }
                     },
                     ticks: {
                         color: '#475569',
-                        font: { size: 11 }
+                        font: { size: 11 },
+                        callback: function(value) {
+                            return value + '%';
+                        }
                     },
                     grid: {
                         color: '#e2e8f0',
                         drawOnChartArea: true
-                    }
-                },
-                y: {
-                    type: 'linear',
-                    display: true,
-                    position: 'left',
-                    title: {
-                        display: true,
-                        text: 'Total Returns (%)',
-                        color: '#475569',
-                        font: { size: 12, weight: 'bold' }
                     },
-                    ticks: {
-                        color: '#475569',
-                        font: { size: 11 },
-                        callback: function(value) {
-                            return value + '%';
-                        }
-                    },
-                    grid: {
-                        color: '#e2e8f0'
-                    },
-                    suggestedMin: -10,
-                    suggestedMax: 45
-                },
-                y1: {
-                    type: 'linear',
-                    display: true,
-                    position: 'right',
-                    title: {
-                        display: true,
-                        text: 'UK 10-year Gilt Yield (%)',
-                        color: '#475569',
-                        font: { size: 12, weight: 'bold' }
-                    },
-                    ticks: {
-                        color: '#475569',
-                        font: { size: 11 },
-                        callback: function(value) {
-                            return value + '%';
-                        }
-                    },
-                    grid: {
-                        drawOnChartArea: false,
-                    },
-                    min: 0,
-                    max: 6
+                    beginAtZero: true
                 }
+            },
+            onHover: (event, elements) => {
+                event.native.target.style.cursor = elements.length > 0 ? 'pointer' : 'default';
             }
-        }
+        },
+        plugins: [{
+            // Custom plugin to add percentage labels on top of bars
+            afterDatasetsDraw: function(chart) {
+                const ctx = chart.ctx;
+                const dataset = chart.data.datasets[0];
+                const meta = chart.getDatasetMeta(0);
+                
+                ctx.save();
+                ctx.font = 'bold 12px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'bottom';
+                
+                meta.data.forEach((bar, index) => {
+                    const value = dataset.data[index];
+                    const x = bar.x;
+                    const y = bar.y;
+                    
+                    // Set text color based on bar value
+                    ctx.fillStyle = value >= 0 ? '#059669' : '#DC2626';
+                    
+                    // Position label above bar for positive values, below for negative
+                    const labelY = value >= 0 ? y - 8 : y + 20;
+                    
+                    ctx.fillText(value + '%', x, labelY);
+                });
+                
+                ctx.restore();
+            }
+        }]
 });
 
 console.log('Performance chart created successfully!');
@@ -448,9 +439,16 @@ function updatePortfolioData(portfolioId) {
         // Update chart data based on selected portfolio
         if (performanceChart) {
             const historyData = getPerformanceHistoryData(portfolioId);
+            const returns = historyData.portfolioReturns;
             
-            performanceChart.data.datasets[0].data = historyData.portfolioReturns;
-            performanceChart.data.datasets[1].data = historyData.giltYields;
+            // Update data
+            performanceChart.data.datasets[0].data = returns;
+            
+            // Update conditional coloring for new data
+            const backgroundColors = returns.map(value => value >= 0 ? '#10B981' : '#EF4444');
+            const borderColors = returns.map(value => value >= 0 ? '#059669' : '#DC2626');
+            performanceChart.data.datasets[0].backgroundColor = backgroundColors;
+            performanceChart.data.datasets[0].borderColor = borderColors;
             
             // Animate chart update
             performanceChart.update('active');

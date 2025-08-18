@@ -10,7 +10,13 @@
     <div class="debt-controls-row">
         <div class="control-group">
             <label>Portfolio:</label>
-            <span class="debt-label">All</span>
+            <select class="deepdive-select" id="portfolio-selector">
+                <option value="all">All ▼</option>
+                <option value="main">Portfolio</option>
+                <option value="sipp">SIPP</option>
+                <option value="hands-on">Hands On Mansfield</option>
+                <option value="airbnbs">AirBnBs</option>
+            </select>
         </div>
         
         <div class="control-group">
@@ -143,5 +149,100 @@ document.querySelector('.debt-report-btn').addEventListener('click', function() 
         alert('Debt report generated successfully!');
     }, 1500);
 });
+
+// Portfolio data structure (same as Portfolio Performance page)
+const portfolios = {
+    'main': {
+        name: 'Portfolio',
+        type: 'commercial',
+        value: 120000000, // £120M portfolio value
+        properties: 5,
+        tenants: 9
+    },
+    'sipp': {
+        name: 'SIPP',
+        type: 'pension',
+        value: 45000000, // £45M portfolio value
+        properties: 3,
+        tenants: 4
+    },
+    'hands-on': {
+        name: 'Hands On Mansfield',
+        type: 'commercial',
+        value: 85000000, // £85M portfolio value
+        properties: 4,
+        tenants: 6
+    },
+    'airbnbs': {
+        name: 'AirBnBs',
+        type: 'hospitality',
+        value: 25000000, // £25M portfolio value
+        properties: 8,
+        guests: 1250 // Annual guests instead of tenants
+    }
+};
+
+// Calculate aggregated "All" portfolio data
+function calculateAggregatedData() {
+    const individualPortfolios = ['main', 'sipp', 'hands-on', 'airbnbs'];
+    let totalValue = 0;
+    let totalProperties = 0;
+    let totalTenants = 0;
+    
+    individualPortfolios.forEach(portfolioId => {
+        const portfolio = portfolios[portfolioId];
+        totalValue += portfolio.value;
+        totalProperties += portfolio.properties;
+        totalTenants += (portfolio.tenants || 0);
+        if (portfolio.guests) totalTenants += portfolio.guests;
+    });
+    
+    return {
+        name: 'All Portfolios',
+        type: 'aggregate',
+        value: totalValue,
+        properties: totalProperties,
+        tenants: totalTenants
+    };
+}
+
+// Add aggregated data to portfolios
+portfolios['all'] = calculateAggregatedData();
+
+// Current portfolio selection (with localStorage persistence)
+let currentPortfolio = localStorage.getItem('selectedPortfolio') || 'all';
+
+// Portfolio selector event listener
+const portfolioSelector = document.getElementById('portfolio-selector');
+if (portfolioSelector) {
+    portfolioSelector.addEventListener('change', function() {
+        const selectedPortfolio = this.value;
+        console.log('🔄 Debt Dashboard portfolio changed to:', selectedPortfolio);
+        
+        // Update current selection and save to storage
+        currentPortfolio = selectedPortfolio;
+        localStorage.setItem('selectedPortfolio', selectedPortfolio);
+        
+        // Update debt dashboard display based on selected portfolio
+        updateDebtDashboardDisplay(selectedPortfolio);
+    });
+    
+    // Set initial selection
+    portfolioSelector.value = currentPortfolio;
+    console.log('Debt Dashboard portfolio selector initialized with:', currentPortfolio);
+}
+
+// Update debt dashboard display based on selected portfolio
+function updateDebtDashboardDisplay(portfolioId) {
+    const portfolio = portfolios[portfolioId];
+    if (!portfolio) {
+        console.error('Portfolio not found:', portfolioId);
+        return;
+    }
+    
+    console.log('Updating Debt Dashboard display for:', portfolio.name);
+    // Future: Filter debt data based on selected portfolio
+    // Future: Update debt metrics and charts
+}
 </script>
 {% endblock javascript %}

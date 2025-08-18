@@ -29,37 +29,37 @@
         <nav class="sidebar-nav">
             <ul>
                 <li>
-                    <a href="{% url 'dashboard' %}" class="nav-item">
+                    <a href="{% url 'dashboard' %}" class="nav-item {% if request.resolver_match.url_name == 'dashboard' %}active{% endif %}">
                         <span class="material-symbols-outlined">dashboard</span>
                         <span>Dashboard</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'portfolio_performance' %}" class="nav-item">
+                    <a href="{% url 'portfolio_performance' %}" class="nav-item {% if request.resolver_match.url_name == 'portfolio_performance' %}active{% endif %}">
                         <span class="material-symbols-outlined">trending_up</span>
                         <span>Portfolio Performance</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'property_deepdive' %}" class="nav-item">
+                    <a href="{% url 'property_deepdive' %}" class="nav-item {% if request.resolver_match.url_name == 'property_deepdive' %}active{% endif %}">
                         <span class="material-symbols-outlined">business</span>
                         <span>Property Deep Dive</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'asset_management' %}" class="nav-item">
+                    <a href="{% url 'asset_management' %}" class="nav-item {% if request.resolver_match.url_name == 'asset_management' %}active{% endif %}">
                         <span class="material-symbols-outlined">home_work</span>
                         <span>Asset Management</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'debt' %}" class="nav-item">
+                    <a href="{% url 'debt' %}" class="nav-item {% if request.resolver_match.url_name == 'debt' %}active{% endif %}">
                         <span class="material-symbols-outlined">account_balance</span>
                         <span>Debt Management</span>
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'income_and_expenses' %}" class="nav-item">
+                    <a href="{% url 'income_and_expenses' %}" class="nav-item {% if request.resolver_match.url_name == 'income_and_expenses' %}active{% endif %}">
                         <span class="material-symbols-outlined">receipt_long</span>
                         <span>Income & Expenses</span>
                     </a>
